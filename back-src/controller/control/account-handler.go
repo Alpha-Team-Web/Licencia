@@ -5,7 +5,6 @@ import (
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
-
 	"github.com/gin-gonic/gin"
 )
 
