@@ -17,11 +17,11 @@ function signUp() {
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
-            username: signUpUsername.value,
-            firstname: signUpFirstName.value,
-            lastname: signUpLastName.value,
-            email: signUpEmail.value,
-            password: signUpPassword.value
+            username: signUpUsername,
+            firstname: signUpFirstName,
+            lastname: signUpLastName,
+            email: signUpEmail,
+            password: signUpPassword
         }
         /*const response = fetch(urlSignUp, {
             method: 'POST',
@@ -69,8 +69,8 @@ function login() {
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
-            keyPoint: loginKeypoint.value,
-            password: loginPassword.value
+            keyPoint: loginKeypoint,
+            password: loginPassword
         }
         /*const response = fetch(urlLogin, {
             method: 'POST',

@@ -8,8 +8,17 @@
     <meta charset="UTF-8">
     <title>*User*'s Page</title>
 
+    <link rel="stylesheet" type="text/css" href="../Semantic-UI-CSS-master/semantic.min.css">
+
     <script src="../Js%20Functionals/FileNames.js"></script>
 
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="../Semantic-UI-CSS-master/semantic.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <div class="header" id="Header">
@@ -49,33 +58,33 @@
             <div class="two fields">
                 <div class="field">
                     <label>نام</label>
-                    <input placeholder="FirstName" readonly="" type="text">
+                    <input id="firstNameField" placeholder="FirstName" readonly="" type="text">
                 </div>
                 <div class="field">
                     <label>نام خانوادگی</label>
-                    <input placeholder="LastName" readonly="" type="text">
+                    <input id="lastNameField" placeholder="LastName" readonly="" type="text">
                 </div>
             </div>
 
             <div class="two fields">
                 <div class="field">
                     <label>نام کاربری</label>
-                    <input placeholder="Username" readonly="" type="text">
+                    <input id="usernameField" placeholder="Username" readonly="" type="text">
                 </div>
                 <div class="field">
                     <label>ایمیل</label>
-                    <input placeholder="Email" readonly="" type="text">
+                    <input id="emailField" placeholder="Email" readonly="" type="text">
                 </div>
             </div>
 
             <div class="two fields">
                 <div class="field">
                     <label>آدرس سایت</label>
-                    <input placeholder="Site Address" readonly="" type="text">
+                    <input id="siteAddressField" placeholder="Site Address" readonly="" type="text">
                 </div>
                 <div class="field">
                     <label>شماره تلفن</label>
-                    <input placeholder="Telephone Number" readonly="" type="text">
+                    <input id="telephoneNumberField" placeholder="Telephone Number" readonly="" type="text">
                 </div>
             </div>
 
@@ -83,10 +92,10 @@
                 <label>رمز عبور</label>
                 <div class="two fields">
                     <div class="field">
-                        <input placeholder="Password" readonly="" type="password">
+                        <input id="passwordField" placeholder="Password" readonly="" type="password">
                     </div>
                     <div class="field">
-                        <input placeholder="Repeat Password" readonly="" type="password">
+                        <input id="repeatPasswordField" placeholder="Repeat Password" readonly="" type="password">
                     </div>
                 </div>
             </div>
@@ -94,11 +103,11 @@
             <div class="two fields">
                 <div class="field">
                     <label>توضیحات</label>
-                    <textarea rows="3"></textarea>
+                    <textarea id="descriptionField" rows="3"></textarea>
                 </div>
                 <div class="field">
                     <label>آدرس</label>
-                    <textarea rows="3"></textarea>
+                    <textarea id="addressField" rows="3"></textarea>
                 </div>
             </div>
         </div>
