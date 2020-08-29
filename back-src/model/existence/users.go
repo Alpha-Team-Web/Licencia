@@ -26,3 +26,23 @@ type Employer struct {
 	image
 	ProjectIds []string `json:"project-ids"`
 }
+
+const (
+	FreelancerGold   = "Gold"
+	FreelancerSilver = "Silver"
+	FreelancerBronze = "Bronze"
+)
+
+type Freelancer struct {
+	tableName struct{} `pg:"freelancers"`
+	user
+	person
+	image
+	ProjectIds            []string            `json:"project-ids"`
+	AccountType           string              `json:"account-type"`
+	Website               string              `json:"website"`
+	GithubAccount         string              `json:"github"`
+	GithubRepos           []string            `json:"github-repos"`
+	SkillsWithProject     map[string][]string `json:"skills-with-project"`
+	ChosenFieldWithSkills map[string][]string `json:"chosen-field-with-skills"`
+}
