@@ -1,9 +1,13 @@
 package database
 
-import "back-src/model/existence"
+import (
+	"back-src/model/existence"
+)
 
 func (db *Database) GetFieldSkills(fieldId string) (skills []string, error error) {
-	error = db.db.Model(&skills).Where("id = ?", fieldId).Select()
+	var field existence.Field
+	error = db.db.Model(&field).Column("skills").Where("id = ?", fieldId).Select()
+	skills = field.Skills
 	return
 }
 

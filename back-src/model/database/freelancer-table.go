@@ -1,6 +1,8 @@
 package database
 
-import "back-src/model/existence"
+import (
+	"back-src/model/existence"
+)
 
 func (db Database) DoesFreelancerExistWithUsername(username string) bool {
 	resultSet := &[]existence.Freelancer{}
@@ -20,12 +22,22 @@ func (db *Database) InsertFreelancer(frl existence.Freelancer) error {
 }
 
 func (db *Database) AddFreelancerSkills(username string, fieldId string, skills []string) error {
-	var fieldsWithSkills = map[string][]string{}
-	if err := db.db.Model().Table("freelancers").Where("username = ?", username).Select(&fieldsWithSkills); err != nil {
+	var frl existence.Freelancer
+	if err := db.db.Model(&frl). /*.Column("chosen_field_with_skills")*/ Where("username = ?", username).Select(); err != nil {
 		return err
 	}
-	fieldsWithSkills[fieldId] = skills
-	frl := existence.Freelancer{ChosenFieldWithSkills: fieldsWithSkills}
-	_, err := db.db.Model(frl).Column("chosen_field_with_skills").Where("username = ?", username).Update()
+	if frl.ChosenFieldWithSkills == nil {
+		frl.ChosenFieldWithSkills = map[string][]string{}
+	}
+	frl.ChosenFieldWithSkills[fieldId] = skills
+	_, err := db.db.Model(&frl).Column("chosen_field_with_skills").Where("username = ?", username).Update()
 	return err
+}
+
+func (db *Database) GetFreelancerByUsername(username string) (existence.Freelancer, error) {
+	var frl existence.Freelancer
+	if err := db.db.Model(&frl).Where("username = ?", username).Select(); err != nil {
+		return frl, err
+	}
+	return frl, nil
 }
