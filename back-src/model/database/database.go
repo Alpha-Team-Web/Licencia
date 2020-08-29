@@ -80,6 +80,9 @@ func (db *Database) Initialize() error {
 	if err := db.initProjectTable(); err != nil {
 		return nil
 	}
+	if err := db.initFreelancerTable(); err != nil {
+		return err
+	}
 
 	return nil
 }

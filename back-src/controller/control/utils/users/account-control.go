@@ -19,7 +19,7 @@ func RegisterEmployer(emp existence.Employer, Db *database.Database) error {
 func RegisterFreelancer(frl existence.Freelancer, Db *database.Database) error {
 	if !Db.DoesFreelancerExistWithUsername(frl.Username) {
 		if !Db.DoesEmployerExistWithEmail(frl.Email) {
-			return Db.InsertEmployer(frl)
+			return Db.InsertFreelancer(frl)
 		}
 		return errors.New("duplicate email: " + frl.Email)
 	}

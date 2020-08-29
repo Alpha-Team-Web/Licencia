@@ -38,10 +38,11 @@ type Freelancer struct {
 	user
 	person
 	image
-	ProjectIds        []string            `json:"project-ids"`
-	AccountType       string              `json:"account-type"`
-	Website           string              `json:"website"`
-	GithubAccount     string              `json:"github"`
-	GithubRepos       []string            `json:"github-repos"`
-	SkillsWithProject map[string][]string `json:"skills-with-project"`
+	ProjectIds            []string            `json:"project-ids"`
+	AccountType           string              `json:"account-type"`
+	Website               string              `json:"website"`
+	GithubAccount         string              `json:"github"`
+	GithubRepos           []string            `json:"github-repos"`
+	SkillsWithProject     map[string][]string `json:"skills-with-project"`
+	ChosenFieldWithSkills map[string][]string `json:"chosen-field-with-skills"`
 }
