@@ -53,3 +53,13 @@ func (controller *Control) EditEmployerProfile(ctx *gin.Context) error {
 	}
 	return users.EditEmployerProfile(emp, DB)
 }
+
+func (controller *Control) GetEmployerProfile(ctx *gin.Context) (existence.Employer, error) {
+	user := struct {
+		username string `json:"username" binding:"required"`
+	}{}
+	if err := ctx.ShouldBindJSON(&user); err != nil {
+		return existence.Employer{}, err
+	}
+	return users.GetEmployerProfile(user.username, DB)
+}

@@ -36,3 +36,9 @@ func (db *Database) UpdateEmployer(username string, emp existence.Employer) erro
 
 	return nil
 }
+
+func (db *Database) GetEmployer(username string) (existence.Employer, error) {
+	emp := new(existence.Employer)
+	err := db.db.Model(emp).Where("username = ?", username).Select()
+	return *emp, err
+}

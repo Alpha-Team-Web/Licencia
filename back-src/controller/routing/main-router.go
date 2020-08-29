@@ -32,6 +32,11 @@ func (router *router) Listen() error {
 		view.RespondEmployerEditProfile(context, router.controller.EditEmployerProfile(context))
 	})
 
+	router.server.POST("/employer/get-profile", func(context *gin.Context) {
+		emp, err := router.controller.GetEmployerProfile(context)
+		view.RespondEmployerGetProfile(context, emp, err)
+	})
+
 	router.server.Run(":" + router.port)
 	return nil
 }
