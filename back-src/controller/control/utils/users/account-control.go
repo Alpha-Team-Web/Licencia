@@ -15,3 +15,15 @@ func RegisterEmployer(emp existence.Employer, DB *database.Database) error {
 	}
 	return errors.New("duplicate username: " + emp.Username)
 }
+
+func EditEmployerProfile(emp existence.Employer, DB *database.Database) error {
+	if !DB.DoesEmployerExistWithUsername(emp.Username) {
+		return errors.New("no user with such username :" + emp.Username)
+	}
+
+	if err := DB.UpdateEmployer(emp.Username, emp); err != nil {
+		return err
+	}
+
+	return nil
+}

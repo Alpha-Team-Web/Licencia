@@ -45,3 +45,11 @@ func (controller *Control) Register(ctx *gin.Context) error {
 	}
 	return nil
 }
+
+func (controller *Control) EditEmployerProfile(ctx *gin.Context) error {
+	emp := existence.Employer{}
+	if err := ctx.ShouldBindJSON(&emp); err != nil {
+		return err
+	}
+	return users.EditEmployerProfile(emp, DB)
+}

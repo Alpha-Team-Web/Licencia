@@ -28,6 +28,10 @@ func (router *router) Listen() error {
 		view.RespondRegister(context, router.controller.Register(context))
 	})
 
+	router.server.POST("/employer/edit-profile", func(context *gin.Context) {
+		view.RespondEmployerEditProfile(context, router.controller.EditEmployerProfile(context))
+	})
+
 	router.server.Run(":" + router.port)
 	return nil
 }

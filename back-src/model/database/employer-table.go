@@ -20,3 +20,19 @@ func (db *Database) InsertEmployer(emp existence.Employer) error {
 	_, err := db.db.Model(&emp).Insert()
 	return err
 }
+
+func (db *Database) UpdateEmployer(username string, emp existence.Employer) error {
+
+	empOld := new(existence.Employer)
+	err := db.db.Model(empOld).Where("username = ?", username).Select()
+	if err != nil {
+		return err
+	}
+
+	_, err = db.db.Model(empOld).Update(emp)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

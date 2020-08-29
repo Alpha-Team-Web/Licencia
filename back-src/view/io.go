@@ -24,3 +24,18 @@ func RespondRegister(context *gin.Context, err error) {
 		context.JSON(status, responses.Response{Message: err.Error()})
 	}
 }
+
+func RespondEmployerEditProfile(context *gin.Context, err error) {
+	if err == nil {
+		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+	} else {
+		var status int
+		switch {
+		case strings.Contains(err.Error(), "no user with such username :"):
+			status = http.StatusBadRequest
+		default:
+			status = http.StatusInternalServerError
+		}
+		context.JSON(status, responses.Response{Message: err.Error()})
+	}
+}
