@@ -23,17 +23,9 @@ func (db *Database) InsertEmployer(emp existence.Employer) error {
 
 func (db *Database) UpdateEmployer(username string, emp existence.Employer) error {
 
-	empOld := new(existence.Employer)
-	err := db.db.Model(empOld).Where("username = ?", username).Select()
-	if err != nil {
+	if _, err := db.db.Model(&emp).Column("password", "email", "description", "firstname", "lastname", "phonenumber", "addr").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
-
-	_, err = db.db.Model(empOld).Update(emp)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
