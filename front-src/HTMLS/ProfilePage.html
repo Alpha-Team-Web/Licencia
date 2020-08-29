@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="../CSS%20Designs/Header.css"/>
+    <link rel="stylesheet" type="text/css" href="../CSS%20Designs/ProfilePage/CSS1.css"/>
+    <link rel="stylesheet" type="text/css" href="../CSS%20Designs/basic.css"/>
+
+    <meta charset="UTF-8">
+    <title>*User*'s Page</title>
+
+    <link rel="stylesheet" type="text/css" href="../Semantic-UI-CSS-master/semantic.min.css">
+
+    <script src="../Js%20Functionals/FileNames.js"></script>
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="../Semantic-UI-CSS-master/semantic.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="header" id="Header">
+    <!--    badan-->
+    <div class="ui button loginButton" onclick="logOut()">خروج</div>
+    <ul id="Header-UnOrderedList">
+        <li class="Header-UnOrderedList-Item" value="KireKhar">
+            <a href="KireKhar" class="Header-UnOrderedList-Item">دسته بندی ها</a>
+        </li>
+        <li class="Header-UnOrderedList-Item" value="KireKhar">
+            <a href="KireKhar" class="Header-UnOrderedList-Item">مشاهده</a>
+        </li>
+        <li class="Header-UnOrderedList-Item" value="KireKhar">
+            <a href="KireKhar" class="Header-UnOrderedList-Item">دنبال کننده ها</a>
+        </li>
+        <li class="Header-UnOrderedList-Item" value="KireKhar">
+            <a href="KireKhar" class="Header-UnOrderedList-Item">دنبال شونده ها</a>
+        </li>
+    </ul>
+    <a href="#badan" class="Header-Link"><img src="../Pics/Licencia-Logo.png" alt="Licencia" id="Logo"/></a>
+</div>
+<div class="content" id="ProfileContent">
+    <div class="content" id="MainProfileContent">
+        <div class="flexColumn" id="leftDiv">
+            <div class="ui large buttons" id="chooseEditProjects">
+                <button class="ui button" onclick="edit()">ویرایش</button>
+                <div class="or"></div>
+                <button class="ui button" onclick="projects()">پروژه ها</button>
+            </div>
+            <div class="content" id="ImageTippoContent">
+                <img class="ui circular bordered image" src="../Pics/codingPerson.jpg" alt="*User*'s Picture"/>
+                <a class="ui teal tag label" id="TippoTag" href="Todo">El Tippo</a>
+            </div>
+        </div>
+
+        <div class="ui form" id="MainProfileForm">
+            <div class="two fields">
+                <div class="field">
+                    <label>نام</label>
+                    <input placeholder="FirstName" readonly="" type="text">
+                </div>
+                <div class="field">
+                    <label>نام خانوادگی</label>
+                    <input placeholder="LastName" readonly="" type="text">
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>نام کاربری</label>
+                    <input placeholder="Username" readonly="" type="text">
+                </div>
+                <div class="field">
+                    <label>ایمیل</label>
+                    <input placeholder="Email" readonly="" type="text">
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>آدرس سایت</label>
+                    <input placeholder="Site Address" readonly="" type="text">
+                </div>
+                <div class="field">
+                    <label>شماره تلفن</label>
+                    <input placeholder="Telephone Number" readonly="" type="text">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>رمز عبور</label>
+                <div class="two fields">
+                    <div class="field">
+                        <input placeholder="Password" readonly="" type="password">
+                    </div>
+                    <div class="field">
+                        <input placeholder="Repeat Password" readonly="" type="password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>توضیحات</label>
+                    <textarea rows="3"></textarea>
+                </div>
+                <div class="field">
+                    <label>آدرس</label>
+                    <textarea rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../Js%20Functionals/ProfilePage/JS1.js"></script>
+</body>
+</html>

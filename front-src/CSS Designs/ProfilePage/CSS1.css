@@ -1,0 +1,41 @@
+#ProfileContent {
+    display: flex;
+    flex-direction: row;
+}
+
+
+#MainProfileContent {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+#MainProfileForm {
+    padding: 70px 40px 70px 60px;
+    width: 100%;
+}
+
+
+#ImageTippoContent {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0;
+}
+
+#TippoTag {
+    max-width: 190px;
+    margin: 10px auto;
+}
+
+
+#leftDiv {
+    padding: 20px;
+    width: 40%;
+}
+
+#chooseEditProjects {
+    margin: 20px auto;
+    max-width: 280px;
+    min-width: 250px;
+}
