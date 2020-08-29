@@ -31,17 +31,25 @@ password
 QUERIES : "account-type"
 */
 func (controller *Control) Register(ctx *gin.Context) error {
-	accountType := ctx.Query("account-type")
-	if accountType == "employer" {
+
+	switch accountType := ctx.Query("account-type"); accountType {
+
+	case "employer":
 		employer := existence.Employer{}
 		if err := ctx.ShouldBindJSON(&employer); err != nil {
 			return err
 		}
 		return users.RegisterEmployer(employer, DB)
-	} else if accountType == "freelancer" {
-		//TODO
-	} else {
+
+	case "freelancer":
+		freelancer := existence.Freelancer{}
+		if err := ctx.ShouldBindJSON(&freelancer); err != nil {
+			return err
+		}
+		return users.RegisterFreelancer(freelancer, DB)
+
+	default:
 		return errors.New("invalid query: " + accountType)
 	}
-	return nil
+
 }

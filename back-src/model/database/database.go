@@ -151,3 +151,7 @@ func (db *Database) updateDBMetadata() error {
 func (db *Database) initProjectTable() error {
 	return db.db.CreateTable(&existence.Project{}, options)
 }
+
+func (db *Database) initFreelancerTable() error {
+	return db.db.CreateTable(&existence.Freelancer{}, options)
+}
