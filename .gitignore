@@ -16,4 +16,7 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-/front-src/.yarn/
+/front-src/.yarn/install-state.gz
+/front-src/.yarn/cache/
+/front-src/.yarn/unplugged/
+/front-src/.pnp.js
