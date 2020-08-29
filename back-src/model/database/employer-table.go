@@ -23,7 +23,7 @@ func (db *Database) InsertEmployer(emp existence.Employer) error {
 
 func (db *Database) UpdateEmployer(username string, emp existence.Employer) error {
 
-	if _, err := db.db.Model(&emp).Column("password", "email", "description", "firstname", "lastname", "phonenumber", "addr").Where("username = ?", username).Update(); err != nil {
+	if _, err := db.db.Model(&emp).Column("password", "email", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil

@@ -16,10 +16,10 @@ const (
 
 var (
 	dbc = dbConnection{
-		username: "ashka",
-		password: "a124578",
-		/*		username: "postgres",
-				password: "mbsoli1743399413",*/
+		/*		username: "ashka",
+				password: "a124578",*/
+		username: "postgres",
+		password: "mbsoli1743399413",
 	}
 
 	options = &orm.CreateTableOptions{
@@ -55,7 +55,7 @@ func NewDb() *Database {
 
 	bytes, err := ioutil.ReadFile("model/database/jsons/db-metadata.json")
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 	meta := &Metadata{}
 	err = json.Unmarshal(bytes, &meta)
@@ -68,7 +68,7 @@ func (db *Database) Initialize() error {
 	defer func() {
 		db.meta.IsFirstInit = false
 		if err := db.updateDBMetadata(); err != nil {
-			panic(err)
+			//panic(err)
 		}
 	}()
 	if err := db.initEmployerTable(); err != nil {

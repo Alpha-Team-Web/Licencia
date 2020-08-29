@@ -18,7 +18,7 @@ func EditEmployerProfile(emp existence.Employer, DB *database.Database) error {
 	return nil
 }
 
-func GetEmployerProfile(username string, DB *database.Database) (existence.Employer, error) {
+func GetEmployer(username string, DB *database.Database) (existence.Employer, error) {
 	if !DB.DoesEmployerExistWithUsername(username) {
 		return existence.Employer{}, errors.New("no user with such username :" + username)
 	}

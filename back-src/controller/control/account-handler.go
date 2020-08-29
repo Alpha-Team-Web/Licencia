@@ -69,7 +69,7 @@ func (controller *Control) GetEmployerProfile(ctx *gin.Context) (existence.Emplo
 	if err := ctx.ShouldBindJSON(&user); err != nil {
 		return existence.Employer{}, err
 	}
-	return users.GetEmployerProfile(user.username, DB)
+	return users.GetEmployer(user.username, DB)
 }
 
 func (controller *Control) GetEmployerProjects(ctx *gin.Context) ([]existence.Project, error) {

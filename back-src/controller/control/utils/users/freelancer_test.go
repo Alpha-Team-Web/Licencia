@@ -3,7 +3,6 @@ package users
 import (
 	"back-src/controller/control/utils/libs"
 	"back-src/model/database"
-	"fmt"
 	"testing"
 )
 
@@ -31,5 +30,4 @@ func TestChooseFreelancerSkills(t *testing.T) {
 			t.Errorf("%v %v", skills, newSkills)
 		}
 	}
-	fmt.Println("6")
 }
