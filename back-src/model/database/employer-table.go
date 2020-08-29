@@ -42,3 +42,20 @@ func (db *Database) GetEmployer(username string) (existence.Employer, error) {
 	err := db.db.Model(emp).Where("username = ?", username).Select()
 	return *emp, err
 }
+
+func (db *Database) GetEmployerProjects(username string) ([]existence.Project, error) {
+	emp := new(existence.Employer)
+	err := db.db.Model(emp).Where("username = ?", username).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	projectIDs := emp.ProjectIds
+	projects := make([]existence.Project, len(projectIDs))
+	for i := range projectIDs {
+		project := new(existence.Project)
+		db.db.Model(project).Where("id = ?", i).Select()
+		projects = append(projects, *project)
+	}
+	return projects, nil
+}

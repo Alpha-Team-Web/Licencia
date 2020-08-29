@@ -34,3 +34,10 @@ func GetEmployerProfile(username string, DB *database.Database) (existence.Emplo
 	}
 	return DB.GetEmployer(username)
 }
+
+func GetEmployerProjects(username string, DB *database.Database) ([]existence.Project, error) {
+	if !DB.DoesEmployerExistWithUsername(username) {
+		return nil, errors.New("no user with such username :" + username)
+	}
+	return DB.GetEmployerProjects(username)
+}
