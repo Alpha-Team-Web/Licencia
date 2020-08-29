@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "وب سایت و نرم افزار",
+    "skills": [
+      "ASP.NET","CSharp","Django","Flask","Go","JavaScript","Python","Ruby","React","html","css"
+    ]
+  },
+  {
+    "id": "2",
+    "name": "موبایل",
+    "skills": [
+      "Android","IOS","Motorola","Telegram-APIs","Whatsapp-APIs","Watch"
+    ]
+  },
+  {
+    "id": "3",
+    "name": "طراحی",
+    "skills": [
+      "Blender","3DMax","Maya","Photoshop","Paint"
+    ]
+  },
+  {
+    "id": "4",
+    "name": "محتوا و ترجمه",
+    "skills": [
+      "تایپ","داستان","E-Books","وبلاگ","مقاله نویسی","PDF"
+    ]
+  }
+]
