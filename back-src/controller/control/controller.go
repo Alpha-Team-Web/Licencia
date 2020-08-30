@@ -2,14 +2,13 @@ package control
 
 import (
 	"back-src/model/database"
-	"fmt"
 	"time"
 )
 
 type Control struct {
 }
 
-const notUsedExpiry = 1
+const notUsedExpiry = 15
 
 var DB *database.Database
 
@@ -51,9 +50,7 @@ type clock struct {
 
 func (clock *clock) startWorking() {
 	go func() {
-		fmt.Println("Clock Started")
 		clock.tik()
-		fmt.Println("Timer Finished")
 		clock.job()
 	}()
 }

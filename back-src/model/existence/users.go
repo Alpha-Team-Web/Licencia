@@ -44,6 +44,7 @@ type Freelancer struct {
 	person
 	image
 	ProjectIds            []string            `json:"project-ids"`
+	RequestedProjectIds   []string            `json:"req-project-ids"`
 	AccountType           string              `json:"account-type"`
 	Website               string              `json:"website"`
 	GithubAccount         string              `json:"github"`

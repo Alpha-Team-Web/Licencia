@@ -6,6 +6,7 @@ import (
 	"back-src/controller/control/utils/users"
 	"back-src/model/existence"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,6 +45,7 @@ func (controller *Control) Login(ctx *gin.Context) (token string, error error) {
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
 		token, error = users.Login(loginReq, getUsernameGetter(loginReq.Id, loginReq.IsFreelancer), getPasswordGetter(loginReq.IsFreelancer), DB)
 	default:
+		fmt.Println("Here: " + accountType)
 		error = errors.New("invalid query: " + accountType)
 	}
 	return
