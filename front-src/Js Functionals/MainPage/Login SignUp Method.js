@@ -13,7 +13,7 @@ const signupKind = document.getElementById("signUpKind")
 function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
-        setFieldError(doc.parentElement.parentElement)
+        setFieldError(doc)
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
@@ -78,13 +78,29 @@ function login() {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        const response = axios.get(urlLogin, data, {
+        const response = fetch(urlSignUp, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            params: {
+                'account-type': loginKind.value
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        }).then(successLogin)
+            .catch(denyLogin);
+        /*const response = axios.get(urlLogin, data, {
             params: {
                 'account-type': loginKind.value
             }
         })
             .then(successLogin)
-            .catch(denyLogin);
+            .catch(denyLogin);*/
         /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
             path: "FuckFuck"
@@ -92,12 +108,12 @@ function login() {
         window.location.href = profilePageName;*/
     }
 }
-function successLogin(res) {
+function successLogin(response) {
     console.log("success");
-    console.log(res)
-    console.log("Server Message: " + res.body)
+    console.log(response)
+    console.log("Server Message: " + JSON.parse(response.body).message)
     // todo alerting response message
-    if (res.status === 200) {
+    if (response.status === 200) {
         // todo go to Profile Menu And Save Auth
         window.location.href = profilePageName;
     } else {
