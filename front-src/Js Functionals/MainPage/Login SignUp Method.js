@@ -85,16 +85,17 @@ function login() {
         })
             .then(successLogin)
             .catch(denyLogin);
-        Cookies.set('Fuck', "Holy Fucking Shit", {
+        /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
             path: "FuckFuck"
         });
-        window.location.href = profilePageName;
+        window.location.href = profilePageName;*/
     }
 }
 function successLogin(res) {
     console.log("success");
     console.log(res)
+    console.log("Server Message: " + res.body)
     // todo alerting response message
     if (res.status === 200) {
         // todo go to Profile Menu And Save Auth
@@ -105,6 +106,7 @@ function successLogin(res) {
 }
 function denyLogin(res) {
     alert('Error Connecting To Licencia Server')
+    console.log("Server Message: " + res.body)
     console.log(res)
 }
 
