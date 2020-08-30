@@ -57,9 +57,9 @@
 }
 
 
-.ui.form {
+/*.ui.form {
     padding: 13px;
-}
+}*/
 
 
 #Login-Footer-Form {
@@ -81,3 +81,6 @@
     padding-right: 15px;
 }
 
+.formPadding {
+    padding: 13px;
+}

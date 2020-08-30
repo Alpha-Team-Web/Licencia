@@ -1,11 +1,9 @@
 function showLoginMenu() {
-    $('.ui.modal')
+    $('#LogSin-Menu')
         .modal('show')
     ;
     loginMenu();
 }
-
-
 
 const greenColor = "green"
 const whiteColor = "white"
