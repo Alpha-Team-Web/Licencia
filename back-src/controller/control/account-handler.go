@@ -62,7 +62,6 @@ func (controller *Control) Login(ctx *gin.Context) (token string, error error) {
 		error = err
 		return
 	}
-
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType

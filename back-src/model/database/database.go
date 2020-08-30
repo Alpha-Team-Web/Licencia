@@ -7,24 +7,10 @@ import (
 	"os"
 
 	"github.com/go-pg/pg"
-	"github.com/go-pg/pg/orm"
 )
 
 const (
 	jsonsFolderPath = "model/database/jsons/"
-)
-
-var (
-	dbc = dbConnection{
-		/*		username: "ashka",
-				password: "a124578",*/
-		username: "postgres",
-		password: "mbsoli1743399413",
-	}
-
-	options = &orm.CreateTableOptions{
-		IfNotExists: true,
-	}
 )
 
 type Metadata struct {
@@ -33,11 +19,6 @@ type Metadata struct {
 
 type Initializable interface {
 	Initialize() error
-}
-
-type dbConnection struct {
-	username string
-	password string
 }
 
 type Database struct {

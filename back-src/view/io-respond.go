@@ -27,10 +27,10 @@ func RespondRegister(context *gin.Context, err error) {
 
 func RespondLogin(context *gin.Context, token string, err error) {
 	if err == nil {
+		context.Header("Token", token)
 		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
-		context.Header("token", token)
 	} else {
-		context.Header("token", "N/A")
+		context.Header("Token", "N/A")
 		var status int
 		switch {
 		case strings.Contains(err.Error(), "invalid query: "):

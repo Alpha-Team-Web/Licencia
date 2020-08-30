@@ -4,7 +4,6 @@ import (
 	"back-src/controller/control"
 	"back-src/view"
 	"back-src/view/users"
-
 	"github.com/gin-gonic/gin"
 )
 
