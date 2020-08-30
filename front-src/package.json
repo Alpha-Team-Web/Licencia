@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "axios": "0.20.0",
+    "gulp": "4.0.2",
     "jquery": "3.5.1",
-    "js-cookie": "3.0.0-rc.0",
-  },
-  "devDependencies": {
-    "gulp": "^4.0.2"
+    "js-cookie": "3.0.0-rc.0"
   }
 }

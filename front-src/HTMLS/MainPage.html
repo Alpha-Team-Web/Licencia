@@ -14,6 +14,10 @@
     <script src="../Js%20Functionals/FileNames.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../Semantic-UI-CSS-master/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
     <script src="../Semantic-UI-CSS-master/semantic.min.js"></script>
 
 </head>
@@ -123,14 +127,24 @@
                            placeholder="Repeat Password">
                 </label>
             </div>
-            <div class="ui form">
+            <!--<div class="ui form">
                 <label>فریلنسر</label>
                 <div class="ui toggle checkbox" id="isFreeLancer-ToggleDiv">
                     <input type="checkbox" id="isFreeLancer-ToggleButton" name="public">
                     <label></label>
                 </div>
                 <label>کارفرما</label>
+            </div>-->
+            <div class="ui form">
+                <div class="ui paragraph paragraphInput">نوع</div>
+                <label>
+                    <select class="ui dropdown">
+                        <option value="1">کارفرما</option>
+                        <option value="0">فریلنسر</option>
+                    </select>
+                </label>
             </div>
+
             <div class="ui form">
                 <label>
                     <input onclick="signUp()" type="submit" id="signUpButton" class="ui green button" value="ثبت نام">
