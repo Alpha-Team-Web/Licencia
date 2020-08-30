@@ -2,13 +2,14 @@ package control
 
 import (
 	"back-src/model/database"
+	"fmt"
 	"time"
 )
 
 type Control struct {
-	notUsedTokenExpiry int
-	tokensWithClock    map[string]clock
 }
+
+const notUsedExpiry = 1
 
 var DB *database.Database
 
@@ -18,14 +19,14 @@ func NewControl() *Control {
 	if err != nil {
 		panic(err)
 	}
-	return &Control{1, map[string]clock{}}
+	return &Control{}
 }
 
 func (controller *Control) AddNewClock(token string) {
-	controller.tokensWithClock[token] = clock{controller.notUsedTokenExpiry, func() {
+	clk := clock{notUsedExpiry, func() {
 		controller.checkTokenUse(token)
-		return
 	}}
+	clk.startWorking()
 }
 
 func (controller *Control) checkTokenUse(token string) {
@@ -35,8 +36,11 @@ func (controller *Control) checkTokenUse(token string) {
 		if err := DB.ChangeAuthUsage(token, false); err != nil {
 			panic(err)
 		}
+		controller.AddNewClock(token)
 	} else {
-
+		if err := DB.ExpireAuth(token); err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -47,7 +51,9 @@ type clock struct {
 
 func (clock *clock) startWorking() {
 	go func() {
+		fmt.Println("Clock Started")
 		clock.tik()
+		fmt.Println("Timer Finished")
 		clock.job()
 	}()
 }

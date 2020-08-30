@@ -30,6 +30,9 @@ func (router *router) Listen() error {
 
 	router.server.GET("/login", func(context *gin.Context) {
 		token, err := router.controller.Login(context)
+		if err == nil {
+			router.controller.AddNewClock(token)
+		}
 		view.RespondLogin(context, token, err)
 	})
 
