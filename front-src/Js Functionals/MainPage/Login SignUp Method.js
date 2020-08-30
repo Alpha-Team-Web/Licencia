@@ -75,7 +75,7 @@ function login() {
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
-            keyPoint: loginKeypoint,
+            id: loginKeypoint,
             password: loginPassword
         }
         const response = axios.get(urlLogin, data, {
