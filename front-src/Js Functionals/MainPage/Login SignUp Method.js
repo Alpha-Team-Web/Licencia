@@ -10,6 +10,7 @@ const signUpPassword = document.getElementById("SignUp-Password")
 const signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
 // const signUpIsFreeLancer = document.getElementById("isFreeLancer-ToggleButton")
 const signupKind = document.getElementById("signUpKind")
+
 function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
@@ -23,26 +24,11 @@ function signUp() {
             email: signUpEmail.value,
             password: signUpPassword.value
         }
-        /*const response = fetch(urlSignUp, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            params: {
-                account_type: signUpIsFreeLancer.value ? "freelancer" : "employer"
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data)
-        }).then(successSignUp)
-            .catch(denySignUp);*/
         const promise = http('post', urlSignUp, data, {'account-type': signupKind.value},
             null, successSignUp, denySignUp);
     }
 }
+
 function successSignUp(res) {
     console.log(res)
     console.log("**** \n" + res.status)
@@ -54,6 +40,7 @@ function successSignUp(res) {
         // todo error the fields
     }
 }
+
 function denySignUp(res) {
     alert('Error Connecting To Licencia Server')
     console.log(res)
@@ -63,6 +50,7 @@ function denySignUp(res) {
 const loginKeypoint = document.getElementById("login-KeyPoint");
 const loginPassword = document.getElementById("login-Password");
 const loginKind = document.getElementById("loginKind")
+
 function login() {
     var doc = hasEmpty(loginKeypoint, loginPassword)
     if (doc != null) {
@@ -89,7 +77,7 @@ function login() {
             body: JSON.stringify(data)
         }).then(successLogin)
             .catch(denyLogin);*/
-        const promise = http('get', urlLogin, data, {'account-type': loginKind.value},
+        const promise = http('post', urlLogin, data, {'account-type': loginKind.value},
             null, successLogin, denyLogin);
         /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
@@ -98,10 +86,11 @@ function login() {
         window.location.href = profilePageName;*/
     }
 }
+
 function successLogin(response) {
     console.log("success");
     console.log(response)
-    console.log("Server Message: " + JSON.parse(response.body).message)
+    console.log("Server Message: " + response.body)
     // todo alerting response message
     if (response.status === 200) {
         // todo go to Profile Menu And Save Auth
@@ -110,6 +99,7 @@ function successLogin(response) {
         // todo error the fields
     }
 }
+
 function denyLogin(res) {
     alert('Error Connecting To Licencia Server')
     console.log("Server Message: " + res.body)
@@ -117,28 +107,21 @@ function denyLogin(res) {
 }
 
 
-function http(method, url, data, params, headers, success, deny) {
-    data = JSON.stringify(data)
-    let Function;
-    console.log("params: " + params);
-
-    switch (method) {
-        case 'post':
-            Function = axios.post;
-            break;
-        case 'get':
-            Function = axios.get;
-            break;
-        default:
-        //Fuck
-    }
-
-    return Function(url, data, {
+function http(method, url, data, params, success, deny) {
+    return fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         params: params,
-        // headers: headers
-    })
-        .then(success)
-        .catch(deny)
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+    }).then(success)
+        .catch(deny);
 }
 
 
