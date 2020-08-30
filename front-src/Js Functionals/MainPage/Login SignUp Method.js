@@ -25,7 +25,7 @@ function signUp() {
             password: signUpPassword.value
         }
         const promise = http('post', urlSignUp, data, {'account-type': signupKind.value},
-            null, successSignUp, denySignUp);
+            successSignUp, denySignUp);
     }
 }
 
@@ -78,7 +78,7 @@ function login() {
         }).then(successLogin)
             .catch(denyLogin);*/
         const promise = http('post', urlLogin, data, {'account-type': loginKind.value},
-            null, successLogin, denyLogin);
+            successLogin, denyLogin);
         /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
             path: "FuckFuck"
