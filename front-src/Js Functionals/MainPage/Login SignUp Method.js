@@ -39,13 +39,8 @@ function signUp() {
             body: JSON.stringify(data)
         }).then(successSignUp)
             .catch(denySignUp);*/
-        const response = axios.post(urlSignUp, data, {
-            params: {
-                //TODO account Type
-                'account-type' : signupKind.value
-            }
-        }).then(successSignUp)
-            .catch(denySignUp)
+        const promise = http('post', urlSignUp, data, {'account-type': signupKind.value},
+            null, successSignUp, denySignUp);
     }
 }
 function successSignUp(res) {
@@ -78,7 +73,7 @@ function login() {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        const response = fetch(urlSignUp, {
+        /*const response = fetch(urlSignUp, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -93,14 +88,9 @@ function login() {
             referrerPolicy: 'no-referrer',
             body: JSON.stringify(data)
         }).then(successLogin)
-            .catch(denyLogin);
-        /*const response = axios.get(urlLogin, data, {
-            params: {
-                'account-type': loginKind.value
-            }
-        })
-            .then(successLogin)
             .catch(denyLogin);*/
+        const promise = http('get', urlLogin, data, {'account-type': loginKind.value},
+            null, successLogin, denyLogin);
         /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
             path: "FuckFuck"
@@ -126,6 +116,30 @@ function denyLogin(res) {
     console.log(res)
 }
 
+
+function http(method, url, data, params, headers, success, deny) {
+    data = JSON.stringify(data)
+    let Function;
+    console.log("params: " + params);
+
+    switch (method) {
+        case 'post':
+            Function = axios.post;
+            break;
+        case 'get':
+            Function = axios.get;
+            break;
+        default:
+        //Fuck
+    }
+
+    return Function(url, data, {
+        params: params,
+        // headers: headers
+    })
+        .then(success)
+        .catch(deny)
+}
 
 
 function hasEmpty(...args) {
