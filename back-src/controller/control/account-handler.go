@@ -4,34 +4,11 @@ import (
 	"back-src/controller/control/utils/data"
 	"back-src/controller/control/utils/libs"
 	"back-src/controller/control/utils/users"
-	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
 	"github.com/gin-gonic/gin"
 )
 
-type Control struct {
-}
-
-var DB *database.Database
-
-func NewControl() *Control {
-	DB = database.NewDb()
-	err := DB.Initialize()
-	if err != nil {
-		panic(err)
-	}
-	return &Control{}
-}
-
-/*
-json{
-username
-email
-password
-}
-QUERIES : "account-type"
-*/
 func (controller *Control) Register(ctx *gin.Context) error {
 
 	switch accountType := ctx.Query("account-type"); accountType {
