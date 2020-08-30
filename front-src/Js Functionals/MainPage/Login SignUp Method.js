@@ -24,8 +24,10 @@ function signUp() {
             email: signUpEmail.value,
             password: signUpPassword.value
         }
-        const promise = http('post', urlSignUp, data, {'account-type': signupKind.value},
-            successSignUp, denySignUp);
+        const promise = http('post', urlSignUp, data, successSignUp, denySignUp, {
+            key: 'account-type',
+            value: signupKind.value
+        });
     }
 }
 
@@ -77,8 +79,10 @@ function login() {
             body: JSON.stringify(data)
         }).then(successLogin)
             .catch(denyLogin);*/
-        const promise = http('post', urlLogin, data, {'account-type': loginKind.value},
-            successLogin, denyLogin);
+        const promise = http('post', urlLogin, data, successLogin, denyLogin, {
+            key: 'account-type',
+            value: loginKind.value
+        });
         /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
             path: "FuckFuck"
@@ -107,8 +111,8 @@ function denyLogin(res) {
 }
 
 
-function http(method, url, data, params, success, deny) {
-    return fetch(url, {
+function http(method, url, data, success, deny, ...params) {
+    return fetch(url + createQuery(params), {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -116,7 +120,6 @@ function http(method, url, data, params, success, deny) {
         headers: {
             'Content-Type': 'application/json'
         },
-        params: params,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data)
@@ -124,6 +127,20 @@ function http(method, url, data, params, success, deny) {
         .catch(deny);
 }
 
+function createQuery(params) {
+    console.log("Params: " + JSON.stringify(params))
+    let query = "";
+    if (params.length > 0) {
+        query += "?" + createShek(params[0]);
+        for (let i = 1; i < params.length; i++) query += "&" + createShek(params[i]);
+    }
+    return query;
+}
+
+function createShek(param) {
+    console.log("Param: " + JSON.stringify(param))
+    return param.key + "=" + param.value;
+}
 
 function hasEmpty(...args) {
     for (let doc of args) {
