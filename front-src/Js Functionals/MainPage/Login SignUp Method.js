@@ -56,38 +56,17 @@ const loginKind = document.getElementById("loginKind")
 function login() {
     var doc = hasEmpty(loginKeypoint, loginPassword)
     if (doc != null) {
-        setFieldError(doc.parentElement.parentElement)
+        setFieldError(doc)
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        /*const response = fetch(urlSignUp, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            params: {
-                'account-type': loginKind.value
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data)
-        }).then(successLogin)
-            .catch(denyLogin);*/
         const promise = http('post', urlLogin, data, successLogin, denyLogin, {
             key: 'account-type',
             value: loginKind.value
         });
-        /*Cookies.set('Fuck', "Holy Fucking Shit", {
-            domain: "FuckFuckFuck",
-            path: "FuckFuck"
-        });
-        window.location.href = profilePageName;*/
     }
 }
 
@@ -144,7 +123,6 @@ function createShek(param) {
 
 function hasEmpty(...args) {
     for (let doc of args) {
-        console.log(doc);
         if (doc.value === "") {
             return doc;
         }
@@ -154,8 +132,8 @@ function hasEmpty(...args) {
 
 
 function setFieldError(field) {
-    if (field.class == null || !field.class.contains('error')) {
-        field.style.border = "1px solid red";
-        field.class = field.class == null ? 'error' : field.class + " error";
+    if (!field.parentElement.classList.contains("error")) {
+        // field.style.border = "1px solid red";
+        field.parentElement.classList.add("error");
     }
 }
