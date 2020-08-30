@@ -1,6 +1,15 @@
 #ProfileContent {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+
+#projectsContent {
+    padding-top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 30px;
 }
 
 
@@ -34,8 +43,42 @@
     width: 40%;
 }
 
+.card{
+    border-color: #6e6e6e;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 10px;
+    width: 310px;
+    height: 140px;
+    justify-content: space-between;
+}
+
 #chooseEditProjects {
     margin: 20px auto;
     max-width: 280px;
     min-width: 250px;
+}
+
+.myIcon {
+    font-size: 35px;
+    float: left;
+    padding: 15px;
+}
+
+.number {
+    float: right;
+    font-size: xx-large;
+    margin-top: auto;
+    padding: 10px;
+}
+
+.cardP {
+    float: right;
+    margin-top: auto;
+    margin-left: auto;
+    padding: 10px;
+}
+
+.cardHeader {
+    justify-content: space-between;
 }

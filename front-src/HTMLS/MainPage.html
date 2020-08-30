@@ -55,23 +55,32 @@
     </div>
 
     <div class="content Login-SignUp-Menu" id="Login-Menu">
-        <div class="ui form">
+        <div class="ui form formPadding">
             <!--            divider-->
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">نام کاربری یا ایمیل</div>
                 <label>
                     <input maxlength="50" type="text" class="div-div-div-input" id="login-KeyPoint"
                            placeholder="Username Or Email">
                 </label>
             </div>
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">رمز عبور</div>
                 <label>
                     <input maxlength="30" type="text" class="div-div-div-input" id="login-Password"
                            placeholder="Password">
                 </label>
             </div>
-            <div class="ui form" id="Login-Footer-Form">
+            <div class="ui form formPadding">
+                <div class="ui paragraph paragraphInput">نوع</div>
+                <label>
+                    <select class="ui dropdown" id="loginKind">
+                        <option value="1">کارفرما</option>
+                        <option value="0">فریلنسر</option>
+                    </select>
+                </label>
+            </div>
+            <div class="ui form formPadding" id="Login-Footer-Form">
                 <label>
                     <input onclick="login()" type="submit" id="loginButton" class="ui green button" value="login">
                 </label>
@@ -83,44 +92,44 @@
         </div>
     </div>
     <div class="content Login-SignUp-Menu" id="SignUp-Menu">
-        <div class="ui form">
+        <div class="ui form formPadding">
             <!--            divider-->
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">نام کاربری</div>
                 <label>
                     <input maxlength="30" type="text" class="div-div-div-input" id="SignUp-UserName"
                            placeholder="username">
                 </label>
             </div>
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">نام</div>
                 <label>
                     <input maxlength="30" type="text" class="div-div-div-input" id="SignUp-FirstName"
                            placeholder="FirstName">
                 </label>
             </div>
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">نام خانوادگی</div>
                 <label>
                     <input maxlength="30" type="text" class="div-div-div-input" id="SignUp-LastName"
                            placeholder="LastName">
                 </label>
             </div>
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">ایمیل</div>
                 <label>
                     <input maxlength="50" type="text" class="div-div-div-input" id="SignUp-Email"
                            placeholder="Email Address">
                 </label>
             </div>
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">رمز عبور</div>
                 <label>
                     <input maxlength="30" type="password" class="div-div-div-input" id="SignUp-Password"
                            placeholder="Password">
                 </label>
             </div>
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">تکرار رمز عبور</div>
                 <label>
                     <input maxlength="30" type="password" class="div-div-div-input" id="SignUp-RepeatPassword"
@@ -135,17 +144,17 @@
                 </div>
                 <label>کارفرما</label>
             </div>-->
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">نوع</div>
                 <label>
-                    <select class="ui dropdown">
+                    <select class="ui dropdown" id="signUpKind">
                         <option value="1">کارفرما</option>
                         <option value="0">فریلنسر</option>
                     </select>
                 </label>
             </div>
 
-            <div class="ui form">
+            <div class="ui form formPadding">
                 <label>
                     <input onclick="signUp()" type="submit" id="signUpButton" class="ui green button" value="ثبت نام">
                 </label>

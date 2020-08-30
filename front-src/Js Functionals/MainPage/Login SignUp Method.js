@@ -9,6 +9,7 @@ const signUpEmail = document.getElementById("SignUp-Email")
 const signUpPassword = document.getElementById("SignUp-Password")
 const signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
 const signUpIsFreeLancer = document.getElementById("isFreeLancer-ToggleButton")
+const signupKind = document.getElementById("signUpKind")
 
 function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
@@ -41,6 +42,7 @@ function signUp() {
             .catch(denySignUp);*/
         const response = axios.post(urlSignUp, data, {
             params: {
+                //TODO account Type
                 'account-type' : (signUpIsFreeLancer.checked ? 'freelancer' : 'employer')
             }
         }).then(successSignUp)
@@ -61,6 +63,7 @@ function denySignUp(res) {
 
 const loginKeypoint = document.getElementById("login-KeyPoint");
 const loginPassword = document.getElementById("login-Password");
+const loginKind = document.getElementById("loginKind")
 
 function login() {
     var doc = hasEmpty(loginKeypoint, loginPassword)
