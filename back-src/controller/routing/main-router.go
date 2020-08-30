@@ -30,8 +30,8 @@ func (router *router) Listen() error {
 	})
 
 	router.server.GET("/login", func(context *gin.Context) {
-		auth, err := router.controller.Login(context)
-		view.RespondLogin(context, auth, err)
+		token, err := router.controller.Login(context)
+		view.RespondLogin(context, token, err)
 	})
 
 	router.server.POST("/employer/edit-profile", func(context *gin.Context) {

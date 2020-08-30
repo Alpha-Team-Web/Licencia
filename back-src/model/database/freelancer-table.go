@@ -48,8 +48,8 @@ func (db *Database) GetFreelancerPasswordByUsername(username string) (string, er
 	return freelancer.Password, err
 }
 
-func (db *Database) GetFreelancerPasswordByEmail(email string) (string, error) {
+func (db *Database) GetFreelancerUsernameByEmail(email string) (string, error) {
 	freelancer := existence.Freelancer{}
-	err := db.db.Model(&freelancer).Where("email = ?", email).Column("password").Select()
-	return freelancer.Password, err
+	err := db.db.Model(&freelancer).Where("email = ?", email).Column("username").Select()
+	return freelancer.Username, err
 }

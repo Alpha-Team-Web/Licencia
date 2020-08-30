@@ -58,8 +58,8 @@ func (db *Database) GetEmployerPasswordByUsername(username string) (string, erro
 	return employer.Password, err
 }
 
-func (db *Database) GetEmployerPasswordByEmail(email string) (string, error) {
+func (db *Database) GetEmployerUsernameByEmail(email string) (string, error) {
 	employer := existence.Employer{}
-	err := db.db.Model(&employer).Where("email = ?", email).Column("password").Select()
-	return employer.Password, err
+	err := db.db.Model(&employer).Where("email = ?", email).Column("username").Select()
+	return employer.Username, err
 }
