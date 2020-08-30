@@ -31,21 +31,20 @@ function signUp() {
     }
 }
 
-function successSignUp(res) {
-    console.log(res)
-    console.log("**** \n" + res.status)
-
+function successSignUp(response) {
+    alert("SuccessFull SignUp")
+    printResponse(response)
     // todo alerting response message
-    if (res.status === 200) {
+    if (response.status === 200) {
         // todo go to login menu
     } else {
         // todo error the fields
     }
 }
 
-function denySignUp(res) {
+function denySignUp(response) {
     alert('Error Connecting To Licencia Server')
-    console.log(res)
+    printResponse(response)
 }
 
 
@@ -71,9 +70,8 @@ function login() {
 }
 
 function successLogin(response) {
-    console.log("success");
-    console.log(response)
-    console.log("Server Message: " + response.body)
+    alert("Login SuccessFull");
+    printResponse(response)
     // todo alerting response message
     if (response.status === 200) {
         // todo go to Profile Menu And Save Auth
@@ -83,10 +81,9 @@ function successLogin(response) {
     }
 }
 
-function denyLogin(res) {
+function denyLogin(response) {
     alert('Error Connecting To Licencia Server')
-    console.log("Server Message: " + res.body)
-    console.log(res)
+    printResponse(response)
 }
 
 
@@ -130,10 +127,16 @@ function hasEmpty(...args) {
     return null;
 }
 
-
 function setFieldError(field) {
     if (!field.parentElement.classList.contains("error")) {
         // field.style.border = "1px solid red";
         field.parentElement.classList.add("error");
     }
+}
+
+
+function printResponse(response) {
+    response.json()
+        .then(value => console.log("value: '" + value.message + "'"))
+        .catch(reason => console.log("reason: " + reason))
 }
