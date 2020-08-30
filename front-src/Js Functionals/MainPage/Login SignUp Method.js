@@ -24,8 +24,8 @@ function signUp() {
             email: signUpEmail.value,
             password: signUpPassword.value
         }
-        const promise = http('post', urlSignUp, data, {'account-type': signupKind.value},
-            null, successSignUp, denySignUp);
+        const promise = http('post', urlSignUp, data, signupKind.value,
+            successSignUp, denySignUp);
     }
 }
 
@@ -77,8 +77,8 @@ function login() {
             body: JSON.stringify(data)
         }).then(successLogin)
             .catch(denyLogin);*/
-        const promise = http('post', urlLogin, data, {'account-type': loginKind.value},
-            null, successLogin, denyLogin);
+        const promise = http('post', urlLogin, data, loginKind.value,
+            successLogin, denyLogin);
         /*Cookies.set('Fuck', "Holy Fucking Shit", {
             domain: "FuckFuckFuck",
             path: "FuckFuck"
@@ -107,7 +107,8 @@ function denyLogin(res) {
 }
 
 
-function http(method, url, data, params, success, deny) {
+function http(method, url, data, accountType, success, deny) {
+    console.log("Params : '" + accountType + "'")
     return fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -116,7 +117,9 @@ function http(method, url, data, params, success, deny) {
         headers: {
             'Content-Type': 'application/json'
         },
-        params: params,
+        params: {
+            'account-type': accountType
+        },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data)
