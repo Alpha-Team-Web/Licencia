@@ -19,8 +19,8 @@ function loadProfileMenu() {
     if (false /* if is Not FreeLancer */) {
         gitHubAccountPart.style.display = "none";
     }
-    console.log(Cookies.get('Fuck', {
+    console.log(Cookies.get('Fuck'/*, {
         domain: "FuckFuckFuck",
         path: "FuckFuck"
-    }));
+    }*/));
 }
