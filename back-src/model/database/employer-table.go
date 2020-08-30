@@ -51,3 +51,15 @@ func (db *Database) GetEmployerProjects(username string) ([]existence.Project, e
 	}
 	return projects, nil
 }
+
+func (db *Database) GetEmployerPasswordByUsername(username string) (string, error) {
+	employer := existence.Employer{}
+	err := db.db.Model(&employer).Where("username = ?", username).Column("password").Select()
+	return employer.Password, err
+}
+
+func (db *Database) GetEmployerPasswordByEmail(email string) (string, error) {
+	employer := existence.Employer{}
+	err := db.db.Model(&employer).Where("email = ?", email).Column("password").Select()
+	return employer.Password, err
+}

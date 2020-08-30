@@ -41,3 +41,15 @@ func (db *Database) GetFreelancerByUsername(username string) (existence.Freelanc
 	}
 	return frl, nil
 }
+
+func (db *Database) GetFreelancerPasswordByUsername(username string) (string, error) {
+	freelancer := existence.Freelancer{}
+	err := db.db.Model(&freelancer).Where("username = ?", username).Column("password").Select()
+	return freelancer.Password, err
+}
+
+func (db *Database) GetFreelancerPasswordByEmail(email string) (string, error) {
+	freelancer := existence.Freelancer{}
+	err := db.db.Model(&freelancer).Where("email = ?", email).Column("password").Select()
+	return freelancer.Password, err
+}

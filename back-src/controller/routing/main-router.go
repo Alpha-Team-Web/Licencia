@@ -3,6 +3,7 @@ package routing
 import (
 	"back-src/controller/control"
 	"back-src/view"
+	"back-src/view/users"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,13 +29,18 @@ func (router *router) Listen() error {
 		view.RespondRegister(context, router.controller.Register(context))
 	})
 
+	router.server.GET("/login", func(context *gin.Context) {
+		auth, err := router.controller.Login(context)
+		view.RespondLogin(context, auth, err)
+	})
+
 	router.server.POST("/employer/edit-profile", func(context *gin.Context) {
-		view.RespondEmployerEditProfile(context, router.controller.EditEmployerProfile(context))
+		users.RespondEmployerEditProfile(context, router.controller.EditEmployerProfile(context))
 	})
 
 	router.server.POST("/employer/get-profile", func(context *gin.Context) {
 		emp, err := router.controller.GetEmployerProfile(context)
-		view.RespondEmployerGetProfile(context, emp, err)
+		users.RespondEmployerGetProfile(context, emp, err)
 	})
 
 	router.server.Run(":" + router.port)

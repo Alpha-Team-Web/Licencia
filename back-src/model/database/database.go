@@ -83,6 +83,9 @@ func (db *Database) Initialize() error {
 	if err := db.initFreelancerTable(); err != nil {
 		return err
 	}
+	if err := db.initSessionTable(); err != nil {
+		panic(err)
+	}
 
 	return nil
 }
@@ -157,4 +160,8 @@ func (db *Database) initProjectTable() error {
 
 func (db *Database) initFreelancerTable() error {
 	return db.db.CreateTable(&existence.Freelancer{}, options)
+}
+
+func (db *Database) initSessionTable() error {
+	return db.db.CreateTable(&existence.AuthToken{}, options)
 }

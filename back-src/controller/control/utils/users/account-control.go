@@ -1,6 +1,7 @@
 package users
 
 import (
+	"back-src/controller/control/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
@@ -24,4 +25,21 @@ func RegisterFreelancer(frl existence.Freelancer, Db *database.Database) error {
 		return errors.New("duplicate email: " + frl.Email)
 	}
 	return errors.New("duplicate username: " + frl.Username)
+}
+
+func Login(Id string, password string, isFreelancer bool, Db *database.Database) (string, error) {
+	var passwordGetter func(string) (string, error)
+	if libs.IsEmailValid(Id) {
+		if isFreelancer {
+
+		} else {
+
+		}
+	} else {
+		if isFreelancer {
+
+		} else {
+
+		}
+	}
 }
