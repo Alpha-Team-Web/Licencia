@@ -37,3 +37,22 @@ func GetEmployerProjects(username string, DB *database.Database) ([]existence.Pr
 	}
 	return DB.GetEmployerProjects(username)
 }
+
+func AddProjectToEmployer(token string, project existence.Project, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		project.EmployerUsername = username
+		DB.AddProject(project)
+		if emp, err := DB.GetEmployer(username); err == nil {
+			emp.ProjectIds = append(emp.ProjectIds, project.Id)
+			if err := DB.UpdateEmployerProjects(username, emp); err == nil {
+				return nil
+			} else {
+				return err
+			}
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
