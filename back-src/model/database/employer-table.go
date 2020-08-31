@@ -31,10 +31,6 @@ func (db *Database) UpdateEmployerProfile(username string, emp existence.Employe
 
 func (db *Database) UpdateEmployerPassword(username string, oldPass string, newPass string) error {
 	emp, _ := db.GetEmployer(username)
-	if err := db.db.Model(emp).Where("username = ?", username).Select(); err != nil {
-		return err
-	}
-
 	if emp.Password != oldPass {
 		return errors.New("password mismatch")
 	}
