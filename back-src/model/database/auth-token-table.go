@@ -10,7 +10,7 @@ import (
 //Expire Auth
 
 func (db *Database) MakeNewAuth(username, token string, isFreelancer bool) (string, error) {
-	auth := existence.AuthToken{"", token, username, time.Now(), isFreelancer, false}
+	auth := existence.AuthToken{token, username, time.Now(), isFreelancer, false}
 	if _, err := db.db.Model(&auth).Insert(); err != nil {
 		return "", err
 	}
@@ -42,4 +42,16 @@ func (db *Database) ChangeAuthUsage(token string, isUsed bool) error {
 func (db *Database) ExpireAuth(token string) error {
 	_, err := db.db.Model(&existence.AuthToken{}).Where("token = ?", token).Delete()
 	return err
+}
+
+func (db *Database) GetAuthByToken(token string) (auth existence.AuthToken, e error) {
+	e = db.db.Model(&auth).Where("token = ?", token).Select()
+	return
+}
+
+func (db *Database) GetUsernameByToken(token string) (username string, e error) {
+	auth := existence.AuthToken{}
+	e = db.db.Model(&auth).Column("username").Where("token = ?", token).Select()
+	username = auth.Username
+	return
 }

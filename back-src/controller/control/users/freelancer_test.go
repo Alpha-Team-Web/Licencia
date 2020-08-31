@@ -1,7 +1,7 @@
 package users
 
 import (
-	"back-src/controller/control/utils/libs"
+	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"testing"
 )

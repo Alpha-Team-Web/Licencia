@@ -1,41 +1,50 @@
-package control
+package handle
 
 import (
 	"back-src/model/database"
+	"fmt"
 	"time"
 )
 
-type Control struct {
+type Handler struct {
 }
 
 const notUsedExpiry = 15
 
+var AuthExpiryDur time.Duration
+
 var DB *database.Database
 
-func NewControl() *Control {
+func NewControl() *Handler {
+	var error error
+	AuthExpiryDur, error = time.ParseDuration("30m")
+	if error != nil {
+		panic(error)
+	}
+	fmt.Println(AuthExpiryDur)
 	DB = database.NewDb()
 	err := DB.Initialize()
 	if err != nil {
 		panic(err)
 	}
-	return &Control{}
+	return &Handler{}
 }
 
-func (controller *Control) AddNewClock(token string) {
+func (handler *Handler) AddNewClock(token string) {
 	clk := clock{notUsedExpiry, func() {
-		controller.checkTokenUse(token)
+		handler.checkTokenUse(token)
 	}}
 	clk.startWorking()
 }
 
-func (controller *Control) checkTokenUse(token string) {
+func (handler *Handler) checkTokenUse(token string) {
 	if isUsed, err := DB.IsAuthUsed(token); err != nil {
 		panic(err)
 	} else if isUsed {
 		if err := DB.ChangeAuthUsage(token, false); err != nil {
 			panic(err)
 		}
-		controller.AddNewClock(token)
+		handler.AddNewClock(token)
 	} else {
 		if err := DB.ExpireAuth(token); err != nil {
 			panic(err)

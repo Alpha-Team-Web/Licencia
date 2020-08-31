@@ -18,11 +18,12 @@ func EditEmployerProfile(emp existence.Employer, DB *database.Database) error {
 	return nil
 }
 
-func GetEmployer(username string, DB *database.Database) (existence.Employer, error) {
-	if !DB.DoesEmployerExistWithUsername(username) {
-		return existence.Employer{}, errors.New("no user with such username :" + username)
+func GetEmployer(token string, DB *database.Database) (existence.Employer, error) {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.GetEmployer(username)
+	} else {
+		return existence.Employer{}, err
 	}
-	return DB.GetEmployer(username)
 }
 
 func GetEmployerProjects(username string, DB *database.Database) ([]existence.Project, error) {

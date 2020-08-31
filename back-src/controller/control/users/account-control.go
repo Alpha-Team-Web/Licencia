@@ -1,8 +1,8 @@
 package users
 
 import (
-	"back-src/controller/control/utils/data"
-	"back-src/controller/control/utils/libs"
+	"back-src/controller/utils/data"
+	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
@@ -15,6 +15,7 @@ const (
 func RegisterEmployer(emp existence.Employer, Db *database.Database) error {
 	if !Db.DoesEmployerExistWithUsername(emp.Username) {
 		if !Db.DoesEmployerExistWithEmail(emp.Email) {
+			emp.ShownName = emp.Username
 			return Db.InsertEmployer(emp)
 		}
 		return errors.New("duplicate email: " + emp.Email)
@@ -25,6 +26,7 @@ func RegisterEmployer(emp existence.Employer, Db *database.Database) error {
 func RegisterFreelancer(frl existence.Freelancer, Db *database.Database) error {
 	if !Db.DoesFreelancerExistWithUsername(frl.Username) {
 		if !Db.DoesFreelancerExistWithEmail(frl.Email) {
+			frl.ShownName = frl.Username
 			return Db.InsertFreelancer(frl)
 		}
 		return errors.New("duplicate email: " + frl.Email)
@@ -36,14 +38,7 @@ func Login(loginReq data.LoginRequest, usernameGetter func() (string, error), pa
 	if username, err := usernameGetter(); err == nil {
 		if realPassword, err := passwordGetter(username); err == nil {
 			if realPassword == loginReq.Password {
-				newToken, err := Db.MakeNewAuth(username, libs.GetRandomString(AuthTokenSize, func(token string) bool {
-					if isDuplicate, err := Db.IsThereAuthWithToken(token); err == nil {
-						return isDuplicate
-					} else {
-						error = err
-					}
-					return false
-				}), loginReq.IsFreelancer)
+				newToken, err := MakeNewAuthToken(username, loginReq.IsFreelancer, Db)
 				if err == nil {
 					token = newToken
 					error = nil
@@ -58,6 +53,21 @@ func Login(loginReq data.LoginRequest, usernameGetter func() (string, error), pa
 		}
 	} else {
 		error = err
+	}
+	return
+}
+
+func MakeNewAuthToken(username string, isFreelancer bool, Db *database.Database) (token string, e error) {
+	token, err := Db.MakeNewAuth(username, libs.GetRandomString(AuthTokenSize, func(token string) bool {
+		if isDuplicate, err := Db.IsThereAuthWithToken(token); err == nil {
+			return isDuplicate
+		} else {
+			e = err
+		}
+		return false
+	}), isFreelancer)
+	if err != nil {
+		e = err
 	}
 	return
 }

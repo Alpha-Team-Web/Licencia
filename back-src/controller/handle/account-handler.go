@@ -1,15 +1,16 @@
-package control
+package handle
 
 import (
-	"back-src/controller/control/utils/data"
-	"back-src/controller/control/utils/libs"
-	"back-src/controller/control/utils/users"
+	"back-src/controller/control/users"
+	"back-src/controller/utils/data"
+	"back-src/controller/utils/libs"
 	"back-src/model/existence"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
-func (controller *Control) Register(ctx *gin.Context) error {
+func (handler *Handler) Register(ctx *gin.Context) error {
 
 	switch accountType := ctx.Query("account-type"); accountType {
 
@@ -33,7 +34,7 @@ func (controller *Control) Register(ctx *gin.Context) error {
 
 }
 
-func (controller *Control) Login(ctx *gin.Context) (token string, error error) {
+func (handler *Handler) Login(ctx *gin.Context) (token string, error error) {
 	loginReq := data.LoginRequest{}
 	if err := ctx.ShouldBindJSON(&loginReq); err != nil {
 		error = err
@@ -90,5 +91,52 @@ func getPasswordGetter(isFreelancer bool) func(string) (string, error) {
 		return DB.GetFreelancerPasswordByUsername
 	} else {
 		return DB.GetEmployerPasswordByUsername
+	}
+}
+
+func CheckToken(token, userType string) (string, error) {
+	if isThereAuth, err := DB.IsThereAuthWithToken(token); err != nil {
+		return "", err
+	} else if isThereAuth {
+		if auth, err := DB.GetAuthByToken(token); err != nil {
+			return "", err
+		} else {
+			if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
+				if newToken, err := reInitToken(auth); err != nil {
+					return "", err
+				} else {
+					return newToken, nil
+				}
+			} else {
+				return "", errors.New("wrong user type token: " + token)
+			}
+		}
+	} else {
+		return "", errors.New("not authorized token: " + token)
+	}
+
+}
+
+func reInitToken(auth existence.AuthToken) (string, error) {
+	currentTime := time.Now()
+	if currentTime.Sub(auth.InitialTime) > AuthExpiryDur {
+		if err := DB.ChangeAuthUsage(auth.Token, false); err != nil {
+			return "", err
+		} else {
+			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, DB)
+			if err != nil {
+				return "", err
+			}
+			if err := DB.ChangeAuthUsage(newToken, true); err != nil {
+				return "", err
+			}
+			return newToken, nil
+		}
+	} else {
+		if err := DB.ChangeAuthUsage(auth.Token, true); err != nil {
+			return "", err
+		} else {
+			return auth.Token, nil
+		}
 	}
 }

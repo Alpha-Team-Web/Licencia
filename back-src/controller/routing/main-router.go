@@ -1,7 +1,7 @@
 package routing
 
 import (
-	"back-src/controller/control"
+	"back-src/controller/handle"
 	"back-src/view"
 	"back-src/view/users"
 	"github.com/gin-gonic/gin"
@@ -14,12 +14,12 @@ type Listener interface {
 type router struct {
 	port       string
 	server     *gin.Engine
-	controller *control.Control
+	controller *handle.Handler
 }
 
 func NewRouter(port string) Listener {
 
-	var listener Listener = &router{port, gin.Default(), control.NewControl()}
+	var listener Listener = &router{port, gin.Default(), handle.NewControl()}
 	return listener
 }
 
@@ -40,9 +40,9 @@ func (router *router) Listen() error {
 		users.RespondEmployerEditProfile(context, router.controller.EditEmployerProfile(context))
 	})
 
-	router.server.POST("/employer/get-profile", func(context *gin.Context) {
-		emp, err := router.controller.GetEmployerProfile(context)
-		users.RespondEmployerGetProfile(context, emp, err)
+	router.server.GET("/employer/get-profile", func(context *gin.Context) {
+		emp, token, err := router.controller.GetEmployerProfile(context)
+		users.RespondEmployerGetProfile(context, token, emp, err)
 	})
 
 	router.server.Run(":" + router.port)
