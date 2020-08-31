@@ -1,3 +1,10 @@
+:root {
+    --Down-Card-Background-Color: #388E3C;
+    --Down-Card-Border-Color: #1B5E20;
+    --Down-Card-Hover-Transition: 0.5s;
+}
+
+
 #ProfileContent {
     display: flex;
     flex-direction: column;
@@ -59,6 +66,24 @@
     height: 140px;
     justify-content: space-between;
 }
+.card:hover {
+    cursor: pointer;
+    background-color: var(--Down-Card-Background-Color);
+    border-color: var(--Down-Card-Border-Color);
+    transition: var(--Down-Card-Hover-Transition);
+}
+.card:hover > div {
+    color: white;
+    transition: var(--Down-Card-Hover-Transition);
+}
+.card:hover > header > i {
+    color: white;
+    transition: var(--Down-Card-Hover-Transition);
+}
+.card:hover > header > h3 {
+    color: white;
+    transition: var(--Down-Card-Hover-Transition);
+}
 
 #chooseEditProjects {
     margin: 20px auto;
@@ -103,20 +128,20 @@
     background-image: url("../../Pics/githubImage2.png");
     background-repeat: no-repeat;
     margin-left: 100px;
+    /*display: none;*/
 }
 
 #saveLinksButton {
-    width: 10%;
-    margin: 0 55% 0 auto;
+    width: 97px;
+    margin: 45px 51% 0 auto;
 }
 
 #passwordFields {
-    width: 70%;
     margin-left: auto;
 }
 
 #changePasswordButton {
-    margin: 0 75% 0 auto;
+    margin: 0 83% 0 auto;
 }
 
 #divider2 {
@@ -125,6 +150,7 @@
 
 #gitHubRepos {
     margin: 14px 20% 14px 50%;
+    min-height: 106px;
 }
 
 #addGitHubRepoInput {
@@ -134,4 +160,9 @@
 
 #addRepoDiv {
     display: none;
+}
+
+#changingPasswordContent {
+    padding: 4%;
+    width: 80%;
 }

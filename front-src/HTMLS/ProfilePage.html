@@ -10,6 +10,7 @@
 
     <script src="../Js%20Functionals/FileNames.js"></script>
     <script src="../Js%20Functionals/AlphaAPI.js"></script>
+    <script src="../Js%20Functionals/urlNames.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -44,14 +45,14 @@
 </div>
 <div class="content" id="ProfileContent">
     <div class="content flexColumn" id="MainProfileContent">
-        <!--<div class="content flexRow">
+        <div class="content transition visible flexRow" id="profile">
             <div class="flexColumn" id="leftDiv">
                 <div class="content" id="ImageTippoContent">
                     <img class="ui circular bordered image" src="../Pics/codingPerson.jpg" alt="*User*'s Picture"/>
                 </div>
             </div>
 
-            &lt;!&ndash;            <div class="ui section vertical divider" id="divider2"></div>&ndash;&gt;
+            <!--            <div class="ui section vertical divider" id="divider2"></div>-->
 
             <div class="ui form" id="MainProfileForm">
                 <div class="two fields">
@@ -77,23 +78,23 @@
 
                 <div class="two fields">
                     <div class="field">
-                        <label class="rightAligned">نام</label>
-                        <input id="firstNameField" placeholder="FirstName" type="text">
-                    </div>
-                    <div class="field">
                         <label class="rightAligned">نام خانوادگی</label>
                         <input id="lastNameField" placeholder="LastName" type="text">
+                    </div>
+                    <div class="field">
+                        <label class="rightAligned">نام</label>
+                        <input id="firstNameField" placeholder="FirstName" type="text">
                     </div>
                 </div>
 
                 <div class="two fields">
                     <div class="field">
-                        <label class="rightAligned">آدرس سایت</label>
-                        <input id="addressField" placeholder="Site Address" type="text">
-                    </div>
-                    <div class="field">
                         <label class="rightAligned">شماره تلفن</label>
                         <input id="telephoneNumberField" placeholder="Telephone Number" type="text">
+                    </div>
+                    <div class="field">
+                        <label class="rightAligned">آدرس</label>
+                        <input id="addressField" placeholder="Address" type="text">
                     </div>
                 </div>
 
@@ -108,9 +109,9 @@
 
             </div>
 
-        </div>-->
+        </div>
 
-        <div class="ui form flexColumn" id="githubReposContent">
+        <div class="ui form flexColumn transition visible" id="githubReposContent">
             <div class="two fields">
                 <div class="field">
                     <label class="rightAligned">آدرس سایت</label>
@@ -121,7 +122,7 @@
             <div class="two fields">
                 <div class="field">
                     <label class="rightAligned">اکانت گیت هاب</label>
-                    <input id="githubAccountField" placeholder="Github-Account" type="text" onchange="accountGithubChanged()">
+                    <input id="githubAccountField" placeholder="Github-Account" type="text" onfocusout="accountGithubChanged()">
                 </div>
             </div>
 
@@ -152,7 +153,7 @@
                 </div>
                 <div class="item" id="addRepoDiv">
                     <div class="ui action input" id="addGitHubRepoInput">
-                        <input type="text" placeholder="Search..." id="addRepoInput">
+                        <input type="text" placeholder="Search..." id="addRepoInput" onfocusout="closeAddRepoDiv()">
                         <button class="ui icon button" onclick="closeAddRepoDiv()">
                             <i class="plus circle icon"></i>
                         </button>
@@ -163,31 +164,13 @@
                 </div>
             </div>
 
-            <!--            githubReposPart-->
-
             <button class="positive ui button rightAligned" id="saveLinksButton">ثبت پیوند ها</button>
 
         </div>
-
-        <!--<div class="ui form flexColumn" id="changingPasswordContent">
-            <div class="two fields" id="passwordFields">
-                <div class="field">
-                    <label class="rightAligned">رمز عبور</label>
-                    <input id="passwordField" placeholder="Password" type="password">
-                </div>
-                <div class="field">
-                    <label class="rightAligned">تکرار رمز عبور</label>
-                    <input id="repeatPasswordField" placeholder="Repeat Password" type="password">
-                </div>
-            </div>
-
-            <button class="positive ui button rightAligned" id="changePasswordButton">تغییر رمز عبور</button>
-
-        </div>-->
     </div>
     <div class="ui section divider" id="divider1"></div>
     <div class="content" id="projectsContent">
-        <div class="card flexColumn">
+        <div class="card flexColumn" onclick="changeMainProfileContent(profile)">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
                 <h3 class="number" id="viewProfile">35</h3>
@@ -195,7 +178,8 @@
             <div class="ui paragraph cardP">مشاهده پروفایل</div>
         </div>
 
-        <div class="card flexColumn">
+        <div class="card flexColumn" id="gitHubAccountPart"
+             onclick="changeMainProfileContent(gitHubRepoContent)">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
                 <h3 class="number" id="viewLinks">35</h3>
@@ -203,7 +187,7 @@
             <div class="ui paragraph cardP">مشاهده پیوند ها</div>
         </div>
 
-        <div class="card flexColumn">
+        <div class="card flexColumn" onclick="modal('changingPasswordContent', 'show')">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
                 <h3 class="number" id="changePassword">35</h3>
@@ -246,6 +230,26 @@
             </header>
             <div class="ui paragraph cardP">اکانت خود را ارتقا دهید</div>
         </div>
+    </div>
+
+    <div class="ui form flexColumn modal" id="changingPasswordContent">
+        <div class="three fields" id="passwordFields">
+            <div class="field">
+                <label class="rightAligned">رمز عبور قدیمی</label>
+                <input id="oldPasswordField" placeholder="Old Password" type="password">
+            </div>
+            <div class="field">
+                <label class="rightAligned">رمز عبور</label>
+                <input id="passwordField" placeholder="Password" type="password">
+            </div>
+            <div class="field">
+                <label class="rightAligned">تکرار رمز عبور</label>
+                <input id="repeatPasswordField" placeholder="Repeat Password" type="password">
+            </div>
+        </div>
+
+        <button class="positive ui button rightAligned" id="changePasswordButton">تغییر رمز عبور</button>
+
     </div>
 </div>
 

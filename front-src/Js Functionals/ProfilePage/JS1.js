@@ -31,9 +31,15 @@ function logOut() {
 
 const gitHubAccountPart = document.getElementById("gitHubAccountPart");
 
-function loadProfileMenu() {
+function initGithubRepos() {
+    firstRepoDiv.style.display = 'none';
+    secondRepoDiv.style.display = 'none';
+    thirdRepoDiv.style.display = 'none';
+    iconDiv.style.display = 'none';
+}
 
-    if (!Cookies.get('isfreelancer')) {
+function loadProfileMenu() {
+    if (/*!Cookies.get('isfreelancer')*/ false) {
         httpGet(urlGetEmployerProfileInfo, {
             'Content-Type': 'application/json',
             'token': Cookies.get('auth')
@@ -45,6 +51,9 @@ function loadProfileMenu() {
             'token': Cookies.get('auth')
         }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
     }
+    $('#' + gitHubRepoContent.id).transition(MainProfileTransition)
+    $('#' + profile.id).transition(MainProfileTransition).transition(MainProfileTransition)
+    initGithubRepos();
 }
 
 function handleSuccessGetProfileInfo(value) {
@@ -113,27 +122,26 @@ function openAddRepoDiv() {
         alert("you can have only 3 repository")
         return;
     }
-    repoInput.value = "";
     repoDiv.style.display = "block";
     iconDiv.style.display = "none";
+    repoInput.value = "";
+    repoInput.focus();
 }
 
 
 function closeAddRepoDiv() {
-    if (repoInput.value === "") return;
-    let textNode = document.createTextNode(repoInput.value);
+    if (repoInput.value === "") {
+        // $ep
+        repoDiv.style.display = "none";
+        iconDiv.style.display = "block";
+        return;
+    }
     if (firstRepoDiv.style.display === "none") {
-        removeAllChild(firstRepoLink);
-        firstRepoLink.appendChild(textNode);
-        firstRepoDiv.style.display = "block";
+        showRepo(firstRepoDiv, firstRepoLink, repoInput.value)
     } else if (secondRepoDiv.style.display === "none") {
-        removeAllChild(secondRepoLink);
-        secondRepoLink.appendChild(textNode);
-        secondRepoDiv.style.display = "block";
+        showRepo(secondRepoDiv, secondRepoLink, repoInput.value)
     } else if (thirdRepoDiv.style.display === "none") {
-        removeAllChild(thirdRepoLink);
-        thirdRepoLink.appendChild(textNode);
-        thirdRepoDiv.style.display = "block";
+        showRepo(thirdRepoDiv, thirdRepoLink, repoInput.value)
     } else {
         alert("you can have only 3 repository")
         return;
@@ -150,6 +158,14 @@ function closeAddRepoDiv() {
     }
 }
 
+function showRepo(repoDiv, repoLink, text) {
+    let textNode = document.createTextNode(text);
+    removeAllChild(repoLink);
+    repoLink.appendChild(textNode);
+    repoLink.href = gitHubUrl + text
+    repoDiv.style.display = "block";
+}
+
 function removeRepo(element) {
     element.style.display = "none";
     iconDiv.style.display = "block";
@@ -163,11 +179,44 @@ function removeAllChild(element) {
 
 function accountGithubChanged() {
     if (githubAccountField.value === "") {
-        gitHubReposDiv.style.display = "none";
         firstRepoDiv.style.display = "none";
         secondRepoDiv.style.display = "none";
         thirdRepoDiv.style.display = "none";
+        repoDiv.style.display = "none";
+        iconDiv.style.display = "none";
     } else {
-        gitHubReposDiv.style.display = "block"
+        iconDiv.style.display = "block";
+    }
+}
+
+const MainProfileTransition = 'fade up';
+const mainProfileContent = document.getElementById('MainProfileContent');
+const profile = document.getElementById('profile');
+const gitHubRepoContent = document.getElementById('githubReposContent');
+const changePasswordContent = document.getElementById('changingPasswordContent');
+function changeMainProfileContent(content) {
+    let showingDisplay = getShowingDisplay();
+    if (showingDisplay != null && content.id !== showingDisplay.id) {
+        $('#' + showingDisplay.id).transition(MainProfileTransition);
+        $('#' + content.id).transition(MainProfileTransition);
+    }
+}
+
+function getShowingDisplay() {
+    for (let childElement of mainProfileContent.children) {
+        console.log('showingDisplay: ' + childElement.id)
+        console.log('****: ' + childElement.style.display)
+        if (childElement.style.display != '' && childElement.style.display !== 'none') {
+            return childElement;
+        }
+    }
+    return null;
+}
+
+
+function modal(modalId, command) {
+    if (document.getElementById(modalId) != null) {
+        $('#' + modalId)
+            .modal(command);
     }
 }
