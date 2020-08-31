@@ -13,10 +13,10 @@ const (
 )
 
 func RegisterEmployer(emp existence.Employer, Db *database.Database) error {
-	if !Db.DoesEmployerExistWithUsername(emp.Username) {
-		if !Db.DoesEmployerExistWithEmail(emp.Email) {
+	if !Db.EmployerTable.DoesEmployerExistWithUsername(emp.Username) {
+		if !Db.EmployerTable.DoesEmployerExistWithEmail(emp.Email) {
 			emp.ShownName = emp.Username
-			return Db.InsertEmployer(emp)
+			return Db.EmployerTable.InsertEmployer(emp)
 		}
 		return errors.New("duplicate email: " + emp.Email)
 	}
@@ -24,10 +24,10 @@ func RegisterEmployer(emp existence.Employer, Db *database.Database) error {
 }
 
 func RegisterFreelancer(frl existence.Freelancer, Db *database.Database) error {
-	if !Db.DoesFreelancerExistWithUsername(frl.Username) {
-		if !Db.DoesFreelancerExistWithEmail(frl.Email) {
+	if !Db.FreelancerTable.DoesFreelancerExistWithUsername(frl.Username) {
+		if !Db.FreelancerTable.DoesFreelancerExistWithEmail(frl.Email) {
 			frl.ShownName = frl.Username
-			return Db.InsertFreelancer(frl)
+			return Db.FreelancerTable.InsertFreelancer(frl)
 		}
 		return errors.New("duplicate email: " + frl.Email)
 	}
@@ -58,8 +58,8 @@ func Login(loginReq data.LoginRequest, usernameGetter func() (string, error), pa
 }
 
 func MakeNewAuthToken(username string, isFreelancer bool, Db *database.Database) (token string, e error) {
-	token, err := Db.MakeNewAuth(username, libs.GetRandomString(AuthTokenSize, func(token string) bool {
-		if isDuplicate, err := Db.IsThereAuthWithToken(token); err == nil {
+	token, err := Db.AuthTokenTable.MakeNewAuth(username, libs.GetRandomString(AuthTokenSize, func(token string) bool {
+		if isDuplicate, err := Db.AuthTokenTable.IsThereAuthWithToken(token); err == nil {
 			return isDuplicate
 		} else {
 			e = err

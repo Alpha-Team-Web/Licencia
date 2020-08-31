@@ -25,10 +25,10 @@ func TestUpdateEmployer(t *testing.T) {
 	emp.FirstName = "ashkan"
 	emp.LastName = "ashkan"
 	emp.Email = "bbbb@gmail.com"
-	if err := db.UpdateEmployerProfile(emp.Username, emp); err != nil {
+	if err := db.EmployerTable.UpdateEmployerProfile(emp.Username, emp); err != nil {
 		t.Error(err)
 	}
-	emp2, err := db.GetEmployer("ashkan")
+	emp2, err := db.EmployerTable.GetEmployer("ashkan")
 	if err != nil {
 		t.Error(err)
 	}
@@ -38,13 +38,13 @@ func TestUpdateEmployer(t *testing.T) {
 	if emp2.Password == "fjfjfj" {
 		t.Errorf("%s %v", "Fail : ", emp2)
 	}
-	if err := db.UpdateEmployerPassword(emp.Username, "dasdsa", "sadasdas"); err == nil {
+	if err := db.EmployerTable.UpdateEmployerPassword(emp.Username, "dasdsa", "sadasdas"); err == nil {
 		t.Error("Old pass must be the same. Fail.")
 	}
-	if err := db.UpdateEmployerPassword(emp.Username, "a12345", "sadasdas"); err != nil {
+	if err := db.EmployerTable.UpdateEmployerPassword(emp.Username, "a12345", "sadasdas"); err != nil {
 		t.Error(err)
 	}
-	emp3, err := db.GetEmployer("ashkan")
+	emp3, err := db.EmployerTable.GetEmployer("ashkan")
 	if emp3.Password != "sadasdas" {
 		t.Errorf("%s %v", "Fail : ", emp3)
 	}
@@ -68,7 +68,7 @@ func TestAddProjectToEmployer(t *testing.T) {
 		t.Error(err)
 	}
 	//after sending request
-	emp, _ := db.GetEmployer("ashkan")
+	emp, _ := db.EmployerTable.GetEmployer("ashkan")
 	if len(emp.ProjectIds) != 2 {
 		t.Errorf("%s %v", "Number of projects is not 2.", emp.ProjectIds)
 	}

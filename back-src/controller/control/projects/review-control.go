@@ -7,18 +7,18 @@ import (
 )
 
 func AddFreelancerReview(token string, review existence.FreelancerEmployerReview, db *database.Database) error {
-	if username, err := db.GetUsernameByToken(token); err != nil {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err != nil {
 		return err
 	} else {
-		if realUsername, err := db.GetFreelancerUsernameByProjectId(review.ProjectID); err != nil {
+		if realUsername, err := db.ProjectTable.GetFreelancerUsernameByProjectId(review.ProjectID); err != nil {
 			return err
 		} else if realUsername == username {
-			if hasReviewed, err := db.HasFreelancerReviewed(review.ProjectID); err != nil {
+			if hasReviewed, err := db.ReviewTable.HasFreelancerReviewed(review.ProjectID); err != nil {
 				return err
 			} else if hasReviewed {
-				return db.EditFreelancerReview(review)
+				return db.ReviewTable.EditFreelancerReview(review)
 			} else {
-				return db.AddFreelancerReview(review)
+				return db.ReviewTable.AddFreelancerReview(review)
 			}
 		} else {
 			return errors.New("not involved in project the username: " + username)
