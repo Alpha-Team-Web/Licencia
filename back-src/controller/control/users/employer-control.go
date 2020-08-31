@@ -5,6 +5,7 @@ import (
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
+	"strconv"
 )
 
 func EditEmployerProfile(token string, emp existence.Employer, DB *database.Database) error {
@@ -40,9 +41,10 @@ func GetEmployerProjects(username string, DB *database.Database) ([]existence.Pr
 
 func AddProjectToEmployer(token string, project existence.Project, DB *database.Database) error {
 	if username, err := DB.GetUsernameByToken(token); err == nil {
-		project.EmployerUsername = username
-		DB.AddProject(project)
 		if emp, err := DB.GetEmployer(username); err == nil {
+			project.EmployerUsername = username
+			project.Id = username + "-project-" + strconv.Itoa(len(emp.ProjectIds))
+			DB.AddProject(project)
 			emp.ProjectIds = append(emp.ProjectIds, project.Id)
 			if err := DB.UpdateEmployerProjects(username, emp); err == nil {
 				return nil

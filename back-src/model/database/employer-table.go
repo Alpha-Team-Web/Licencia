@@ -43,7 +43,7 @@ func (db *Database) UpdateEmployerPassword(username string, oldPass string, newP
 }
 
 func (db *Database) UpdateEmployerProjects(username string, emp existence.Employer) error {
-	if _, err := db.db.Model(&emp).Column("projects_ids").Where("username = ?", username).Update(); err != nil {
+	if _, err := db.db.Model(&emp).Column("project_ids").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
