@@ -2,6 +2,7 @@ package database
 
 import (
 	"back-src/model/existence"
+	"errors"
 )
 
 func (db Database) DoesEmployerExistWithUsername(username string) bool {
@@ -21,13 +22,30 @@ func (db *Database) InsertEmployer(emp existence.Employer) error {
 	return err
 }
 
-func (db *Database) UpdateEmployer(username string, emp existence.Employer) error {
-
-	if _, err := db.db.Model(&emp).Column("password", "email", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
+func (db *Database) UpdateEmployerProfile(username string, emp existence.Employer) error {
+	if _, err := db.db.Model(&emp).Column("shown_name", "email", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
 }
+
+func (db *Database) UpdateEmployerPassword(username string, oldPass string, newPass string) error{
+	emp := new(existence.Employer)
+	if err := db.db.Model(emp).Where("username = ?", username).Select(); err != nil {
+		return err
+	}
+
+	if emp.Password != oldPass {
+		return errors.New("password mismatch")
+	}
+
+	emp.Password = newPass
+	if _, err := db.db.Model(&emp).Column("password").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
 
 func (db *Database) GetEmployer(username string) (existence.Employer, error) {
 	emp := new(existence.Employer)

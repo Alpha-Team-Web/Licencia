@@ -11,7 +11,7 @@ func EditEmployerProfile(emp existence.Employer, DB *database.Database) error {
 		return errors.New("no user with such username :" + emp.Username)
 	}
 
-	if err := DB.UpdateEmployer(emp.Username, emp); err != nil {
+	if err := DB.UpdateEmployerProfile(emp.Username, emp); err != nil {
 		return err
 	}
 

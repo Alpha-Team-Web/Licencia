@@ -2,6 +2,7 @@ package database
 
 import (
 	"back-src/model/existence"
+	"errors"
 )
 
 func (db Database) DoesFreelancerExistWithUsername(username string) bool {
@@ -33,6 +34,31 @@ func (db *Database) AddFreelancerSkills(username string, fieldId string, skills 
 	_, err := db.db.Model(&frl).Column("chosen_field_with_skills").Where("username = ?", username).Update()
 	return err
 }
+
+func (db *Database) UpdateFreelancerProfile(username string, frl existence.Freelancer) error {
+	if _, err := db.db.Model(&frl).Column("shown_name", "email", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *Database) UpdateFreelancerPassword(username string, oldPass string, newPass string) error{
+	frl := new(existence.Freelancer)
+	if err := db.db.Model(frl).Where("username = ?", username).Select(); err != nil {
+		return err
+	}
+
+	if frl.Password != oldPass {
+		return errors.New("password mismatch")
+	}
+
+	frl.Password = newPass
+	if _, err := db.db.Model(&frl).Column("password").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
 
 func (db *Database) GetFreelancerByUsername(username string) (existence.Freelancer, error) {
 	var frl existence.Freelancer
