@@ -2,16 +2,35 @@ package handle
 
 import (
 	"back-src/controller/control/users"
+	"back-src/controller/utils/data"
 	"back-src/model/existence"
 	"github.com/gin-gonic/gin"
 )
 
-func (handler *Handler) EditEmployerProfile(ctx *gin.Context) error {
-	emp := existence.Employer{}
-	if err := ctx.ShouldBindJSON(&emp); err != nil {
-		return err
+func (handler *Handler) EditEmployerProfile(ctx *gin.Context) (string, error) {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+		return "", err
+	} else {
+		emp := existence.Employer{}
+		if err := ctx.ShouldBindJSON(&emp); err != nil {
+			return newToken, err
+		}
+		return newToken, users.EditEmployerProfile(token, emp, DB)
 	}
-	return users.EditEmployerProfile(emp, DB)
+}
+
+func (handler *Handler) EditEmployerPassword(ctx *gin.Context) (string, error) {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+		return "", err
+	} else {
+		emp := data.ChangePassRequest{}
+		if err := ctx.ShouldBindJSON(&emp); err != nil {
+			return newToken, err
+		}
+		return newToken, users.EditEmployerPassword(token, emp, DB)
+	}
 }
 
 func (handler *Handler) GetEmployerProfile(ctx *gin.Context) (existence.Employer, string, error) {

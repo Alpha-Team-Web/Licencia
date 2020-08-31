@@ -36,8 +36,29 @@ func (router *router) Listen() error {
 		view.RespondLogin(context, token, err)
 	})
 
-	router.server.POST("/employer/edit-profile", func(context *gin.Context) {
-		users.RespondEmployerEditProfile(context, router.handler.EditEmployerProfile(context))
+	router.server.POST("/employer/edit/profile", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerProfile(context)
+		users.RespondEmployerEdit(context, token, err)
+	})
+
+	router.server.POST("/employer/edit/password", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerPassword(context)
+		users.RespondEmployerEdit(context, token, err)
+	})
+
+	router.server.POST("/freelancer/edit/profile", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerProfile(context)
+		users.RespondFreelancerEdit(context, token, err)
+	})
+
+	router.server.POST("/freelancer/edit/password", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerPassword(context)
+		users.RespondFreelancerEdit(context, token, err)
+	})
+
+	router.server.POST("/freelancer/edit/links", func(context *gin.Context) {
+		token, err := router.handler.EditFreelancerLinks(context)
+		users.RespondFreelancerEdit(context, token, err)
 	})
 
 	router.server.GET("/employer/get-profile", func(context *gin.Context) {

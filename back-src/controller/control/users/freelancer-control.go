@@ -1,6 +1,7 @@
 package users
 
 import (
+	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
@@ -19,6 +20,30 @@ func ChooseFreelancerSkills(username string, fieldId string, skills []string, da
 			}
 		}
 		return nil
+	} else {
+		return err
+	}
+}
+
+func EditFreelancerProfile(token string, frl existence.Freelancer, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.UpdateFreelancerProfile(username, frl)
+	} else {
+		return err
+	}
+}
+
+func EditFreelancerPassword(token string, frl data.ChangePassRequest, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
+	} else {
+		return err
+	}
+}
+
+func EditFreelancerLinks(token string, frl existence.Freelancer, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.UpdateFreelancerLinks(username, frl)
 	} else {
 		return err
 	}
