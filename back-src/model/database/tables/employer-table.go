@@ -35,7 +35,7 @@ func (table *EmployerTable) UpdateEmployerProfile(username string, emp existence
 }
 
 func (table *EmployerTable) UpdateEmployerPassword(username string, oldPass string, newPass string) error {
-	emp, _ := db.GetEmployer(username)
+	emp, _ := table.GetEmployer(username)
 	if emp.Password != oldPass {
 		return errors.New("password mismatch")
 	}
@@ -87,11 +87,4 @@ func (table *EmployerTable) GetEmployerUsernameByEmail(email string) (string, er
 	employer := existence.Employer{}
 	err := table.Model(&employer).Where("email = ?", email).Column("username").Select()
 	return employer.Username, err
-}
-
-func (table *EmployerTable) AddProject(project existence.Project) error {
-	if _, err := table.Model(&project).Insert(); err != nil {
-		return err
-	}
-	return nil
 }

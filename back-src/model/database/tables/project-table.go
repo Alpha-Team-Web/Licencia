@@ -24,3 +24,10 @@ func (table *ProjectTable) GetEmployerUsernameByProjectId(projectId string) (str
 	}
 	return project.EmployerUsername, nil
 }
+
+func (table *ProjectTable) AddProject(project existence.Project) error {
+	if _, err := table.Model(&project).Insert(); err != nil {
+		return err
+	}
+	return nil
+}

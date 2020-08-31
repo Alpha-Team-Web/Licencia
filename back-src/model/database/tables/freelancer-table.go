@@ -48,7 +48,7 @@ func (table *FreelancerTable) UpdateFreelancerProfile(username string, frl exist
 }
 
 func (table *FreelancerTable) UpdateFreelancerPassword(username string, oldPass string, newPass string) error {
-	frl, _ := db.GetFreelancer(username)
+	frl, _ := table.GetFreelancer(username)
 	if frl.Password != oldPass {
 		return errors.New("password mismatch")
 	}

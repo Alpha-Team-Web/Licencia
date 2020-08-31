@@ -52,9 +52,9 @@ func (handler *Handler) Login(ctx *gin.Context) (token string, error error) {
 
 func getUsernameGetter(Id string, isFreelancer bool) func() (username string, error error) {
 	if isFreelancer {
-		return getUsernameById(Id, DB.DoesFreelancerExistWithEmail, DB.DoesFreelancerExistWithUsername, DB.GetFreelancerUsernameByEmail)
+		return getUsernameById(Id, DB.FreelancerTable.DoesFreelancerExistWithEmail, DB.FreelancerTable.DoesFreelancerExistWithUsername, DB.FreelancerTable.GetFreelancerUsernameByEmail)
 	} else {
-		return getUsernameById(Id, DB.DoesEmployerExistWithEmail, DB.DoesEmployerExistWithUsername, DB.GetEmployerUsernameByEmail)
+		return getUsernameById(Id, DB.EmployerTable.DoesEmployerExistWithEmail, DB.EmployerTable.DoesEmployerExistWithUsername, DB.EmployerTable.GetEmployerUsernameByEmail)
 	}
 }
 
@@ -88,17 +88,17 @@ func getUsernameById(Id string, doesUserExistWithEmail doesExist, doesUserExistW
 
 func getPasswordGetter(isFreelancer bool) func(string) (string, error) {
 	if isFreelancer {
-		return DB.GetFreelancerPasswordByUsername
+		return DB.FreelancerTable.GetFreelancerPasswordByUsername
 	} else {
-		return DB.GetEmployerPasswordByUsername
+		return DB.EmployerTable.GetEmployerPasswordByUsername
 	}
 }
 
 func CheckToken(token, userType string) (string, error) {
-	if isThereAuth, err := DB.IsThereAuthWithToken(token); err != nil {
+	if isThereAuth, err := DB.AuthTokenTable.IsThereAuthWithToken(token); err != nil {
 		return "", err
 	} else if isThereAuth {
-		if auth, err := DB.GetAuthByToken(token); err != nil {
+		if auth, err := DB.AuthTokenTable.GetAuthByToken(token); err != nil {
 			return "", err
 		} else {
 			if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
@@ -120,20 +120,20 @@ func CheckToken(token, userType string) (string, error) {
 func reInitToken(auth existence.AuthToken) (string, error) {
 	currentTime := time.Now()
 	if currentTime.Sub(auth.InitialTime) > AuthExpiryDur {
-		if err := DB.ChangeAuthUsage(auth.Token, false); err != nil {
+		if err := DB.AuthTokenTable.ChangeAuthUsage(auth.Token, false); err != nil {
 			return "", err
 		} else {
 			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, DB)
 			if err != nil {
 				return "", err
 			}
-			if err := DB.ChangeAuthUsage(newToken, true); err != nil {
+			if err := DB.AuthTokenTable.ChangeAuthUsage(newToken, true); err != nil {
 				return "", err
 			}
 			return newToken, nil
 		}
 	} else {
-		if err := DB.ChangeAuthUsage(auth.Token, true); err != nil {
+		if err := DB.AuthTokenTable.ChangeAuthUsage(auth.Token, true); err != nil {
 			return "", err
 		} else {
 			return auth.Token, nil

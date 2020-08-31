@@ -36,15 +36,15 @@ func (handler *Handler) AddNewClock(token string) {
 }
 
 func (handler *Handler) checkTokenUse(token string) {
-	if isUsed, err := DB.IsAuthUsed(token); err != nil {
+	if isUsed, err := DB.AuthTokenTable.IsAuthUsed(token); err != nil {
 		panic(err)
 	} else if isUsed {
-		if err := DB.ChangeAuthUsage(token, false); err != nil {
+		if err := DB.AuthTokenTable.ChangeAuthUsage(token, false); err != nil {
 			panic(err)
 		}
 		handler.AddNewClock(token)
 	} else {
-		if err := DB.ExpireAuth(token); err != nil {
+		if err := DB.AuthTokenTable.ExpireAuth(token); err != nil {
 			panic(err)
 		}
 	}
