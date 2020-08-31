@@ -1,7 +1,6 @@
 package routing
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,7 +38,6 @@ const (
 func (router *router) addHandlerToPath(addr, endpointGroupName, method string, handle func(ctx *gin.Context)) {
 	if addr == "" {
 		//TODO
-		fmt.Println("TODO")
 	} else {
 		switch method {
 		case "POST":
