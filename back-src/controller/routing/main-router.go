@@ -3,6 +3,7 @@ package routing
 import (
 	"back-src/controller/handle"
 	"back-src/view"
+	"back-src/view/projects"
 	"back-src/view/users"
 	"github.com/gin-gonic/gin"
 )
@@ -69,6 +70,11 @@ func (router *router) Listen() error {
 	router.server.GET("/freelancer/get-profile", func(context *gin.Context) {
 		emp, token, err := router.handler.GetFreelancerProfile(context)
 		users.RespondFreelancerGetProfile(context, token, emp, err)
+	})
+
+	router.server.POST("/freelancer/project/review", func(context *gin.Context) {
+		token, err := router.handler.AddFreelancerReview(context)
+		projects.RespondFreelancerReview(context, token, err)
 	})
 
 	router.server.Run(":" + router.port)

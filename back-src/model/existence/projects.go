@@ -8,12 +8,7 @@ type File struct {
 	Url       string
 }
 
-//Project Stats
-const (
-	Open    = "Open"
-	Closed  = "Closed"
-	OnGoing = "OnGoing"
-)
+/*--------------------------------------Review--------------------------------------*/
 
 type booleanReviewFreelancer struct {
 	DeliveredCompletely         bool `json:"delivered-completely"`
@@ -47,6 +42,15 @@ type FreelancerEmployerReview struct {
 	booleanReviewEmployer
 }
 
+/*--------------------------------------Project--------------------------------------*/
+
+//Project Stats
+const (
+	Open    = "Open"
+	Closed  = "Closed"
+	OnGoing = "OnGoing"
+)
+
 type Project struct {
 	Id string `json:"id" sql:",pk"`
 
@@ -68,6 +72,8 @@ type Project struct {
 	StartDate  time.Time     `json:"start"`
 	FinishDate time.Time     `json:"finish"`
 }
+
+/*--------------------------------------Sample--------------------------------------*/
 
 type OuterSample struct {
 	Id               string              `json:"id"`
