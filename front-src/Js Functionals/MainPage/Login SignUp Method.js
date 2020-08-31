@@ -8,9 +8,7 @@ const signUpLastName = document.getElementById("SignUp-LastName")
 const signUpEmail = document.getElementById("SignUp-Email")
 const signUpPassword = document.getElementById("SignUp-Password")
 const signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
-// const signUpIsFreeLancer = document.getElementById("isFreeLancer-ToggleButton")
 const signupKind = document.getElementById("signUpKind")
-
 function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
@@ -65,7 +63,7 @@ const loginPassword = document.getElementById("login-Password");
 const loginKind = document.getElementById("loginKind")
 
 function login() {
-    var doc = hasEmpty(loginKeypoint, loginPassword)
+    let doc = hasEmpty(loginKeypoint, loginPassword);
     if (doc != null) {
         setFieldError(doc, true)
         setTimeout(() => alert("fill the red box!!"), 1000);
@@ -84,6 +82,10 @@ function login() {
 function handleSuccessLogin(value) {
 // todo go to Profile Menu And Save Auth
     alert("Login Successful")
+    alert("Server Message: " + value.message)
+    alert("Auth: " + value.messageField)
+    Cookies.set('auth', value.messageField)
+    Cookies.set('isfreelancer', loginKind.value === 'freelancer')
     window.location.href = profilePageName;
 }
 

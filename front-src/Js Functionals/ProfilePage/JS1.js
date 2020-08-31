@@ -16,11 +16,7 @@ function logOut() {
 
 const gitHubAccountPart = document.getElementById("gitHubAccountPart");
 function loadProfileMenu() {
-    if (false /* if is Not FreeLancer */) {
+    if (!Cookies.get('isfreelancer')) {
         gitHubAccountPart.style.display = "none";
     }
-    console.log(Cookies.get('Fuck'/*, {
-        domain: "FuckFuckFuck",
-        path: "FuckFuck"
-    }*/));
 }
