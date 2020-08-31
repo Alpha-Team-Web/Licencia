@@ -1,6 +1,7 @@
 package users
 
 import (
+	"back-src/controller/utils/data"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
@@ -15,6 +16,17 @@ func EditEmployerProfile(emp existence.Employer, DB *database.Database) error {
 		return err
 	}
 
+	return nil
+}
+
+func EditEmployerPassword(emp data.ChangePassRequest, DB *database.Database) error {
+	if !DB.DoesEmployerExistWithUsername(emp.Username) {
+		return errors.New("no user with such username:" + emp.Username)
+	}
+
+	if err := DB.UpdateEmployerPassword(emp.Username, emp.OldPass, emp.NewPass); err != nil {
+		return err
+	}
 	return nil
 }
 

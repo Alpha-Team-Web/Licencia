@@ -5,3 +5,10 @@ type LoginRequest struct {
 	Password     string `json:"password" binding:"min=6,max=20"`
 	IsFreelancer bool   `json:"-"`
 }
+
+type ChangePassRequest struct {
+	Username     string `json:"username" binding:"min=4,max=20"`
+	OldPass      string `json:"old_pass" binding:"min=6,max=20"`
+	NewPass      string `json:"new_pass" binding:"min=6,max=20"`
+	IsFreelancer bool   `json:"-"`
+}

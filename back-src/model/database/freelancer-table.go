@@ -42,7 +42,7 @@ func (db *Database) UpdateFreelancerProfile(username string, frl existence.Freel
 	return nil
 }
 
-func (db *Database) UpdateFreelancerPassword(username string, oldPass string, newPass string) error{
+func (db *Database) UpdateFreelancerPassword(username string, oldPass string, newPass string) error {
 	frl := new(existence.Freelancer)
 	if err := db.db.Model(frl).Where("username = ?", username).Select(); err != nil {
 		return err
@@ -59,6 +59,12 @@ func (db *Database) UpdateFreelancerPassword(username string, oldPass string, ne
 	return nil
 }
 
+func (db *Database) UpdateFreelancerLinks(username string, frl existence.Freelancer) error {
+	if _, err := db.db.Model(&frl).Column("website", "github", "github-repos").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
+}
 
 func (db *Database) GetFreelancerByUsername(username string) (existence.Freelancer, error) {
 	var frl existence.Freelancer
