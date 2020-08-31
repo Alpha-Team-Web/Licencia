@@ -36,8 +36,17 @@ func RespondEmployerGetProfile(context *gin.Context, token string, emp existence
 	}
 }
 
-func RespondEmployerAddProject(context *gin.Context, err error) {
-
+func RespondEmployerAddProject(context *gin.Context, token string, err error) {
+	if err == nil {
+		context.Header("Token", token)
+		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+	} else {
+		if !view.RespondTokenErrors(context, err) {
+			context.Header("Token", token)
+			var status int = http.StatusInternalServerError
+			context.JSON(status, responses.Response{Message: err.Error()})
+		}
+	}
 }
 
 func RespondEmployerGetProjects(context *gin.Context, projects []existence.Project, err error) {
