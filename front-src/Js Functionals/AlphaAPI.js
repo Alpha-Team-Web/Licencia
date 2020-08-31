@@ -13,6 +13,20 @@ function httpExcGET(method, url, data, handleSuccess, handleDeny, ...params) {
     }).then(response => success(response, handleSuccess, handleDeny))
         .catch(deny);
 }
+
+function httpGet(url, headers, handleSuccess, handleDeny, ...params){
+    return fetch(url + createQuery(params), {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: headers,
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+    }).then(response => success(response, handleSuccess, handleDeny))
+        .catch(deny);
+}
+
 function createQuery(params) {
     let query = "";
     let shekCreator = param => param.key + "=" + param.value;
@@ -31,14 +45,15 @@ function success(response, handleSuccess, handleError) {
         .then(value => {
             if (response.status === 200) {
                 // todo go to Profile Menu And Save Auth
-                handleSuccess(parseValue(value))
-                // window.location.href = profilePageName;
+                handleSuccess(value)
             } else {
-                handleError(parseValue(value))
+                handleError(value)
                 // todo error the fields
             }
         })
 }
+
+
 function deny(response) {
     alert('Error Connecting To Licencia Server')
     // todo
@@ -51,10 +66,11 @@ function handleResponseJsonCatch(reason) {
 
 function parseValue(value) {
     let splitter = value.message.indexOf(':');
-    return {
+    return splitter===-1?value:{
         message: value.message,
         messageError: value.message.substring(0, splitter),
         messageField: value.message.substring(splitter + 1),
         // Type
     }
 }
+

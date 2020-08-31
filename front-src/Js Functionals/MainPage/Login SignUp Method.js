@@ -1,5 +1,8 @@
 const urlSignUp = "http://localhost:8008/register"
 const urlLogin = "http://localhost:8008/login"
+const urlGetProfileInfo = "http://localhost:8008/profileinfo"
+
+const isLogin = false;
 
 
 const signUpUsername = document.getElementById("SignUp-UserName")
@@ -9,6 +12,7 @@ const signUpEmail = document.getElementById("SignUp-Email")
 const signUpPassword = document.getElementById("SignUp-Password")
 const signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
 const signupKind = document.getElementById("signUpKind")
+
 function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
@@ -81,6 +85,9 @@ function login() {
 
 function handleSuccessLogin(value) {
 // todo go to Profile Menu And Save Auth
+    let splitter = value.message.indexOf(':');
+    let messageError = value.message.substring(0, splitter);
+    let messageField = value.message.substring(splitter + 1);
     alert("Login Successful")
     alert("Server Message: " + value.message)
     alert("Auth: " + value.messageField)
@@ -91,6 +98,9 @@ function handleSuccessLogin(value) {
 
 function handleErrorLogin(value) {
     // todo error the fields
+    let splitter = value.message.indexOf(':');
+    let messageError = value.message.substring(0, splitter);
+    let messageField = value.message.substring(splitter + 1);
     alert("Login Failed")
     alert('Server Message: ' + value.message)
     switch (value.messageError) {
@@ -120,7 +130,7 @@ function setFieldError(field, isError) {
     if ((isError === undefined || isError) && !field.parentElement.classList.contains("error")) {
         // field.style.border = "1px solid red";
         field.parentElement.classList.add("error");
-    } else if(!isError && field.parentElement.classList.contains("error")) {
+    } else if (!isError && field.parentElement.classList.contains("error")) {
         field.parentElement.classList.remove("error")
     }
 }
