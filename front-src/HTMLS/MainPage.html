@@ -12,6 +12,8 @@
 
 
     <script src="../Js%20Functionals/FileNames.js"></script>
+    <script src="../Js%20Functionals/AlphaAPI.js"></script>
+    <script src="../Js%20Functionals/urlNames.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
@@ -27,7 +29,7 @@
 <body>
 <div class="header" id="Header">
     <!--    badan-->
-    <div class="ui button loginButton" onclick="showLoginMenu()">ورود / ثبت نام</div>
+    <div class="ui button loginButton" onclick="openLogSinMenu()">ورود / ثبت نام</div>
     <ul id="Header-UnOrderedList">
         <li class="Header-UnOrderedList-Item" value="KireKhar">
             <a href="KireKhar" class="Header-UnOrderedList-Item">دسته بندی ها</a>
@@ -62,24 +64,19 @@
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">نام کاربری یا ایمیل</p>
-                    <input maxlength="50" type="text" placeholder="Username Or Email" id="login-KeyPoint">
+                    <input maxlength="50" type="text" placeholder="Username Or Email"
+                           id="login-KeyPoint" onfocus="setFieldError(this, false)">
                 </div>
             </div>
 
-            <!--<div class="ui form formPadding">
-                <div class="ui field ">
-                    <label> نام کاربری یا ایمیل</label>
-                    <input maxlength="50" type="text"
-                           placeholder="Username Or Email">
-                </div>
-            </div>-->
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">رمز عبور</p>
-                    <input maxlength="30" type="text" class="div-div-div-input" id="login-Password"
-                           placeholder="Password">
+                    <input maxlength="30" type="password" class="div-div-div-input" id="login-Password"
+                           placeholder="Password" onfocus="setFieldError(this, false)">
                 </div>
             </div>
+
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">نوع</p>
@@ -89,6 +86,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="ui form formPadding" id="Login-Footer-Form">
                 <label>
                     <input onclick="login()" type="submit" id="loginButton" class="ui green button" value="login">
@@ -100,6 +98,7 @@
             </div>
         </div>
     </div>
+
     <div class="content Login-SignUp-Menu" id="SignUp-Menu">
         <div class="ui form formPadding">
             <!--            divider-->
@@ -107,14 +106,14 @@
                 <div class="ui field">
                     <p class="paragraphInput">نام کاربری</p>
                     <input maxlength="30" type="text" class="div-div-div-input" id="SignUp-UserName"
-                           placeholder="username">
+                           placeholder="username" onfocus="setFieldError(this, false)">
                 </div>
             </div>
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">نام</p>
                     <input maxlength="30" type="text" class="div-div-div-input" id="SignUp-FirstName"
-                           placeholder="FirstName">
+                           placeholder="FirstName" onfocus="setFieldError(this, false)">
                 </div>
 
             </div>
@@ -122,38 +121,31 @@
                 <div class="ui field">
                     <p class="paragraphInput">نام خانوادگی</p>
                     <input maxlength="30" type="text" class="div-div-div-input" id="SignUp-LastName"
-                           placeholder="LastName">
+                           placeholder="LastName" onfocus="setFieldError(this, false)">
                 </div>
             </div>
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">ایمیل</p>
                     <input maxlength="50" type="text" class="div-div-div-input" id="SignUp-Email"
-                           placeholder="Email Address">
+                           placeholder="Email Address" onfocus="setFieldError(this, false)">
                 </div>
             </div>
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">رمز عبور</p>
                     <input maxlength="30" type="password" class="div-div-div-input" id="SignUp-Password"
-                           placeholder="Password">
+                           placeholder="Password" onfocus="setFieldError(this, false)">
                 </div>
             </div>
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">تکرار رمز عبور</p>
                     <input maxlength="30" type="password" class="div-div-div-input" id="SignUp-RepeatPassword"
-                           placeholder="Repeat Password">
+                           placeholder="Repeat Password" onfocus="setFieldError(this, false)">
                 </div>
             </div>
-            <!--<div class="ui form">
-                <label>فریلنسر</label>
-                <div class="ui toggle checkbox" id="isFreeLancer-ToggleDiv">
-                    <input type="checkbox" id="isFreeLancer-ToggleButton" name="public">
-                    <label></label>
-                </div>
-                <label>کارفرما</label>
-            </div>-->
+
             <div class="ui form formPadding">
                 <div class="ui paragraph paragraphInput">نوع</div>
                 <label>
