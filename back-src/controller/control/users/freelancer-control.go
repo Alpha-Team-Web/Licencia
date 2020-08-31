@@ -51,7 +51,12 @@ func EditFreelancerLinks(token string, frl existence.Freelancer, DB *database.Da
 
 func GetFreelancer(token string, DB *database.Database) (existence.Freelancer, error) {
 	if username, err := DB.GetUsernameByToken(token); err == nil {
-		return DB.GetFreelancer(username)
+		if frl, err := DB.GetFreelancer(username); err != nil {
+			return existence.Freelancer{}, err
+		} else {
+			frl.Password = "N/A"
+			return frl, nil
+		}
 	} else {
 		return existence.Freelancer{}, err
 	}

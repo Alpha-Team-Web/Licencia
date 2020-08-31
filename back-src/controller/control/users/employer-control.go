@@ -26,7 +26,12 @@ func EditEmployerPassword(token string, emp data.ChangePassRequest, DB *database
 
 func GetEmployer(token string, DB *database.Database) (existence.Employer, error) {
 	if username, err := DB.GetUsernameByToken(token); err == nil {
-		return DB.GetEmployer(username)
+		if emp, err := DB.GetEmployer(username); err != nil {
+			return existence.Employer{}, err
+		} else {
+			emp.Password = "N/A"
+			return emp, nil
+		}
 	} else {
 		return existence.Employer{}, err
 	}
