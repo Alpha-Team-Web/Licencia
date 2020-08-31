@@ -5,7 +5,6 @@ import (
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
-	"errors"
 )
 
 func ChooseFreelancerSkills(username string, fieldId string, skills []string, database *database.Database) error {
@@ -26,39 +25,28 @@ func ChooseFreelancerSkills(username string, fieldId string, skills []string, da
 	}
 }
 
-func EditFreelancerProfile(frl existence.Freelancer, DB *database.Database) error {
-	if !DB.DoesFreelancerExistWithUsername(frl.Username) {
-		return errors.New("no user with such username :" + frl.Username)
-	}
-
-	if err := DB.UpdateFreelancerProfile(frl.Username, frl); err != nil {
+func EditFreelancerProfile(token string, frl existence.Freelancer, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.UpdateFreelancerProfile(username, frl)
+	} else {
 		return err
 	}
-
-	return nil
 }
 
-func EditFreelancerPassword(frl data.ChangePassRequest, DB *database.Database) error {
-	if !DB.DoesFreelancerExistWithUsername(frl.Username) {
-		return errors.New("no user with such username:" + frl.Username)
-	}
-
-	if err := DB.UpdateFreelancerPassword(frl.Username, frl.OldPass, frl.NewPass); err != nil {
+func EditFreelancerPassword(token string, frl data.ChangePassRequest, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
+	} else {
 		return err
 	}
-	return nil
 }
 
-func EditFreelancerLinks(frl existence.Freelancer, DB *database.Database) error {
-	if !DB.DoesFreelancerExistWithUsername(frl.Username) {
-		return errors.New("no user with such username :" + frl.Username)
-	}
-
-	if err := DB.UpdateFreelancerLinks(frl.Username, frl); err != nil {
+func EditFreelancerLinks(token string, frl existence.Freelancer, DB *database.Database) error {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.UpdateFreelancerLinks(username, frl)
+	} else {
 		return err
 	}
-
-	return nil
 }
 
 func GetFreelancer(token string, DB *database.Database) (existence.Freelancer, error) {
