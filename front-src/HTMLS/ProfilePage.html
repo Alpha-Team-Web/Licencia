@@ -43,100 +43,139 @@
     <a href="#badan" class="Header-Link"><img src="../Pics/Licencia-Logo.png" alt="Licencia" id="Logo"/></a>
 </div>
 <div class="content" id="ProfileContent">
-    <div class="content" id="MainProfileContent">
-        <div class="flexColumn" id="leftDiv">
-            <div class="content" id="ImageTippoContent">
-                <img class="ui circular bordered image" src="../Pics/codingPerson.jpg" alt="*User*'s Picture"/>
-                <a class="ui teal tag label" id="TippoTag" href="Todo">El Tippo</a>
-            </div>
-        </div>
-
-        <div class="ui form" id="MainProfileForm">
-            <div class="two fields">
-                <div class="field">
-                    <label>نام</label>
-                    <input id="firstNameField" placeholder="FirstName" type="text">
-                </div>
-                <div class="field">
-                    <label>نام خانوادگی</label>
-                    <input id="lastNameField" placeholder="LastName" type="text">
+    <div class="content flexColumn" id="MainProfileContent">
+        <!--<div class="content flexRow">
+            <div class="flexColumn" id="leftDiv">
+                <div class="content" id="ImageTippoContent">
+                    <img class="ui circular bordered image" src="../Pics/codingPerson.jpg" alt="*User*'s Picture"/>
                 </div>
             </div>
 
-            <div class="two fields">
-                <div class="field">
-                    <label>نام کاربری</label>
-                    <input id="usernameField" placeholder="Username" readonly="" type="text">
+            <div class="ui form" id="MainProfileForm">
+                <div class="two fields">
+                    <div class="field">
+                        <label class="rightAligned">نام کاربری</label>
+                        <input id="usernameField" placeholder="Username" readonly="" type="text">
+                    </div>
                 </div>
-                <div class="field">
-                    <label>ایمیل</label>
-                    <input id="emailField" placeholder="Email" readonly="" type="text">
-                </div>
-            </div>
 
+                <div class="two fields">
+                    <div class="field">
+                        <label class="rightAligned">ایمیل</label>
+                        <input id="emailField" placeholder="Email" readonly="" type="text">
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label class="rightAligned">نام نمایشی</label>
+                        <input id="showingNameField" placeholder="Showing Name" type="text">
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label class="rightAligned">نام</label>
+                        <input id="firstNameField" placeholder="FirstName" type="text">
+                    </div>
+                    <div class="field">
+                        <label class="rightAligned">نام خانوادگی</label>
+                        <input id="lastNameField" placeholder="LastName" type="text">
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label class="rightAligned">آدرس سایت</label>
+                        <input id="addressField" placeholder="Site Address" type="text">
+                    </div>
+                    <div class="field">
+                        <label class="rightAligned">شماره تلفن</label>
+                        <input id="telephoneNumberField" placeholder="Telephone Number" type="text">
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label class="rightAligned">توضیحات</label>
+                        <textarea id="descriptionField" rows="3" placeholder="Description"></textarea>
+                    </div>
+                </div>
+
+                <button class="positive ui button rightAligned" id="saveProfileButton">ثبت پروفایل</button>
+
+            </div>
+        </div>-->
+
+        <div class="ui form flexColumn" id="githubReposContent">
             <div class="two fields">
                 <div class="field">
-                    <label>آدرس سایت</label>
+                    <label class="rightAligned">آدرس سایت</label>
                     <input id="siteAddressField" placeholder="Site Address" type="text">
                 </div>
-                <div class="field">
-                    <label>شماره تلفن</label>
-                    <input id="telephoneNumberField" placeholder="Telephone Number" type="text">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>رمز عبور</label>
-                <div class="two fields">
-                    <div class="field">
-                        <input id="passwordField" placeholder="Password" type="password">
-                    </div>
-                    <div class="field">
-                        <input id="repeatPasswordField" placeholder="Repeat Password" type="password">
-                    </div>
-                </div>
-            </div>
-
-            <div class="content" id="gitHubAccountPart">
-                <div class="two fields">
-                    <div class="field">
-                        <label>اکانت گیت هاب</label>
-                        <input id="githubAccountField" placeholder="Github-Account" type="text">
-                    </div>
-                </div>
-                <br />
             </div>
 
             <div class="two fields">
                 <div class="field">
-                    <label>توضیحات</label>
-                    <textarea id="descriptionField" rows="3"></textarea>
-                </div>
-                <div class="field">
-                    <label>آدرس</label>
-                    <textarea id="addressField" rows="3"></textarea>
+                    <label class="rightAligned">اکانت گیت هاب</label>
+                    <input id="githubAccountField" placeholder="Github-Account" type="text">
                 </div>
             </div>
 
-            <button class="positive ui button rightAligned" id="saveButton">ثبت</button>
+            <!--            githubReposPart-->
+
+            <button class="positive ui button rightAligned" id="saveLinksButton">ثبت پیوند ها</button>
 
         </div>
+
+        <!--<div class="ui form flexColumn" id="changingPasswordContent">
+            <div class="two fields" id="passwordFields">
+                <div class="field">
+                    <label class="rightAligned">رمز عبور</label>
+                    <input id="passwordField" placeholder="Password" type="password">
+                </div>
+                <div class="field">
+                    <label class="rightAligned">تکرار رمز عبور</label>
+                    <input id="repeatPasswordField" placeholder="Repeat Password" type="password">
+                </div>
+            </div>
+
+            <button class="positive ui button rightAligned" id="changePasswordButton">تغییر رمز عبور</button>
+
+        </div>-->
     </div>
     <div class="ui section divider" id="divider1"></div>
     <div class="content" id="projectsContent">
         <div class="card flexColumn">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
-                <h3 class="number" id="doneProjects">35</h3>
+                <h3 class="number" id="viewProfile">35</h3>
             </header>
-            <div class="ui paragraph cardP">پروژه های انجام شده در لیسنسیا</div>
+            <div class="ui paragraph cardP">مشاهده پروفایل</div>
         </div>
+
         <div class="card flexColumn">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
-                <h3 class="number" id="inProgressProjects">8</h3>
+                <h3 class="number" id="viewLinks">35</h3>
             </header>
-            <div class="ui paragraph cardP">پروژه های در حال انجام لیسنسیا</div>
+            <div class="ui paragraph cardP">مشاهده پیوند ها</div>
+        </div>
+
+        <div class="card flexColumn">
+            <header class="cardHeader flexRow">
+                <i class="check large icon myIcon"></i>
+                <h3 class="number" id="changePassword">35</h3>
+            </header>
+            <div class="ui paragraph cardP">تغییر رمز عبور</div>
+        </div>
+
+        <div class="card flexColumn">
+            <header class="cardHeader flexRow">
+                <i class="check large icon myIcon"></i>
+                <h3 class="number" id="doneProjects">35</h3>
+            </header>
+            <div class="ui paragraph cardP">پروژه های انجام شده در لیسنسیا</div>
         </div>
         <div class="card flexColumn">
             <header class="cardHeader flexRow">
@@ -158,13 +197,6 @@
                 <h3 class="number" id="elTippo">95</h3>
             </header>
             <div class="ui paragraph cardP">نمونه کارها</div>
-        </div>
-        <div class="card flexColumn">
-            <header class="cardHeader flexRow">
-                <i class="check large icon myIcon"></i>
-                <h3 class="number" id="elTippo">95</h3>
-            </header>
-            <div class="ui paragraph cardP">ریپو های معروف GitHub</div>
         </div>
         <div class="card flexColumn">
             <header class="cardHeader flexRow">

@@ -13,15 +13,22 @@
 }
 
 
+.ui.form > .two.fields > .field {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+
 #MainProfileContent {
-    display: flex;
-    flex-direction: row;
+    /*display: flex;*/
+    /*flex-direction: row;*/
     width: 100%;
+    padding: 20px;
 }
 
 
 #MainProfileForm {
-    padding: 70px 40px 70px 60px;
+    padding: 50px 20px 50px 60px;
     width: 100%;
 }
 
@@ -39,7 +46,7 @@
 
 
 #leftDiv {
-    padding: 20px;
+    padding-right: 20px;
     width: 40%;
 }
 
@@ -90,4 +97,22 @@
 
 #saveButton {
     margin-top: 20px;
+}
+
+#githubReposContent {
+
+}
+
+#saveLinksButton {
+    width: 10%;
+    margin: 0 55% 0 auto;
+}
+
+#passwordFields {
+    width: 70%;
+    margin-left: auto;
+}
+
+#changePasswordButton {
+    margin: 0 75% 0 auto;
 }
