@@ -14,9 +14,15 @@ const signupKind = document.getElementById("signUpKind")
 function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
-        setFieldError(doc)
+        setFieldError(doc, true)
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
+        if (signUpPassword.value !== signUpRepeatPassword.value) {
+            alert("Your Passwords Doesn't Match")
+            setFieldError(signUpPassword, true)
+            setFieldError(signUpRepeatPassword, true)
+            return;
+        }
         const data = {
             username: signUpUsername.value,
             firstname: signUpFirstName.value,
@@ -36,9 +42,21 @@ function handleSuccessSignUp(value) {
     shideLoginMenu(false)
 }
 
-function handleErrorSignUp(reason) {
+function handleErrorSignUp(value) {
     // todo error the fields
     alert("SignUp Failed")
+    alert('Server Message: ' + value.message)
+    switch (value.messageError) {
+        case 'duplicate email':
+            setFieldError(signUpEmail, true);
+            break;
+        case 'duplicate username':
+            setFieldError(signUpUsername, true)
+            break;
+        default:
+            alert("Haven't Handled That Error Before");
+            console.log("messageError: '" + value.messageError + "'")
+    }
 }
 
 
@@ -49,7 +67,7 @@ const loginKind = document.getElementById("loginKind")
 function login() {
     var doc = hasEmpty(loginKeypoint, loginPassword)
     if (doc != null) {
-        setFieldError(doc)
+        setFieldError(doc, true)
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
@@ -69,26 +87,23 @@ function handleSuccessLogin(value) {
     window.location.href = profilePageName;
 }
 
-function handleErrorLogin(reason) {
+function handleErrorLogin(value) {
     // todo error the fields
     alert("Login Failed")
+    alert('Server Message: ' + value.message)
+    switch (value.messageError) {
+        case 'not signed up username':
+        case 'not signed up email':
+            setFieldError(loginKeypoint);
+            break;
+        case 'invalid password':
+            setFieldError(loginPassword)
+            break;
+        default:
+            alert("Haven't Handled That Error Before");
+            console.log("messageError: '" + value.messageError + "'")
+    }
 }
-
-/*function http(method, url, data, success, deny, ...params) {
-    return fetch(url + createQuery(params), {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data)
-    }).then(success)
-        .catch(deny);
-}*/
 
 function hasEmpty(...args) {
     for (let doc of args) {
@@ -99,16 +114,11 @@ function hasEmpty(...args) {
     return null;
 }
 
-function setFieldError(field) {
-    if (!field.parentElement.classList.contains("error")) {
+function setFieldError(field, isError) {
+    if ((isError === undefined || isError) && !field.parentElement.classList.contains("error")) {
         // field.style.border = "1px solid red";
         field.parentElement.classList.add("error");
+    } else if(!isError && field.parentElement.classList.contains("error")) {
+        field.parentElement.classList.remove("error")
     }
-}
-
-
-function printResponse(response) {
-    response.json()
-        .then(value => console.log("value: '" + value.message + "'"))
-        .catch(reason => console.log("reason: " + reason))
 }

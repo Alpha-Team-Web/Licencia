@@ -31,10 +31,10 @@ function success(response, handleSuccess, handleError) {
         .then(value => {
             if (response.status === 200) {
                 // todo go to Profile Menu And Save Auth
-                handleSuccess(value)
+                handleSuccess(parseValue(value))
                 // window.location.href = profilePageName;
             } else {
-                handleError(value)
+                handleError(parseValue(value))
                 // todo error the fields
             }
         })
@@ -47,4 +47,14 @@ function deny(response) {
 function handleResponseJsonCatch(reason) {
     alert("Raft To Catche Response.json()")
     alert("Reason: " + JSON.stringify(reason))
+}
+
+function parseValue(value) {
+    let splitter = value.message.indexOf(':');
+    return {
+        message: value.message,
+        messageError: value.message.substring(0, splitter),
+        messageField: value.message.substring(splitter + 1),
+        // Type
+    }
 }
