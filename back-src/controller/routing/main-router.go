@@ -47,6 +47,11 @@ func (router *router) Listen() error {
 		users.RespondEmployerEdit(context, token, err)
 	})
 
+	router.server.POST("/employer/projects/add", func(context *gin.Context) {
+		token, err := router.handler.AddEmployerProject(context)
+		users.RespondEmployerAddProject(context, token, err)
+	})
+
 	router.server.POST("/freelancer/edit/profile", func(context *gin.Context) {
 		token, err := router.handler.EditEmployerProfile(context)
 		users.RespondFreelancerEdit(context, token, err)

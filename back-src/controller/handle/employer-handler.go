@@ -52,3 +52,17 @@ func (handler *Handler) GetEmployerProjects(ctx *gin.Context) ([]existence.Proje
 	}
 	return users.GetEmployerProjects(user.username, DB)
 }
+
+func (handler *Handler) AddEmployerProject(ctx *gin.Context) (string, error) {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+		return newToken, err
+	} else {
+		project := existence.Project{}
+		if err := ctx.ShouldBindJSON(&project); err != nil {
+			return newToken, err
+		}
+		err := users.AddProjectToEmployer(token, project, DB)
+		return newToken, err
+	}
+}

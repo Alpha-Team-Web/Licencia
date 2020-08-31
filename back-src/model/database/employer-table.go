@@ -31,16 +31,19 @@ func (db *Database) UpdateEmployerProfile(username string, emp existence.Employe
 
 func (db *Database) UpdateEmployerPassword(username string, oldPass string, newPass string) error {
 	emp, _ := db.GetEmployer(username)
-	if err := db.db.Model(emp).Where("username = ?", username).Select(); err != nil {
-		return err
-	}
-
 	if emp.Password != oldPass {
 		return errors.New("password mismatch")
 	}
 
 	emp.Password = newPass
 	if _, err := db.db.Model(&emp).Column("password").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *Database) UpdateEmployerProjects(username string, emp existence.Employer) error {
+	if _, err := db.db.Model(&emp).Column("project_ids").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
@@ -79,4 +82,11 @@ func (db *Database) GetEmployerUsernameByEmail(email string) (string, error) {
 	employer := existence.Employer{}
 	err := db.db.Model(&employer).Where("email = ?", email).Column("username").Select()
 	return employer.Username, err
+}
+
+func (db *Database) AddProject(project existence.Project) error {
+	if _, err := db.db.Model(&project).Insert(); err != nil {
+		return err
+	}
+	return nil
 }

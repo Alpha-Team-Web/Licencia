@@ -49,3 +49,27 @@ func TestUpdateEmployer(t *testing.T) {
 		t.Errorf("%s %v", "Fail : ", emp3)
 	}
 }
+
+/*{
+	"name":"helloworld2"
+	"desc":"This is my first project."
+	"fr-to-emp-comment":"N/A"
+	"emp-to-fr-comment":"N/A"
+}*/
+/*{
+	"name":"helloworld3"
+	"desc":"This is my first project."
+	"fr-to-emp-comment":"N/A"
+	"emp-to-fr-comment":"N/A"
+}*/
+func TestAddProjectToEmployer(t *testing.T) {
+	db := database.NewDb()
+	if err := db.Initialize(); err != nil {
+		t.Error(err)
+	}
+	//after sending request
+	emp, _ := db.GetEmployer("ashkan")
+	if len(emp.ProjectIds) != 2 {
+		t.Errorf("%s %v", "Number of projects is not 2.", emp.ProjectIds)
+	}
+}
