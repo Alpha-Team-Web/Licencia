@@ -22,6 +22,8 @@ let gitHubAccount;
 let gitHubRepo;
 let description;
 let address;
+let projectsId;
+let requestedProjectsId;
 
 function logOut() {
     // Todo
@@ -31,14 +33,18 @@ function logOut() {
 const gitHubAccountPart = document.getElementById("gitHubAccountPart");
 
 function loadProfileMenu() {
-    httpGet(urlGetProfileInfo, {
-        'Content-Type': 'application/json',
-        'token': Cookies.get('auth')
-    }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
+
     if (!Cookies.get('isfreelancer')) {
+        httpGet(urlGetEmployerProfileInfo, {
+            'Content-Type': 'application/json',
+            'token': Cookies.get('auth')
+        }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
         gitHubAccountPart.style.display = "none";
-
-
+    } else {
+        httpGet(urlGetFreelancerProfileInfo, {
+            'Content-Type': 'application/json',
+            'token': Cookies.get('auth')
+        }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
     }
 }
 
@@ -50,13 +56,15 @@ function handleSuccessGetProfileInfo(value) {
     lastname = messages.lastname;
     email = messages.email;
     description = messages.description;
-    telephoneNumber = messages['telephone-number'];
-    address = messages.address;
+    telephoneNumber = messages.phonenumber;
+    address = messages.addr;
     password = messages.password;
+    projectsId = messages['project-ids'];
     if (Cookies.get('isfreelancer')) {
-        gitHubAccount = messages['github-account'];
-        gitHubRepo = messages['github-repo'];
-        siteAddress = messages['site-address'];
+        gitHubAccount = messages.github;
+        gitHubRepo = messages['github-repos'];
+        siteAddress = messages.website;
+        requestedProjectsId = messages['req-project-ids'];
         fillFreelancerSpecialFields();
     } else {
         fillCommonFields();
@@ -66,7 +74,7 @@ function handleSuccessGetProfileInfo(value) {
 
 function fillFreelancerSpecialFields() {
     siteAddressField.value = siteAddress;
-    //TODO : account and repos;
+    //TODO : remaining;
 }
 
 function fillCommonFields() {
