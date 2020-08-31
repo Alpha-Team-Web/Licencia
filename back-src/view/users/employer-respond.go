@@ -36,6 +36,10 @@ func RespondEmployerGetProfile(context *gin.Context, token string, emp existence
 	}
 }
 
+func RespondEmployerAddProject(context *gin.Context, err error) {
+
+}
+
 func RespondEmployerGetProjects(context *gin.Context, projects []existence.Project, err error) {
 	if err == nil {
 		context.JSON(http.StatusOK, struct {
