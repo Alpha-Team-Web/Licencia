@@ -197,6 +197,7 @@ const mainProfileContent = document.getElementById('MainProfileContent');
 const profile = document.getElementById('profile');
 const gitHubRepoContent = document.getElementById('githubReposContent');
 const changePasswordContent = document.getElementById('changingPasswordContent');
+
 function changeMainProfileContent(content) {
     let showingDisplay = getShowingDisplay();
     if (showingDisplay != null && content.id !== showingDisplay.id) {
@@ -245,4 +246,28 @@ function saveProfile() {
     httpExcGET('post', saveProfileUrl, data, successSaveProfile, errorSaveProfile, {
         'auth': Cookies.get('auth')
     })
+}
+
+function submitGitPart() {
+    let gitLinks = [];
+    let size = 0;
+    if (firstRepoDiv.style.display !== "none") {
+        gitLinks[size] = $('#linkRepo1').text();
+        size += 1;
+    }
+    if (secondRepoDiv.style.display !== "none") {
+        gitLinks[size] = $('#linkRepo2').text();
+        size += 1;
+    }
+    if (thirdRepoDiv.style.display !== "none") {
+        gitLinks[size] = $('#linkRepo3').text();
+        size += 1;
+    }
+    let data = {
+        website: siteAddressField.value,
+        ['github-repos']: gitLinks,
+        github: githubAccountField.value
+    }
+    siteAddress = siteAddressField.value;
+    gitHubAccount = githubAccountField.value;
 }
