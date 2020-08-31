@@ -4,6 +4,6 @@ const urlGetEmployerProfileInfo = "http://localhost:8008/employer/get-profile"
 const urlGetFreelancerProfileInfo = "http://localhost:8008/freelancer/get-profile"
 const gitHubUrl = "https://github.com/"
 
-const saveProfileUrl;
-const saveGithubUrl;
-const changePasswordUrl;
+const saveProfileUrl="";
+const saveGithubUrl="";
+const changePasswordUrl="";

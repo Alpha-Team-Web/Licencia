@@ -264,10 +264,59 @@ function submitGitPart() {
         size += 1;
     }
     let data = {
-        website: siteAddressField.value,
-        ['github-repos']: gitLinks,
-        github: githubAccountField.value
+        'website': siteAddressField.value,
+        'github-repos': gitLinks,
+        'github': githubAccountField.value
     }
     siteAddress = siteAddressField.value;
     gitHubAccount = githubAccountField.value;
+    let headers = {
+        'Content-Type': 'application/json',
+        'token': Cookies.get('auth')
+    }
+    httpExcGET('POST', saveGithubUrl, data, successGithubPartSubmit, denyGithubPartSubmit, headers);
+}
+
+function successGithubPartSubmit(value) {
+    alert("post successfully" + " value : " + JSON.stringify(value));
+}
+
+function denyGithubPartSubmit(value) {
+    alert("post deny" + " value : " + JSON.stringify(value));
+}
+
+const oldPasswordField = document.getElementById("oldPasswordField");
+const newPasswordField = document.getElementById("passwordField");
+const repeatNewPasswordField = document.getElementById("repeatPasswordField");
+
+function changePassword() {
+    if (oldPasswordField.value === "" || newPasswordField.value === "" || repeatNewPasswordField.value === "") {
+        alert("you have empty field")
+    } else {
+        if (newPasswordField.value !== repeatNewPasswordField.value) {
+            alert("passwords doesn't match")
+        } else {
+            if (oldPasswordField.value !== password) {
+                alert("old password is incorrect")
+            } else {
+                let data = {
+                    'new-password': siteAddressField.value,
+                }
+                let headers = {
+                    'Content-Type': 'application/json',
+                    'token': Cookies.get('auth')
+                }
+                password = newPasswordField.value;
+                httpExcGET('POST', changePasswordUrl, data, successChangePassword, denyChangePassword, headers)
+            }
+        }
+    }
+}
+
+function successChangePassword(value) {
+    alert("password changed successfully" + "  value : " + JSON.stringify(value))
+}
+
+function denyChangePassword(value) {
+    alert("password doesn't change" + "  value : " + JSON.stringify(value))
 }
