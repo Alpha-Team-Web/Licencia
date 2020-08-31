@@ -7,7 +7,6 @@ const telephoneNumberField = document.getElementById("telephoneNumberField");
 const passwordField = document.getElementById("passwordField");
 const repeatPasswordField = document.getElementById("repeatPasswordField");
 const gitHubAccountField = document.getElementById("githubAccountField");
-const siteAddressField = document.getElementById("siteAddressField");
 const descriptionField = document.getElementById("descriptionField");
 const addressField = document.getElementById("addressField");
 
@@ -91,4 +90,63 @@ function fillCommonFields() {
 function handleDenyGetProfileInfo(value) {
     alert(JSON.stringify(value));
     console.log("raft too handleDenyGetProfileInfo");
+}
+
+const repoDiv = document.getElementById("addRepoDiv");
+const iconDiv = document.getElementById("plusRepoIconDiv");
+const repoInput = document.getElementById("addRepoInput");
+const firstRepoDiv = document.getElementById("firstRepo");
+const secondRepoDiv = document.getElementById("secondRepo");
+const thirdRepoDiv = document.getElementById("thirdRepo");
+const firstRepoLink = document.getElementById("linkRepo1");
+const secondRepoLink = document.getElementById("linkRepo2");
+const thirdRepoLink = document.getElementById("linkRepo3");
+
+function openAddRepoDiv() {
+    let counter = 0;
+    if (firstRepoDiv.style.display !== "none") counter += 1;
+    if (secondRepoDiv.style.display !== "none") counter += 1;
+    if (thirdRepoDiv.style.display !== "none") counter += 1;
+    if (counter === 3) {
+        alert("you can have only 3 repository")
+        return ;
+    }
+    repoInput.value = "";
+    repoDiv.style.display = "block";
+    iconDiv.style.display = "none";
+}
+
+
+function closeAddRepoDiv() {
+    if (repoInput.value === "") return;
+    let textNode = document.createTextNode(repoInput.value);
+    if (firstRepoDiv.style.display === "none") {
+        removeAllChild(firstRepoLink);
+        firstRepoLink.appendChild(textNode);
+        firstRepoDiv.style.display = "block";
+    } else if (secondRepoDiv.style.display) {
+        removeAllChild(secondRepoLink);
+        secondRepoLink.appendChild(textNode);
+        secondRepoDiv.style.display = "block";
+    } else if (thirdRepoDiv.style.display) {
+        removeAllChild(thirdRepoLink);
+        thirdRepoLink.appendChild(textNode);
+        thirdRepoDiv.style.display = "block";
+    } else {
+        alert("you can have only 3 repository")
+        return ;
+    }
+    repoDiv.style.display = "none";
+    iconDiv.style.display = "block";
+    repoInput.value = "";
+}
+
+function removeRepo(element) {
+    element.style.display = "none";
+}
+
+function removeAllChild(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
 }

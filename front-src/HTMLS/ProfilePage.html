@@ -126,31 +126,39 @@
             </div>
 
             <div class="ui relaxed divided list" id="gitHubRepos">
-                <div class="item">
+                <div class="item" id="firstRepo">
                     <i class="large github middle aligned icon"></i>
                     <div class="content">
-                        <a class="header">Semantic-Org/Semantic-UI</a>
-<!--                        <div class="description">Updated 10 mins ago</div>-->
+                        <a class="header" id="linkRepo1">Semantic-Org/Semantic-UI</a>
+                        <!--                        <div class="description">Updated 10 mins ago</div>-->
                     </div>
-                    <i class="large window minimize middle aligned link icon"></i>
+                    <i class="large window minimize middle aligned link icon" onclick="removeRepo(firstRepo)"></i>
                 </div>
-                <div class="item">
+                <div class="item" id="secondRepo">
                     <i class="large github middle aligned icon"></i>
                     <div class="content">
-                        <a class="header">Semantic-Org/Semantic-UI-Docs</a>
-<!--                        <div class="description">Updated 22 mins ago</div>-->
+                        <a class="header" id="linkRepo2">Semantic-Org/Semantic-UI-Docs</a>
+                        <!--                        <div class="description">Updated 22 mins ago</div>-->
                     </div>
-                    <i class="large window minimize middle aligned link icon"></i>
+                    <i class="large window minimize middle aligned link icon" onclick="removeRepo(secondRepo)"></i>
                 </div>
-                <div class="item">
+                <div class="item" id="thirdRepo">
                     <i class="large github middle aligned icon"></i>
                     <div class="content">
-                        <a class="header">Semantic-Org/Semantic-UI-Meteor</a>
-<!--                        <div class="description">Updated 34 mins ago</div>-->
+                        <a class="header" id="linkRepo3">Semantic-Org/Semantic-UI-Meteor</a>
+                        <!--                        <div class="description">Updated 34 mins ago</div>-->
                     </div>
-                    <i class="large window minimize middle aligned link icon"></i>
+                    <i class="large window minimize middle aligned link icon" onclick="removeRepo(thirdRepo)"></i>
                 </div>
-                <div class="item">
+                <div class="item" id="addRepoDiv">
+                    <div class="ui action input" id="addGitHubRepoInput">
+                        <input type="text" placeholder="Search..." id="addRepoInput">
+                        <button class="ui icon button" onclick="closeAddRepoDiv()">
+                            <i class="plus circle icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="item" id="plusRepoIconDiv" onclick="openAddRepoDiv()">
                     <i class="large plus circle middle aligned link icon central"></i>
                 </div>
             </div>
@@ -227,14 +235,14 @@
         <div class="card flexColumn">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
-                <h3 class="number" id="elTippo">95</h3>
+                <h3 class="number" id="workInstance">95</h3>
             </header>
             <div class="ui paragraph cardP">نمونه کارها</div>
         </div>
         <div class="card flexColumn">
             <header class="cardHeader flexRow">
                 <i class="check large icon myIcon"></i>
-                <h3 class="number" id="elTippo">95</h3>
+                <h3 class="number" id="upgradeAccount">95</h3>
             </header>
             <div class="ui paragraph cardP">اکانت خود را ارتقا دهید</div>
         </div>

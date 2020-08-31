@@ -50,7 +50,7 @@
     width: 40%;
 }
 
-.card{
+.card {
     border-color: #6e6e6e;
     border-style: solid;
     border-radius: 4px;
@@ -100,7 +100,9 @@
 }
 
 #githubReposContent {
-
+    background-image: url("../../Pics/githubImage2.png");
+    background-repeat: no-repeat;
+    margin-left: 100px;
 }
 
 #saveLinksButton {
@@ -122,5 +124,14 @@
 }
 
 #gitHubRepos {
-    margin: 14px 10% 14px 60%;
+    margin: 14px 20% 14px 50%;
+}
+
+#addGitHubRepoInput {
+    width: 100%;
+}
+
+
+#addRepoDiv {
+    display: none;
 }
