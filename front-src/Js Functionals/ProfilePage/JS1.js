@@ -7,6 +7,7 @@ const telephoneNumberField = document.getElementById("telephoneNumberField");
 const passwordField = document.getElementById("passwordField");
 const repeatPasswordField = document.getElementById("repeatPasswordField");
 const gitHubAccountField = document.getElementById("githubAccountField");
+const siteAddressField = document.getElementById("siteAddressField");
 const descriptionField = document.getElementById("descriptionField");
 const addressField = document.getElementById("addressField");
 
@@ -56,7 +57,27 @@ function handleSuccessGetProfileInfo(value) {
         gitHubAccount = messages['github-account'];
         gitHubRepo = messages['github-repo'];
         siteAddress = messages['site-address'];
+        fillFreelancerSpecialFields();
+    } else {
+        fillCommonFields();
     }
+
+}
+
+function fillFreelancerSpecialFields() {
+    siteAddressField.value = siteAddress;
+    //TODO : account and repos;
+}
+
+function fillCommonFields() {
+    usernameField.value = username;
+    firstNameField.value = firstname;
+    lastNameField.value = lastname;
+    emailField.value = email;
+    telephoneNumberField.value = telephoneNumber;
+    addressField.value = address;
+    descriptionField.value = description;
+    passwordField.value = password;
 }
 
 function handleDenyGetProfileInfo(value) {
