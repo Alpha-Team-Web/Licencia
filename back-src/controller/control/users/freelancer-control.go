@@ -3,6 +3,7 @@ package users
 import (
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
+	"back-src/model/existence"
 )
 
 func ChooseFreelancerSkills(username string, fieldId string, skills []string, database *database.Database) error {
@@ -20,5 +21,13 @@ func ChooseFreelancerSkills(username string, fieldId string, skills []string, da
 		return nil
 	} else {
 		return err
+	}
+}
+
+func GetFreelancer(token string, DB *database.Database) (existence.Freelancer, error) {
+	if username, err := DB.GetUsernameByToken(token); err == nil {
+		return DB.GetFreelancer(username)
+	} else {
+		return existence.Freelancer{}, err
 	}
 }

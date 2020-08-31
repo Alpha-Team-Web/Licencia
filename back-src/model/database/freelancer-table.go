@@ -53,3 +53,9 @@ func (db *Database) GetFreelancerUsernameByEmail(email string) (string, error) {
 	err := db.db.Model(&freelancer).Where("email = ?", email).Column("username").Select()
 	return freelancer.Username, err
 }
+
+func (db *Database) GetFreelancer(username string) (existence.Freelancer, error) {
+	frl := new(existence.Freelancer)
+	err := db.db.Model(frl).Where("username = ?", username).Select()
+	return *frl, err
+}

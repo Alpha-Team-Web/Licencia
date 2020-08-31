@@ -45,6 +45,11 @@ func (router *router) Listen() error {
 		users.RespondEmployerGetProfile(context, token, emp, err)
 	})
 
+	router.server.GET("/freelancer/get-profile", func(context *gin.Context) {
+		emp, token, err := router.controller.GetFreelancerProfile(context)
+		users.RespondFreelancerGetProfile(context, token, emp, err)
+	})
+
 	router.server.Run(":" + router.port)
 	return nil
 }
