@@ -8,7 +8,7 @@ import (
 type Handler struct {
 }
 
-const notUsedExpiry = 15
+const notUsedExpiry = 10
 
 var AuthExpiryDur time.Duration
 
