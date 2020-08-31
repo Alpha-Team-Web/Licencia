@@ -12,6 +12,7 @@
 
 
     <script src="../Js%20Functionals/FileNames.js"></script>
+    <script src="../Js%20Functionals/AlphaAPI.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
@@ -27,7 +28,7 @@
 <body>
 <div class="header" id="Header">
     <!--    badan-->
-    <div class="ui button loginButton" onclick="showLoginMenu()">ورود / ثبت نام</div>
+    <div class="ui button loginButton" onclick="openLogSinMenu()">ورود / ثبت نام</div>
     <ul id="Header-UnOrderedList">
         <li class="Header-UnOrderedList-Item" value="KireKhar">
             <a href="KireKhar" class="Header-UnOrderedList-Item">دسته بندی ها</a>
@@ -66,20 +67,14 @@
                 </div>
             </div>
 
-            <!--<div class="ui form formPadding">
-                <div class="ui field ">
-                    <label> نام کاربری یا ایمیل</label>
-                    <input maxlength="50" type="text"
-                           placeholder="Username Or Email">
-                </div>
-            </div>-->
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">رمز عبور</p>
-                    <input maxlength="30" type="text" class="div-div-div-input" id="login-Password"
+                    <input maxlength="30" type="password" class="div-div-div-input" id="login-Password"
                            placeholder="Password">
                 </div>
             </div>
+
             <div class="ui form formPadding">
                 <div class="ui field">
                     <p class="paragraphInput">نوع</p>
@@ -89,6 +84,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="ui form formPadding" id="Login-Footer-Form">
                 <label>
                     <input onclick="login()" type="submit" id="loginButton" class="ui green button" value="login">

@@ -1,8 +1,11 @@
-function showLoginMenu() {
-    $('#LogSin-Menu')
-        .modal('show')
-    ;
+function openLogSinMenu() {
+    shideLoginMenu(true)
     loginMenu();
+}
+function shideLoginMenu(show) {
+    $('#LogSin-Menu')
+        .modal(show ? 'show' : 'hide')
+    ;
 }
 
 const greenColor = "green"

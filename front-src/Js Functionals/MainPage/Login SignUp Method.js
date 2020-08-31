@@ -24,27 +24,21 @@ function signUp() {
             email: signUpEmail.value,
             password: signUpPassword.value
         }
-        const promise = http('post', urlSignUp, data, successSignUp, denySignUp, {
+        const promise = httpExcGET('post', urlSignUp, data, handleSuccessSignUp, handleErrorSignUp, {
             key: 'account-type',
             value: signupKind.value
         });
     }
 }
 
-function successSignUp(response) {
-    alert("SuccessFull SignUp")
-    printResponse(response)
-    // todo alerting response message
-    if (response.status === 200) {
-        // todo go to login menu
-    } else {
-        // todo error the fields
-    }
+function handleSuccessSignUp(value) {
+    alert("SignUp Successful")
+    shideLoginMenu(false)
 }
 
-function denySignUp(response) {
-    alert('Error Connecting To Licencia Server')
-    printResponse(response)
+function handleErrorSignUp(reason) {
+    // todo error the fields
+    alert("SignUp Failed")
 }
 
 
@@ -62,32 +56,25 @@ function login() {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        const promise = http('post', urlLogin, data, successLogin, denyLogin, {
+        const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
             key: 'account-type',
             value: loginKind.value
         });
     }
 }
 
-function successLogin(response) {
-    alert("Login SuccessFull");
-    printResponse(response)
-    // todo alerting response message
-    if (response.status === 200) {
-        // todo go to Profile Menu And Save Auth
-        window.location.href = profilePageName;
-    } else {
-        // todo error the fields
-    }
+function handleSuccessLogin(value) {
+// todo go to Profile Menu And Save Auth
+    alert("Login Successful")
+    window.location.href = profilePageName;
 }
 
-function denyLogin(response) {
-    alert('Error Connecting To Licencia Server')
-    printResponse(response)
+function handleErrorLogin(reason) {
+    // todo error the fields
+    alert("Login Failed")
 }
 
-
-function http(method, url, data, success, deny, ...params) {
+/*function http(method, url, data, success, deny, ...params) {
     return fetch(url + createQuery(params), {
         method: 'POST',
         mode: 'cors',
@@ -101,22 +88,7 @@ function http(method, url, data, success, deny, ...params) {
         body: JSON.stringify(data)
     }).then(success)
         .catch(deny);
-}
-
-function createQuery(params) {
-    console.log("Params: " + JSON.stringify(params))
-    let query = "";
-    if (params.length > 0) {
-        query += "?" + createShek(params[0]);
-        for (let i = 1; i < params.length; i++) query += "&" + createShek(params[i]);
-    }
-    return query;
-}
-
-function createShek(param) {
-    console.log("Param: " + JSON.stringify(param))
-    return param.key + "=" + param.value;
-}
+}*/
 
 function hasEmpty(...args) {
     for (let doc of args) {
