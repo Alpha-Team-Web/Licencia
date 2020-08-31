@@ -14,9 +14,11 @@ func (router *router) addNewEndpointGroup(endpointAddr string, name, fatherName 
 	fatherGroup := router.getEndpointGroupByName(fatherName)
 	if fatherGroup == nil {
 		endpointGroup := &endpointGroup{name: name, group: router.server.Group(endpointAddr), fatherGroup: nil}
+		router.endpointGroups = append(router.endpointGroups, endpointGroup)
 		return endpointGroup
 	} else {
 		endpointGroup := &endpointGroup{name: name, group: fatherGroup.group.Group(endpointAddr), fatherGroup: fatherGroup}
+		router.endpointGroups = append(router.endpointGroups, endpointGroup)
 		return endpointGroup
 	}
 }
