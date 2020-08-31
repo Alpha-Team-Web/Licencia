@@ -29,8 +29,8 @@ func (db *Database) UpdateEmployerProfile(username string, emp existence.Employe
 	return nil
 }
 
-func (db *Database) UpdateEmployerPassword(username string, oldPass string, newPass string) error{
-	emp := new(existence.Employer)
+func (db *Database) UpdateEmployerPassword(username string, oldPass string, newPass string) error {
+	emp, _ := db.GetEmployer(username)
 	if err := db.db.Model(emp).Where("username = ?", username).Select(); err != nil {
 		return err
 	}
@@ -45,7 +45,6 @@ func (db *Database) UpdateEmployerPassword(username string, oldPass string, newP
 	}
 	return nil
 }
-
 
 func (db *Database) GetEmployer(username string) (existence.Employer, error) {
 	emp := new(existence.Employer)

@@ -48,7 +48,7 @@ func TestUpdateFreelancer(t *testing.T) {
 	}
 	frl3, err := db.GetFreelancer("ashkan")
 	if frl3.Password != "sadasdas" {
-		t.Error("%s %v", "Fail : ", frl3)
+		t.Errorf("%s %v", "Fail : ", frl3)
 	}
 	frl.Website = "ffff.com"
 	if err := db.UpdateFreelancerLinks("ashkan", frl); err != nil {

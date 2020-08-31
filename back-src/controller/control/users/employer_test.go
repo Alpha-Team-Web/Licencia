@@ -46,6 +46,6 @@ func TestUpdateEmployer(t *testing.T) {
 	}
 	emp3, err := db.GetEmployer("ashkan")
 	if emp3.Password != "sadasdas" {
-		t.Error("%s %v", "Fail : ", emp2)
+		t.Errorf("%s %v", "Fail : ", emp3)
 	}
 }

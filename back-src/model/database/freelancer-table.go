@@ -43,7 +43,7 @@ func (db *Database) UpdateFreelancerProfile(username string, frl existence.Freel
 }
 
 func (db *Database) UpdateFreelancerPassword(username string, oldPass string, newPass string) error {
-	frl := new(existence.Freelancer)
+	frl, _ := db.GetFreelancer(username)
 	if err := db.db.Model(frl).Where("username = ?", username).Select(); err != nil {
 		return err
 	}
