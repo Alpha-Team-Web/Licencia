@@ -1,6 +1,6 @@
 function httpExcGET(method, url, data, handleSuccess, handleDeny, ...params) {
     return fetch(url + createQuery(params), {
-        method: 'POST',
+        method: method,
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
