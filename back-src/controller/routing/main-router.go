@@ -13,23 +13,34 @@ type Listener interface {
 }
 
 type router struct {
-	port    string
-	server  *gin.Engine
-	handler *handle.Handler
+	port           string
+	server         *gin.Engine
+	handler        *handle.Handler
+	endpointGroups []*endpointGroup
 }
 
 func NewRouter(port string) Listener {
-
-	var listener Listener = &router{port, gin.Default(), handle.NewControl()}
+	var listener Listener = &router{port, gin.Default(), handle.NewControl(), []*endpointGroup{}}
 	return listener
 }
 
 func (router *router) Listen() error {
-	router.server.POST("/register", func(context *gin.Context) {
+
+	//jesus
+	router.addNewEndpointGroup("/io", "io", "")
+	//jesus
+	router.addNewEndpointGroup("/employer", "employer", "")
+	router.addNewEndpointGroup("/profile", "employer-profile", "employer")
+	router.addNewEndpointGroup("/projects", "employer-projects", "employer")
+	//jesus
+	router.addNewEndpointGroup("/freelancer", "freelancer", "")
+	router.addNewEndpointGroup("/profile", "freelancer-profile", "freelancer")
+	router.addNewEndpointGroup("/projects", "freelancer-projects", "freelancer")
+
+	router.addHandlerToPath("/register", "io", Post, func(context *gin.Context) {
 		view.RespondRegister(context, router.handler.Register(context))
 	})
-
-	router.server.POST("/login", func(context *gin.Context) {
+	router.addHandlerToPath("/login", "io", Post, func(context *gin.Context) {
 		token, err := router.handler.Login(context)
 		if err == nil {
 			router.handler.AddNewClock(token)
@@ -37,12 +48,19 @@ func (router *router) Listen() error {
 		view.RespondLogin(context, token, err)
 	})
 
-	router.server.POST("/employer/edit/profile", func(context *gin.Context) {
+	router.addHandlerToPath("/general", "employer-profile", Post, func(context *gin.Context) {
 		token, err := router.handler.EditEmployerProfile(context)
 		users.RespondEmployerEdit(context, token, err)
 	})
 
-	router.server.POST("/employer/edit/password", func(context *gin.Context) {
+	//io
+	//employer
+	router.server.POST("/employer/profile/general", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerProfile(context)
+		users.RespondEmployerEdit(context, token, err)
+	})
+
+	router.server.POST("/employer/profile/password", func(context *gin.Context) {
 		token, err := router.handler.EditEmployerPassword(context)
 		users.RespondEmployerEdit(context, token, err)
 	})
@@ -52,32 +70,32 @@ func (router *router) Listen() error {
 		users.RespondEmployerAddProject(context, token, err)
 	})
 
-	router.server.POST("/freelancer/edit/profile", func(context *gin.Context) {
-		token, err := router.handler.EditEmployerProfile(context)
-		users.RespondFreelancerEdit(context, token, err)
-	})
-
-	router.server.POST("/freelancer/edit/password", func(context *gin.Context) {
-		token, err := router.handler.EditEmployerPassword(context)
-		users.RespondFreelancerEdit(context, token, err)
-	})
-
-	router.server.POST("/freelancer/edit/links", func(context *gin.Context) {
-		token, err := router.handler.EditFreelancerLinks(context)
-		users.RespondFreelancerEdit(context, token, err)
-	})
-
-	router.server.GET("/employer/get-profile", func(context *gin.Context) {
+	router.server.GET("/employer/profile/get", func(context *gin.Context) {
 		emp, token, err := router.handler.GetEmployerProfile(context)
 		users.RespondEmployerGetProfile(context, token, emp, err)
 	})
 
-	router.server.GET("/freelancer/get-profile", func(context *gin.Context) {
+	router.server.GET("/freelancer/profile/get", func(context *gin.Context) {
 		emp, token, err := router.handler.GetFreelancerProfile(context)
 		users.RespondFreelancerGetProfile(context, token, emp, err)
 	})
 
-	router.server.POST("/freelancer/project/review", func(context *gin.Context) {
+	router.server.POST("/freelancer/profile/general", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerProfile(context)
+		users.RespondFreelancerEdit(context, token, err)
+	})
+
+	router.server.POST("/freelancer/profile/password", func(context *gin.Context) {
+		token, err := router.handler.EditEmployerPassword(context)
+		users.RespondFreelancerEdit(context, token, err)
+	})
+
+	router.server.POST("/freelancer/profile/links", func(context *gin.Context) {
+		token, err := router.handler.EditFreelancerLinks(context)
+		users.RespondFreelancerEdit(context, token, err)
+	})
+
+	router.server.POST("/freelancer/projects/review", func(context *gin.Context) {
 		token, err := router.handler.AddFreelancerReview(context)
 		projects.RespondFreelancerReview(context, token, err)
 	})

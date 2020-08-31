@@ -8,7 +8,7 @@ const (
 type user struct {
 	Username    string `json:"username" binding:"min=4,max=20" sql:"username,pk,notnull"`
 	Password    string `json:"password" binding:"min=6,max=20" sql:"password,notnull"`
-	ShownName   string `json:"shown-name" binding:"min=4,max=30" sql:",notnull"`
+	ShownName   string `json:"shown-name" binding:"min=0,max=30" sql:",notnull"`
 	Email       string `json:"email" binding:"email,min=5,max=100" sql:"email,unique"`
 	Description string `json:"description" sql:"description"`
 }

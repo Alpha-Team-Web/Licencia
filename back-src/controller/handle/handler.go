@@ -2,7 +2,6 @@ package handle
 
 import (
 	"back-src/model/database"
-	"fmt"
 	"time"
 )
 
@@ -21,7 +20,6 @@ func NewControl() *Handler {
 	if error != nil {
 		panic(error)
 	}
-	fmt.Println(AuthExpiryDur)
 	DB = database.NewDb()
 	err := DB.Initialize()
 	if err != nil {
