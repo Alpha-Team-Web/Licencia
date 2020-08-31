@@ -101,6 +101,8 @@ const thirdRepoDiv = document.getElementById("thirdRepo");
 const firstRepoLink = document.getElementById("linkRepo1");
 const secondRepoLink = document.getElementById("linkRepo2");
 const thirdRepoLink = document.getElementById("linkRepo3");
+const githubAccountField = document.getElementById("githubAccountField");
+const gitHubReposDiv = document.getElementById("gitHubRepos");
 
 function openAddRepoDiv() {
     let counter = 0;
@@ -109,7 +111,7 @@ function openAddRepoDiv() {
     if (thirdRepoDiv.style.display !== "none") counter += 1;
     if (counter === 3) {
         alert("you can have only 3 repository")
-        return ;
+        return;
     }
     repoInput.value = "";
     repoDiv.style.display = "block";
@@ -124,29 +126,48 @@ function closeAddRepoDiv() {
         removeAllChild(firstRepoLink);
         firstRepoLink.appendChild(textNode);
         firstRepoDiv.style.display = "block";
-    } else if (secondRepoDiv.style.display) {
+    } else if (secondRepoDiv.style.display === "none") {
         removeAllChild(secondRepoLink);
         secondRepoLink.appendChild(textNode);
         secondRepoDiv.style.display = "block";
-    } else if (thirdRepoDiv.style.display) {
+    } else if (thirdRepoDiv.style.display === "none") {
         removeAllChild(thirdRepoLink);
         thirdRepoLink.appendChild(textNode);
         thirdRepoDiv.style.display = "block";
     } else {
         alert("you can have only 3 repository")
-        return ;
+        return;
     }
     repoDiv.style.display = "none";
     iconDiv.style.display = "block";
     repoInput.value = "";
+    let counter = 0;
+    if (firstRepoDiv.style.display !== "none") counter += 1;
+    if (secondRepoDiv.style.display !== "none") counter += 1;
+    if (thirdRepoDiv.style.display !== "none") counter += 1;
+    if (counter === 3) {
+        iconDiv.style.display = "none";
+    }
 }
 
 function removeRepo(element) {
     element.style.display = "none";
+    iconDiv.style.display = "block";
 }
 
 function removeAllChild(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
+    }
+}
+
+function accountGithubChanged() {
+    if (githubAccountField.value === "") {
+        gitHubReposDiv.style.display = "none";
+        firstRepoDiv.style.display = "none";
+        secondRepoDiv.style.display = "none";
+        thirdRepoDiv.style.display = "none";
+    } else {
+        gitHubReposDiv.style.display = "block"
     }
 }
