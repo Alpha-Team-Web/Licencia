@@ -53,49 +53,42 @@ func (router *router) Listen() error {
 		users.RespondEmployerEdit(context, token, err)
 	})
 
-	//io
-	//employer
-	router.server.POST("/employer/profile/general", func(context *gin.Context) {
-		token, err := router.handler.EditEmployerProfile(context)
-		users.RespondEmployerEdit(context, token, err)
-	})
-
-	router.server.POST("/employer/profile/password", func(context *gin.Context) {
+	router.addHandlerToPath("/password", "employer-profile", Post, func(context *gin.Context) {
 		token, err := router.handler.EditEmployerPassword(context)
 		users.RespondEmployerEdit(context, token, err)
 	})
 
-	router.server.POST("/employer/projects/add", func(context *gin.Context) {
+	router.addHandlerToPath("/add", "employer-projects", Post, func(context *gin.Context) {
 		token, err := router.handler.AddEmployerProject(context)
 		users.RespondEmployerAddProject(context, token, err)
 	})
 
-	router.server.GET("/employer/profile/get", func(context *gin.Context) {
+	router.addHandlerToPath("/get", "employer-profile", Get, func(context *gin.Context) {
 		emp, token, err := router.handler.GetEmployerProfile(context)
 		users.RespondEmployerGetProfile(context, token, emp, err)
 	})
 
-	router.server.GET("/freelancer/profile/get", func(context *gin.Context) {
+	router.addHandlerToPath("/get", "freelancer-profile", Get, func(context *gin.Context) {
 		emp, token, err := router.handler.GetFreelancerProfile(context)
 		users.RespondFreelancerGetProfile(context, token, emp, err)
 	})
 
-	router.server.POST("/freelancer/profile/general", func(context *gin.Context) {
+	router.addHandlerToPath("/general", "freelancer-profile", Post, func(context *gin.Context) {
 		token, err := router.handler.EditEmployerProfile(context)
 		users.RespondFreelancerEdit(context, token, err)
 	})
 
-	router.server.POST("/freelancer/profile/password", func(context *gin.Context) {
+	router.addHandlerToPath("/password", "freelancer-profile", Post, func(context *gin.Context) {
 		token, err := router.handler.EditEmployerPassword(context)
 		users.RespondFreelancerEdit(context, token, err)
 	})
 
-	router.server.POST("/freelancer/profile/links", func(context *gin.Context) {
+	router.addHandlerToPath("/links", "freelancer-profile", Post, func(context *gin.Context) {
 		token, err := router.handler.EditFreelancerLinks(context)
 		users.RespondFreelancerEdit(context, token, err)
 	})
 
-	router.server.POST("/freelancer/projects/review", func(context *gin.Context) {
+	router.addHandlerToPath("/review", "freelancer-profile", Post, func(context *gin.Context) {
 		token, err := router.handler.AddFreelancerReview(context)
 		projects.RespondFreelancerReview(context, token, err)
 	})
