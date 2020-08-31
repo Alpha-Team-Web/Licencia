@@ -26,6 +26,8 @@ function signUp() {
             password: signUpPassword.value
         }
         const promise = httpExcGET('post', urlSignUp, data, handleSuccessSignUp, handleErrorSignUp, {
+            'Content-Type': 'application/json'
+        }, {
             key: 'account-type',
             value: signupKind.value
         });
@@ -70,6 +72,8 @@ function login() {
             password: loginPassword.value
         }
         const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
+            'Content-Type': 'application/json'
+        }, {
             key: 'account-type',
             value: loginKind.value
         });

@@ -1,12 +1,10 @@
-function httpExcGET(method, url, data, handleSuccess, handleDeny, ...params) {
+function httpExcGET(method, url, data, handleSuccess, handleDeny, headers, ...params) {
     return fetch(url + createQuery(params), {
         method: method,
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: headers,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data)

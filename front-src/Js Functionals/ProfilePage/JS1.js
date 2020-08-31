@@ -1,4 +1,5 @@
 const usernameField = document.getElementById("usernameField");
+const shownNameField = document.getElementById('showingNameField')
 const firstNameField = document.getElementById("firstNameField");
 const lastNameField = document.getElementById("lastNameField");
 const emailField = document.getElementById("emailField");
@@ -11,6 +12,7 @@ const descriptionField = document.getElementById("descriptionField");
 const addressField = document.getElementById("addressField");
 
 let username;
+let shownName;
 let firstname;
 let lastname;
 let email;
@@ -60,6 +62,7 @@ function handleSuccessGetProfileInfo(value) {
     console.log("message : " + value.message);
     let messages = JSON.parse(value.message);
     username = messages.username;
+    shownName = messages['shown-name']
     firstname = messages.firstname;
     lastname = messages.lastname;
     email = messages.email;
@@ -219,4 +222,27 @@ function modal(modalId, command) {
         $('#' + modalId)
             .modal(command);
     }
+}
+
+function successSaveProfile(value) {
+    alert('Profile Saved Successfully')
+}
+
+function errorSaveProfile(value) {
+    //Error Handling
+}
+
+function saveProfile() {
+    let getValue = (firstValue, secondValue) => secondValue == null ? firstValue : secondValue;
+    const data = {
+        'shown-name': getValue(shownName, shownNameField.value),
+        'firstname': getValue(firstname, firstNameField.value),
+        'lastname': getValue(lastname, lastNameField.value),
+        'phonenumber': getValue(telephoneNumber, telephoneNumberField.value),
+        'addr': getValue(address, addressField.value),
+        'description': getValue(description, descriptionField.value)
+    }
+    httpExcGET('post', saveProfileUrl, data, successSaveProfile, errorSaveProfile, {
+        'auth': Cookies.get('auth')
+    })
 }
