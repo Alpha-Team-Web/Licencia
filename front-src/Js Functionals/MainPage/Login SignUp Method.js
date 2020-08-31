@@ -24,26 +24,27 @@ function signUp() {
             email: signUpEmail.value,
             password: signUpPassword.value
         }
-        const promise = http('post', urlSignUp, data, {'account-type': signupKind.value},
-            successSignUp, denySignUp);
+        const promise = http('post', urlSignUp, data, successSignUp, denySignUp, {
+            key: 'account-type',
+            value: signupKind.value
+        });
     }
 }
 
-function successSignUp(res) {
-    console.log(res)
-    console.log("**** \n" + res.status)
-
+function successSignUp(response) {
+    alert("SuccessFull SignUp")
+    printResponse(response)
     // todo alerting response message
-    if (res.status === 200) {
+    if (response.status === 200) {
         // todo go to login menu
     } else {
         // todo error the fields
     }
 }
 
-function denySignUp(res) {
+function denySignUp(response) {
     alert('Error Connecting To Licencia Server')
-    console.log(res)
+    printResponse(response)
 }
 
 
@@ -54,43 +55,23 @@ const loginKind = document.getElementById("loginKind")
 function login() {
     var doc = hasEmpty(loginKeypoint, loginPassword)
     if (doc != null) {
-        setFieldError(doc.parentElement.parentElement)
+        setFieldError(doc)
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        /*const response = fetch(urlSignUp, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            params: {
-                'account-type': loginKind.value
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data)
-        }).then(successLogin)
-            .catch(denyLogin);*/
-        const promise = http('post', urlLogin, data, {'account-type': loginKind.value},
-            successLogin, denyLogin);
-        /*Cookies.set('Fuck', "Holy Fucking Shit", {
-            domain: "FuckFuckFuck",
-            path: "FuckFuck"
+        const promise = http('post', urlLogin, data, successLogin, denyLogin, {
+            key: 'account-type',
+            value: loginKind.value
         });
-        window.location.href = profilePageName;*/
     }
 }
 
 function successLogin(response) {
-    console.log("success");
-    console.log(response)
-    console.log("Server Message: " + response.body)
+    alert("Login SuccessFull");
+    printResponse(response)
     // todo alerting response message
     if (response.status === 200) {
         // todo go to Profile Menu And Save Auth
@@ -100,15 +81,14 @@ function successLogin(response) {
     }
 }
 
-function denyLogin(res) {
+function denyLogin(response) {
     alert('Error Connecting To Licencia Server')
-    console.log("Server Message: " + res.body)
-    console.log(res)
+    printResponse(response)
 }
 
 
-function http(method, url, data, params, success, deny) {
-    return fetch(url, {
+function http(method, url, data, success, deny, ...params) {
+    return fetch(url + createQuery(params), {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -116,7 +96,6 @@ function http(method, url, data, params, success, deny) {
         headers: {
             'Content-Type': 'application/json'
         },
-        params: params,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data)
@@ -124,10 +103,23 @@ function http(method, url, data, params, success, deny) {
         .catch(deny);
 }
 
+function createQuery(params) {
+    console.log("Params: " + JSON.stringify(params))
+    let query = "";
+    if (params.length > 0) {
+        query += "?" + createShek(params[0]);
+        for (let i = 1; i < params.length; i++) query += "&" + createShek(params[i]);
+    }
+    return query;
+}
+
+function createShek(param) {
+    console.log("Param: " + JSON.stringify(param))
+    return param.key + "=" + param.value;
+}
 
 function hasEmpty(...args) {
     for (let doc of args) {
-        console.log(doc);
         if (doc.value === "") {
             return doc;
         }
@@ -135,10 +127,16 @@ function hasEmpty(...args) {
     return null;
 }
 
-
 function setFieldError(field) {
-    if (field.class == null || !field.class.contains('error')) {
-        field.style.border = "1px solid red";
-        field.class = field.class == null ? 'error' : field.class + " error";
+    if (!field.parentElement.classList.contains("error")) {
+        // field.style.border = "1px solid red";
+        field.parentElement.classList.add("error");
     }
+}
+
+
+function printResponse(response) {
+    response.json()
+        .then(value => console.log("value: '" + value.message + "'"))
+        .catch(reason => console.log("reason: " + reason))
 }
