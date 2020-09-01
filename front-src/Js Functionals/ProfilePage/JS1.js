@@ -41,16 +41,18 @@ function initGithubRepos() {
 }
 
 function loadProfileMenu() {
-    if (/*!Cookies.get('isfreelancer')*/ false) {
+    // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
+    alert('Cookies: "' + Cookies.get('isfreelancer') + "'")
+    if (!Cookies.get('isfreelancer')) {
         httpGet(urlGetEmployerProfileInfo, {
             'Content-Type': 'application/json',
-            'token': Cookies.get('auth')
+            'Token': Cookies.get('auth')
         }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
         gitHubAccountPart.style.display = "none";
     } else {
         httpGet(urlGetFreelancerProfileInfo, {
             'Content-Type': 'application/json',
-            'token': Cookies.get('auth')
+            'Token': Cookies.get('auth')
         }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
     }
     $('#' + gitHubRepoContent.id).transition(MainProfileTransition)
