@@ -10,14 +10,14 @@ type user struct {
 	Password    string `json:"password" binding:"min=6,max=20" sql:",notnull"`
 	ShownName   string `json:"shown-name" binding:"min=0,max=30" sql:",notnull"`
 	Email       string `json:"email" binding:"email,min=5,max=100" sql:"email,unique"`
-	Description string `json:"description" sql:"description"`
+	Description string `json:"description" binding:"min=0,max=500" sql:"description"`
 }
 
 type person struct {
-	FirstName   string `json:"first-name"`
-	LastName    string `json:"last-name"`
-	PhoneNumber string `json:"phone-number"`
-	Address     string `json:"address"`
+	FirstName   string `json:"first-name" binding:"max=50"`
+	LastName    string `json:"last-name" binding:"max=50"`
+	PhoneNumber string `json:"phone-number" binding:"max=30"`
+	Address     string `json:"address" binding:"max=100"`
 }
 
 type image struct {

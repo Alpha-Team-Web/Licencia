@@ -17,12 +17,12 @@ func (router *router) addFreelancerEndpoints() {
 	})
 
 	router.addHandlerToPath("/general", "freelancer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditEmployerProfile(context)
+		token, err := router.handler.EditFreelancerProfile(context)
 		users.RespondFreelancerEdit(context, token, err)
 	})
 
 	router.addHandlerToPath("/password", "freelancer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditEmployerPassword(context)
+		token, err := router.handler.EditFreelancerPassword(context)
 		users.RespondFreelancerEdit(context, token, err)
 	})
 

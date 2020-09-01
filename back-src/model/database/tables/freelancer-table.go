@@ -62,7 +62,7 @@ func (table *FreelancerTable) UpdateFreelancerPassword(username string, oldPass 
 }
 
 func (table *FreelancerTable) UpdateFreelancerLinks(username string, frl existence.Freelancer) error {
-	if _, err := table.Model(&frl).Column("website", "github", "github_repos").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.Model(&frl).Column("website", "github_account", "github_repos").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil

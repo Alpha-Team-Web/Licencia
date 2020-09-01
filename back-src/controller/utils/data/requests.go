@@ -7,8 +7,8 @@ type LoginRequest struct {
 }
 
 type ChangePassRequest struct {
-	OldPass string `json:"old_pass" binding:"min=6,max=20"`
-	NewPass string `json:"new_pass" binding:"min=6,max=20"`
+	OldPass string `json:"old-pass" binding:"min=6,max=20"`
+	NewPass string `json:"new-pass" binding:"min=6,max=20"`
 }
 
 type FreelancerRequestForProject struct {
