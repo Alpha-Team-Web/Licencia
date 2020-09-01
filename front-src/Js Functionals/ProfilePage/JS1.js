@@ -239,10 +239,13 @@ function saveProfile() {
         'shown-name': getValue(shownName, shownNameField.value),
         'firstname': getValue(firstname, firstNameField.value),
         'lastname': getValue(lastname, lastNameField.value),
-        'phonenumber': getValue(telephoneNumber, telephoneNumberField.value),
-        'addr': getValue(address, addressField.value),
-        'description': getValue(description, descriptionField.value)
+        'phonenumber': telephoneNumberField.value,
+        'addr': addressField.value,
+        'description': descriptionField.value
     }
+    telephoneNumber = telephoneNumberField.value;
+    address = addressField.value;
+    description = descriptionField.value;
     httpExcGET('post', saveProfileUrl, data, successSaveProfile, errorSaveProfile, {
         'auth': Cookies.get('auth')
     })
@@ -322,7 +325,7 @@ function denyChangePassword(value) {
 }
 
 
-function openClose(){
+function openClose() {
     $('.ui.sidebar')
         .sidebar('toggle')
     ;
