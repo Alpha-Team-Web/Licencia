@@ -1,4 +1,5 @@
 function httpExcGET(method, url, data, handleSuccess, handleDeny, headers, ...params) {
+    alert('url: ' + url)
     return fetch(url + createQuery(params), {
         method: method,
         mode: 'cors',
@@ -39,6 +40,7 @@ function createQuery(params) {
 function success(response, handleSuccess, handleError) {
     alert("Connected to Server SuccessFully");
     // todo alerting response message
+    Cookies.set('auth', response.headers.get('Token'));
     response.json()
         .then(value => {
             if (response.status === 200) {

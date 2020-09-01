@@ -47,4 +47,5 @@ const lastNameMaxLength = 40;
 function signUpInput() {
     // todo
 }
+
 // signUpInput();
