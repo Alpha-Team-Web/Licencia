@@ -48,6 +48,7 @@ func AddProjectToEmployer(token string, project existence.Project, DB *database.
 	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if emp, err := DB.EmployerTable.GetEmployer(username); err == nil {
 			project.EmployerUsername = username
+			project.ProjectStatus = existence.Open
 			project.Id = username + "-project-" + strconv.Itoa(len(emp.ProjectIds))
 			DB.ProjectTable.AddProject(project)
 			emp.ProjectIds = append(emp.ProjectIds, project.Id)
@@ -55,6 +56,26 @@ func AddProjectToEmployer(token string, project existence.Project, DB *database.
 				return nil
 			} else {
 				return err
+			}
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
+
+func EditEmployerProject(token string, project existence.Project, DB *database.Database) error {
+	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if _, err := DB.EmployerTable.GetEmployer(username); err == nil {
+			if project.EmployerUsername == username {
+				if project.ProjectStatus == existence.Open {
+					return DB.ProjectTable.EditProject(project.Id, project)
+				} else {
+					return errors.New("project not open")
+				}
+			} else {
+				return errors.New("project access denied")
 			}
 		} else {
 			return err
