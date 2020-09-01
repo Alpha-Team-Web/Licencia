@@ -67,3 +67,7 @@ body {
     min-height: 40px;
     max-height: 40px;
 }
+
+#mySidebar {
+    float: right;
+}

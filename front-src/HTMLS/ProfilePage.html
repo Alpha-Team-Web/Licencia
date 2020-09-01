@@ -4,6 +4,8 @@
     <link rel="stylesheet" type="text/css" href="../CSS%20Designs/Header.css"/>
     <link rel="stylesheet" type="text/css" href="../CSS%20Designs/ProfilePage/CSS1.css"/>
     <link rel="stylesheet" type="text/css" href="../CSS%20Designs/basic.css"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 
     <meta charset="UTF-8">
     <title>*User*'s Page</title>
@@ -24,6 +26,12 @@
 
 </head>
 <body onload="loadProfileMenu()">
+<div class="w3-sidebar w3-bar-block w3-border-right rightAligned" id="mySidebar">
+    <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+    <a href="#" class="w3-bar-item w3-button">Link 1</a>
+    <a href="#" class="w3-bar-item w3-button">Link 2</a>
+    <a href="#" class="w3-bar-item w3-button">Link 3</a>
+</div>
 <div class="header" id="Header">
     <!--    badan-->
     <div class="ui button loginButton" onclick="logOut()">خروج</div>
@@ -41,8 +49,23 @@
             <a href="KireKhar" class="Header-UnOrderedList-Item">دنبال شونده ها</a>
         </li>
     </ul>
-    <a href="#badan" class="Header-Link"><img src="../Pics/Licencia-Logo.png" alt="Licencia" id="Logo"/></a>
+    <div>
+        <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+    </div>
+    <!--    <a href="#badan" class="Header-Link"><img src="../Pics/Licencia-Logo.png" alt="Licencia" id="Logo"/></a>-->
+
 </div>
+<script>
+    w3_open()
+
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+    }
+</script>
 <div class="content" id="ProfileContent">
     <div class="content flexColumn" id="MainProfileContent">
         <div class="content transition visible flexRow" id="profile">
@@ -105,7 +128,9 @@
                     </div>
                 </div>
 
-                <button class="positive ui button rightAligned" id="saveProfileButton" onclick="saveProfile()">ثبت پروفایل</button>
+                <button class="positive ui button rightAligned" id="saveProfileButton" onclick="saveProfile()">ثبت
+                    پروفایل
+                </button>
 
             </div>
 
@@ -122,7 +147,8 @@
             <div class="two fields">
                 <div class="field">
                     <label class="rightAligned">اکانت گیت هاب</label>
-                    <input id="githubAccountField" placeholder="Github-Account" type="text" onfocusout="accountGithubChanged()">
+                    <input id="githubAccountField" placeholder="Github-Account" type="text"
+                           onfocusout="accountGithubChanged()">
                 </div>
             </div>
 
@@ -164,7 +190,9 @@
                 </div>
             </div>
 
-            <button class="positive ui button rightAligned" id="saveLinksButton" onclick="submitGitPart()">ثبت پیوند ها</button>
+            <button class="positive ui button rightAligned" id="saveLinksButton" onclick="submitGitPart()">ثبت پیوند
+                ها
+            </button>
 
         </div>
     </div>
