@@ -40,7 +40,10 @@ function createQuery(params) {
 function success(response, handleSuccess, handleError) {
     alert("Connected to Server SuccessFully");
     // todo alerting response message
-    Cookies.set('auth', response.headers.get('Token'));
+    Cookies.remove('auth')
+    if (!(response.headers.get('Token') === null || response.headers.get('Token') === undefined)) {
+        Cookies.set('auth', response.headers.get('Token'));
+    }
     response.json()
         .then(value => {
             if (response.status === 200) {

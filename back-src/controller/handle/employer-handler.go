@@ -12,6 +12,9 @@ func (handler *Handler) EditEmployerProfile(ctx *gin.Context) (string, error) {
 		return "", err
 	} else {
 		emp := existence.Employer{}
+		emp.Username = "NNNNNN"
+		emp.Password = "NNNNNN"
+		emp.Email = "N@N.N"
 		if err := ctx.ShouldBindJSON(&emp); err != nil {
 			return newToken, err
 		}

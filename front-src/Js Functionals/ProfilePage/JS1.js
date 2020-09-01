@@ -65,12 +65,12 @@ function handleSuccessGetProfileInfo(value) {
     console.log(JSON.stringify(messages));
     username = messages.username;
     shownName = messages['shown-name'];
-    firstname = messages.firstname;
-    lastname = messages.lastname;
+    firstname = messages['first-name']
+    lastname = messages['last-name'];
     email = messages.email;
     description = messages.description;
-    telephoneNumber = messages.phonenumber;
-    address = messages.addr;
+    telephoneNumber = messages['phone-number'];
+    address = messages.address;
     projectsId = messages['project-ids'];
     fillCommonFields();
     if (isFreeLancer) {
@@ -235,13 +235,13 @@ function errorSaveProfile(value) {
 }
 
 function saveProfile() {
-    let getValue = (firstValue, secondValue) => secondValue == null ? firstValue : secondValue;
+    let getValue = (firstValue, secondValue) => (secondValue === null || secondValue === '') ? firstValue : secondValue;
     const data = {
         'shown-name': getValue(shownName, shownNameField.value),
         'first-name': getValue(firstname, firstNameField.value),
         'last-name': getValue(lastname, lastNameField.value),
         'phone-number': getValue(telephoneNumber, telephoneNumberField.value),
-        'addr': getValue(address, addressField.value),
+        'address': getValue(address, addressField.value),
         'description': getValue(description, descriptionField.value)
     }
     httpExcGET('post', isFreeLancer ? saveProfileUrlFreeLancer : saveProfileUrlEmployer,
@@ -306,20 +306,16 @@ function changePassword() {
         if (newPasswordField.value !== repeatNewPasswordField.value) {
             alert("passwords doesn't match")
         } else {
-            if (oldPasswordField.value !== password) {
-                alert("old password is incorrect")
-            } else {
-                let data = {
-                    'new-password': siteAddressField.value,
-                }
-                let headers = {
-                    'Content-Type': 'application/json',
-                    'token': Cookies.get('auth')
-                }
-                password = newPasswordField.value;
-                httpExcGET('POST', isFreeLancer ? changePasswordUrlFreeLancer : changePasswordUrlEmployer,
-                    data, successChangePassword, denyChangePassword, headers)
+            let data = {
+                'old-pass': oldPasswordField.value,
+                'new-pass': newPasswordField.value,
             }
+            let headers = {
+                'Content-Type': 'application/json',
+                'token': Cookies.get('auth')
+            }
+            httpExcGET('POST', isFreeLancer ? changePasswordUrlFreeLancer : changePasswordUrlEmployer,
+                data, successChangePassword, denyChangePassword, headers)
         }
     }
 }

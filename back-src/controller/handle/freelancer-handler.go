@@ -13,6 +13,9 @@ func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) 
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
+		frl.Username = "NNNNNN"
+		frl.Password = "NNNNNN"
+		frl.Email = "N@N.N"
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
 			return newToken, err
 		}
@@ -39,6 +42,9 @@ func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) (string, error) {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
+		frl.Username = "NNNNNN"
+		frl.Password = "NNNNNN"
+		frl.Email = "N@N.N"
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
 			return newToken, err
 		}

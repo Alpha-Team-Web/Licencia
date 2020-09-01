@@ -20,8 +20,8 @@ function signUp() {
         }
         const data = {
             username: signUpUsername.value,
-            firstname: signUpFirstName.value,
-            lastname: signUpLastName.value,
+            'first-name': signUpFirstName.value,
+            'last-name': signUpLastName.value,
             email: signUpEmail.value,
             password: signUpPassword.value
         }
