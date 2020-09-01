@@ -9,7 +9,7 @@ import (
 
 func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
@@ -22,7 +22,7 @@ func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) 
 
 func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := data.ChangePassRequest{}
@@ -35,7 +35,7 @@ func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) (string, error)
 
 func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
@@ -53,5 +53,20 @@ func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) (existence.Freela
 	} else {
 		frl, err := users.GetFreelancer(newToken, DB)
 		return frl, newToken, err
+	}
+}
+
+func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) (string, error) {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+		return "", err
+	} else {
+		request := data.FreelancerRequestForProject{}
+		if err := ctx.ShouldBindJSON(&request); err != nil {
+			return newToken, err
+		} else {
+			err := users.FreelancerRequestsForProject(newToken, request, DB)
+			return newToken, err
+		}
 	}
 }

@@ -34,9 +34,15 @@ type Employer struct {
 }
 
 const (
-	FreelancerGold   = "Gold"
-	FreelancerSilver = "Silver"
-	FreelancerBronze = "Bronze"
+	FreelancerGold   = "gold"
+	FreelancerSilver = "silver"
+	FreelancerBronze = "bronze"
+)
+
+const (
+	GoldRequestSize   = 15
+	SilverRequestSize = 8
+	BronzeRequestSize = 3
 )
 
 type Freelancer struct {
@@ -46,7 +52,7 @@ type Freelancer struct {
 	image
 	ProjectIds            []string            `json:"project-ids"`
 	RequestedProjectIds   []string            `json:"requested-project-ids"`
-	AccountType           string              `json:"account-type"`
+	AccountType           string              `json:"account-type" sql:",notnull"`
 	Website               string              `json:"website"`
 	GithubAccount         string              `json:"github-account"`
 	GithubRepos           []string            `json:"github-repos"`

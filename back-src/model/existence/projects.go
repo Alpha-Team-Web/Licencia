@@ -60,7 +60,7 @@ type Project struct {
 	MinBudget        float64             `json:"min-budget"`
 	MaxBudget        float64             `json:"max-budget"`
 	FieldsWithSkills map[string][]string `json:"fields-with-skills"`
-	ProjectStatus    string              `json:"stat"`
+	ProjectStatus    string              `json:"project-status"`
 
 	//user
 	EmployerUsername                  string            `json:"employer"`
