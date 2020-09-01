@@ -30,4 +30,9 @@ func (router *router) addEmployerEndpoints() {
 		users.RespondEmployerGetProfile(context, token, emp, err)
 	})
 
+	router.addHandlerToPath("/edit", "employer-projects", Post, func(context *gin.Context) {
+		token, err := router.handler.EditEmployerProject(context)
+		users.RespondEmployerEditProject(context, token, err)
+	})
+
 }
