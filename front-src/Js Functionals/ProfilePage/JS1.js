@@ -1,5 +1,3 @@
-const isFreeLancer = Cookies.get('isfreelancer')
-
 const usernameField = document.getElementById("usernameField");
 const shownNameField = document.getElementById('showingNameField')
 const firstNameField = document.getElementById("firstNameField");
@@ -7,6 +5,8 @@ const lastNameField = document.getElementById("lastNameField");
 const emailField = document.getElementById("emailField");
 const siteAddressField = document.getElementById("siteAddressField");
 const telephoneNumberField = document.getElementById("telephoneNumberField");
+const passwordField = document.getElementById("passwordField");
+const repeatPasswordField = document.getElementById("repeatPasswordField");
 const gitHubAccountField = document.getElementById("githubAccountField");
 const descriptionField = document.getElementById("descriptionField");
 const addressField = document.getElementById("addressField");
@@ -42,8 +42,8 @@ function initGithubRepos() {
 
 function loadProfileMenu() {
     // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
-    alert('Cookies: "' + isFreeLancer + "'")
-    if (!isFreeLancer) {
+    alert('Cookies: "' + Cookies.get('isfreelancer') + "'")
+    if (!Cookies.get('isfreelancer')) {
         httpGet(urlGetEmployerProfileInfo, {
             'Content-Type': 'application/json',
             'Token': Cookies.get('auth')
@@ -64,16 +64,17 @@ function handleSuccessGetProfileInfo(value) {
     let messages = value;
     console.log(JSON.stringify(messages));
     username = messages.username;
-    shownName = messages['shown-name'];
-    firstname = messages['first-name']
-    lastname = messages['last-name'];
+    shownName = messages['shown-name']
+    firstname = messages.firstname;
+    lastname = messages.lastname;
     email = messages.email;
     description = messages.description;
-    telephoneNumber = messages['phone-number'];
-    address = messages.address;
+    telephoneNumber = messages.phonenumber;
+    address = messages.addr;
+    password = messages.password;
     projectsId = messages['project-ids'];
     fillCommonFields();
-    if (isFreeLancer) {
+    if (Cookies.get('isfreelancer')) {
         gitHubAccount = messages.github;
         gitHubRepo = messages['github-repos'];
         siteAddress = messages.website;
@@ -89,13 +90,13 @@ function fillFreelancerSpecialFields() {
 
 function fillCommonFields() {
     usernameField.value = username;
-    shownNameField.value = shownName;
     firstNameField.value = firstname;
     lastNameField.value = lastname;
     emailField.value = email;
     telephoneNumberField.value = telephoneNumber;
     addressField.value = address;
     descriptionField.value = description;
+    passwordField.value = password;
 }
 
 function handleDenyGetProfileInfo(value) {
@@ -226,65 +227,57 @@ function modal(modalId, command) {
 
 function successSaveProfile(value) {
     alert('Profile Saved Successfully')
-    location.reload();
 }
 
 function errorSaveProfile(value) {
     //Error Handling
-    alert('value: ' + value.message)
 }
 
 function saveProfile() {
-    let getValue = (firstValue, secondValue) => (secondValue === null || secondValue === '') ? firstValue : secondValue;
+    let getValue = (firstValue, secondValue) => secondValue == null ? firstValue : secondValue;
     const data = {
         'shown-name': getValue(shownName, shownNameField.value),
-        'first-name': getValue(firstname, firstNameField.value),
-        'last-name': getValue(lastname, lastNameField.value),
-        'phone-number': getValue(telephoneNumber, telephoneNumberField.value),
-        'address': getValue(address, addressField.value),
-        'description': getValue(description, descriptionField.value)
+        'firstname': getValue(firstname, firstNameField.value),
+        'lastname': getValue(lastname, lastNameField.value),
+        'phonenumber': telephoneNumberField.value,
+        'addr': addressField.value,
+        'description': descriptionField.value
     }
-    httpExcGET('post', isFreeLancer ? saveProfileUrlFreeLancer : saveProfileUrlEmployer,
-        data, successSaveProfile, errorSaveProfile, {
-        'Token': Cookies.get('auth'),
-            'Content-Type': 'application/json',
+    telephoneNumber = telephoneNumberField.value;
+    address = addressField.value;
+    description = descriptionField.value;
+    httpExcGET('post', saveProfileUrl, data, successSaveProfile, errorSaveProfile, {
+        'auth': Cookies.get('auth')
     })
 }
 
 function submitGitPart() {
-    if (isFreeLancer) {
-        let gitLinks = [];
-        let size = 0;
-        if (firstRepoDiv.style.display !== "none") {
-            gitLinks[size] = $('#linkRepo1').text();
-            size += 1;
-        }
-        if (secondRepoDiv.style.display !== "none") {
-            gitLinks[size] = $('#linkRepo2').text();
-            size += 1;
-        }
-        if (thirdRepoDiv.style.display !== "none") {
-            gitLinks[size] = $('#linkRepo3').text();
-            size += 1;
-        }
-        let data = {
-            'website': siteAddressField.value,
-            'github-repos': gitLinks,
-            'github': githubAccountField.value
-        }
-        siteAddress = siteAddressField.value;
-        gitHubAccount = githubAccountField.value;
-        let headers = {
-            'Content-Type': 'application/json',
-            'Token': Cookies.get('auth')
-        }
-        httpExcGET('POST', saveGithubUrlFreeLancer,
-            data, successGithubPartSubmit, denyGithubPartSubmit, headers);
-    } else {
-        alert("Ridiiiii")
-        alert("Employer In Links Menu")
-        alert('Is FreeLancer: ' + isFreeLancer)
+    let gitLinks = [];
+    let size = 0;
+    if (firstRepoDiv.style.display !== "none") {
+        gitLinks[size] = $('#linkRepo1').text();
+        size += 1;
     }
+    if (secondRepoDiv.style.display !== "none") {
+        gitLinks[size] = $('#linkRepo2').text();
+        size += 1;
+    }
+    if (thirdRepoDiv.style.display !== "none") {
+        gitLinks[size] = $('#linkRepo3').text();
+        size += 1;
+    }
+    let data = {
+        'website': siteAddressField.value,
+        'github-repos': gitLinks,
+        'github': githubAccountField.value
+    }
+    siteAddress = siteAddressField.value;
+    gitHubAccount = githubAccountField.value;
+    let headers = {
+        'Content-Type': 'application/json',
+        'token': Cookies.get('auth')
+    }
+    httpExcGET('POST', saveGithubUrl, data, successGithubPartSubmit, denyGithubPartSubmit, headers);
 }
 
 function successGithubPartSubmit(value) {
@@ -306,16 +299,19 @@ function changePassword() {
         if (newPasswordField.value !== repeatNewPasswordField.value) {
             alert("passwords doesn't match")
         } else {
-            let data = {
-                'old-pass': oldPasswordField.value,
-                'new-pass': newPasswordField.value,
+            if (oldPasswordField.value !== password) {
+                alert("old password is incorrect")
+            } else {
+                let data = {
+                    'new-password': siteAddressField.value,
+                }
+                let headers = {
+                    'Content-Type': 'application/json',
+                    'token': Cookies.get('auth')
+                }
+                password = newPasswordField.value;
+                httpExcGET('POST', changePasswordUrl, data, successChangePassword, denyChangePassword, headers)
             }
-            let headers = {
-                'Content-Type': 'application/json',
-                'token': Cookies.get('auth')
-            }
-            httpExcGET('POST', isFreeLancer ? changePasswordUrlFreeLancer : changePasswordUrlEmployer,
-                data, successChangePassword, denyChangePassword, headers)
         }
     }
 }
@@ -329,8 +325,8 @@ function denyChangePassword(value) {
 }
 
 
-function openClose(sideBarID){
-    $('#' + sideBarID)
+function openClose() {
+    $('.ui.sidebar')
         .sidebar('toggle')
     ;
 }
