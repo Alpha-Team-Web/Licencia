@@ -325,3 +325,10 @@ function successChangePassword(value) {
 function denyChangePassword(value) {
     alert("password doesn't change" + "  value : " + JSON.stringify(value))
 }
+
+
+function openClose(){
+    $('.ui.sidebar')
+        .sidebar('toggle')
+    ;
+}
