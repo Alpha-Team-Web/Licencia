@@ -252,33 +252,39 @@ function saveProfile() {
 }
 
 function submitGitPart() {
-    let gitLinks = [];
-    let size = 0;
-    if (firstRepoDiv.style.display !== "none") {
-        gitLinks[size] = $('#linkRepo1').text();
-        size += 1;
+    if (isFreeLancer) {
+        let gitLinks = [];
+        let size = 0;
+        if (firstRepoDiv.style.display !== "none") {
+            gitLinks[size] = $('#linkRepo1').text();
+            size += 1;
+        }
+        if (secondRepoDiv.style.display !== "none") {
+            gitLinks[size] = $('#linkRepo2').text();
+            size += 1;
+        }
+        if (thirdRepoDiv.style.display !== "none") {
+            gitLinks[size] = $('#linkRepo3').text();
+            size += 1;
+        }
+        let data = {
+            'website': siteAddressField.value,
+            'github-repos': gitLinks,
+            'github': githubAccountField.value
+        }
+        siteAddress = siteAddressField.value;
+        gitHubAccount = githubAccountField.value;
+        let headers = {
+            'Content-Type': 'application/json',
+            'Token': Cookies.get('auth')
+        }
+        httpExcGET('POST', saveGithubUrlFreeLancer,
+            data, successGithubPartSubmit, denyGithubPartSubmit, headers);
+    } else {
+        alert("Ridiiiii")
+        alert("Employer In Links Menu")
+        alert('Is FreeLancer: ' + isFreeLancer)
     }
-    if (secondRepoDiv.style.display !== "none") {
-        gitLinks[size] = $('#linkRepo2').text();
-        size += 1;
-    }
-    if (thirdRepoDiv.style.display !== "none") {
-        gitLinks[size] = $('#linkRepo3').text();
-        size += 1;
-    }
-    let data = {
-        'website': siteAddressField.value,
-        'github-repos': gitLinks,
-        'github': githubAccountField.value
-    }
-    siteAddress = siteAddressField.value;
-    gitHubAccount = githubAccountField.value;
-    let headers = {
-        'Content-Type': 'application/json',
-        'Token': Cookies.get('auth')
-    }
-    httpExcGET('POST', isFreeLancer ? saveGithubUrlFreeLancer : saveGithubUrlEmployer,
-        data, successGithubPartSubmit, denyGithubPartSubmit, headers);
 }
 
 function successGithubPartSubmit(value) {
@@ -327,8 +333,8 @@ function denyChangePassword(value) {
 }
 
 
-function openClose(){
-    $('.ui.sidebar')
+function openClose(sideBarID){
+    $('#' + sideBarID)
         .sidebar('toggle')
     ;
 }

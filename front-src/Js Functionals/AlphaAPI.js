@@ -1,4 +1,5 @@
 function httpExcGET(method, url, data, handleSuccess, handleDeny, headers, ...params) {
+    alert('url: ' + url)
     return fetch(url + createQuery(params), {
         method: method,
         mode: 'cors',
