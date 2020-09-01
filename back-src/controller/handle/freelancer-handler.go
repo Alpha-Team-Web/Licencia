@@ -8,46 +8,65 @@ import (
 )
 
 func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
 			return newToken, err
 		}
-		return newToken, users.EditFreelancerProfile(newToken, frl, DB)
+		return newToken, users.EditFreelancerProfile(token, frl, DB)
 	}
 }
 
 func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := data.ChangePassRequest{}
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
 			return newToken, err
 		}
-		return newToken, users.EditFreelancerPassword(newToken, frl, DB)
+		return newToken, users.EditFreelancerPassword(token, frl, DB)
 	}
 }
 
 func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
 			return newToken, err
 		}
-		return newToken, users.EditFreelancerLinks(newToken, frl, DB)
+		return newToken, users.EditFreelancerLinks(token, frl, DB)
 	}
 }
 
 func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) (existence.Freelancer, string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
 		return existence.Freelancer{}, "", err
 	} else {
 		frl, err := users.GetFreelancer(newToken, DB)
 		return frl, newToken, err
+	}
+}
+
+func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) (string, error) {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+		return "", err
+	} else {
+		request := data.FreelancerRequestForProject{}
+		if err := ctx.ShouldBindJSON(&request); err != nil {
+			return newToken, err
+		} else {
+			err := users.FreelancerRequestsForProject(newToken, request, DB)
+			return newToken, err
+		}
 	}
 }

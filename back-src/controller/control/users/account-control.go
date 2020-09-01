@@ -27,6 +27,7 @@ func RegisterFreelancer(frl existence.Freelancer, Db *database.Database) error {
 	if !Db.FreelancerTable.DoesFreelancerExistWithUsername(frl.Username) {
 		if !Db.FreelancerTable.DoesFreelancerExistWithEmail(frl.Email) {
 			frl.ShownName = frl.Username
+			frl.AccountType = existence.FreelancerBronze
 			return Db.FreelancerTable.InsertFreelancer(frl)
 		}
 		return errors.New("duplicate email: " + frl.Email)
