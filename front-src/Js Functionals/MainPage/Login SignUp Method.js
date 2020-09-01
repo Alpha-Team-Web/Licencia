@@ -71,19 +71,12 @@ function login() {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        // document.cookie = "username=John Doe; expires=Thu, 18 Dec 2022 12:00:00 UTC";
-        Cookies.set("Fuck", "Fuck"/*, {
-            domain: "192.168.0.1"
-        }*/)
-        alert(Cookies.get("Fuck"))
-        alert('fuck')
-        // Cookies.set("isfreelancer", "true");
-        /*const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
+        const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
             'Content-Type': 'application/json'
         }, {
             key: 'account-type',
             value: loginKind.value
-        });*/
+        });
     }
 }
 
@@ -91,8 +84,8 @@ function handleSuccessLogin(value) {
 // todo go to Profile Menu And Save Auth
     value = parseValue(value)
     alert("Login Successful")
-    // Cookies.set("isfreelancer", "true");
-    // setTimeout(() => window.location.href = profilePageName, 100000000000000)
+    Cookies.set("isfreelancer", loginKind.value === "freelancer");
+    window.location.href = profilePageName
 }
 
 function handleErrorLogin(value) {

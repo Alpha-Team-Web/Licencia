@@ -39,8 +39,7 @@ function createQuery(params) {
 function success(response, handleSuccess, handleError) {
     alert("Connected to Server SuccessFully");
     // todo alerting response message
-    alert("headers: '" + response.headers.get('Token') + "'")
-    Cookies.set('auth', response.headers.get('Token'))
+    Cookies.set('auth', response.headers.get('Token'));
     response.json()
         .then(value => {
             if (response.status === 200) {

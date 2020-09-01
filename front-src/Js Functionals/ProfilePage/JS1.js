@@ -61,8 +61,8 @@ function loadProfileMenu() {
 }
 
 function handleSuccessGetProfileInfo(value) {
-    console.log("message : " + value.message);
-    let messages = JSON.parse(value.message);
+    let messages = value;
+    console.log(JSON.stringify(messages));
     username = messages.username;
     shownName = messages['shown-name']
     firstname = messages.firstname;
@@ -73,16 +73,14 @@ function handleSuccessGetProfileInfo(value) {
     address = messages.addr;
     password = messages.password;
     projectsId = messages['project-ids'];
+    fillCommonFields();
     if (Cookies.get('isfreelancer')) {
         gitHubAccount = messages.github;
         gitHubRepo = messages['github-repos'];
         siteAddress = messages.website;
         requestedProjectsId = messages['req-project-ids'];
         fillFreelancerSpecialFields();
-    } else {
-        fillCommonFields();
     }
-
 }
 
 function fillFreelancerSpecialFields() {
