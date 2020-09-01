@@ -55,3 +55,23 @@ func (table *ProjectTable) GetOpenProjects() ([]existence.Project, error) {
 	}
 	return *projects, nil
 }
+
+func (table *ProjectTable) AddFreelancerToProject(username string, projectId string) error {
+	project := existence.Project{FreelancerUsername: username}
+	if _, err := table.Model(&project).Column("freelancer_username").Where("id = ?", projectId).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (table *ProjectTable) SetProjectStatus(id string, status string) error {
+	project, err := table.GetProject(id)
+	if err != nil {
+		return err
+	}
+	project.ProjectStatus = status
+	if _, err := table.Model(&project).Column("project_status").Where("id = ?", id).Update(); err != nil {
+		return err
+	}
+	return nil
+}

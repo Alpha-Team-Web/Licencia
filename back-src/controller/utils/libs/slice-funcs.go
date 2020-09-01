@@ -21,3 +21,7 @@ func AreStringSetsEqual(set1 []string, set2 []string) (boolean bool) {
 	}
 	return
 }
+
+func RemoveStringElement(slice []string, index int) []string {
+	return append(slice[index:], slice[index+1:]...)
+}

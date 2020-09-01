@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"back-src/controller/utils/libs"
 	"back-src/model/existence"
 	"errors"
 	"github.com/go-pg/pg"
@@ -91,4 +92,44 @@ func (table *FreelancerTable) GetFreelancer(username string) (existence.Freelanc
 	frl := new(existence.Freelancer)
 	err := table.Model(frl).Where("username = ?", username).Select()
 	return *frl, err
+}
+
+func (table *FreelancerTable) DeleteFreelancerRequestedProject(username string, projectId string) error {
+	frl, err := table.GetFreelancer(username)
+	if err != nil {
+		return err
+	}
+	var index int
+	for i, id := range frl.RequestedProjectIds {
+		if id == projectId {
+			index = i
+			break
+		}
+	}
+	frl.RequestedProjectIds = libs.RemoveStringElement(frl.RequestedProjectIds, index)
+	if _, err = table.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (table *FreelancerTable) AddFreelancerProjectId(username string, projectId string) error {
+	frl, err := table.GetFreelancer(username)
+	if err != nil {
+		return err
+	}
+	found := false
+	for _, id := range frl.ProjectIds {
+		if id == projectId {
+			found = true
+		}
+	}
+	if found {
+		return nil
+	}
+	frl.ProjectIds = append(frl.ProjectIds, projectId)
+	if _, err = table.Model(&frl).Column("project_ids").Where("username = ?", username).Update(); err != nil {
+		return err
+	}
+	return nil
 }
