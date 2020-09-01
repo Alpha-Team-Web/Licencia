@@ -16,9 +16,14 @@ const signupButton = document.getElementById("SignUpMenuButton")
 const signupMenu = document.getElementById("SignUp-Menu")
 const LoginMenu = document.getElementById("Login-Menu")
 
+function emptyLoginFields() {
+
+}
+
 function loginMenu() {
     if (onLoginPage) return;
     onLoginPage = true;
+    emptyLoginFields();
     change(greenColor, whiteColor, "none", "block");
 }
 
@@ -26,6 +31,7 @@ function signUpMenu() {
     if (!onLoginPage) {
         return
     }
+    emptySignUpFields();
     onLoginPage = false;
     change(whiteColor, greenColor, "block", "none");
 }
