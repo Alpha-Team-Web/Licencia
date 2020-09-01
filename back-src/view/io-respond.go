@@ -10,7 +10,7 @@ import (
 func RespondRegister(context *gin.Context, err error) {
 
 	if err == nil {
-		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+		context.JSON(http.StatusOK, responses.SuccessMessage)
 	} else {
 		var status int
 		switch {
@@ -28,7 +28,7 @@ func RespondRegister(context *gin.Context, err error) {
 func RespondLogin(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
-		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+		context.JSON(http.StatusOK, responses.SuccessMessage)
 	} else {
 		context.Header("Token", "N/A")
 		var status int

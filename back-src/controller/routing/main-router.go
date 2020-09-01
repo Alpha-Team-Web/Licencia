@@ -1,9 +1,7 @@
 package routing
 
 import (
-	"back-src/controller/control"
-	"back-src/view"
-	"back-src/view/users"
+	"back-src/controller/handle"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,38 +10,21 @@ type Listener interface {
 }
 
 type router struct {
-	port       string
-	server     *gin.Engine
-	controller *control.Control
+	port           string
+	server         *gin.Engine
+	handler        *handle.Handler
+	endpointGroups []*endpointGroup
 }
 
 func NewRouter(port string) Listener {
-
-	var listener Listener = &router{port, gin.Default(), control.NewControl()}
+	var listener Listener = &router{port, gin.Default(), handle.NewControl(), []*endpointGroup{}}
 	return listener
 }
 
 func (router *router) Listen() error {
-	router.server.POST("/register", func(context *gin.Context) {
-		view.RespondRegister(context, router.controller.Register(context))
-	})
-
-	router.server.POST("/login", func(context *gin.Context) {
-		token, err := router.controller.Login(context)
-		if err == nil {
-			router.controller.AddNewClock(token)
-		}
-		view.RespondLogin(context, token, err)
-	})
-
-	router.server.POST("/employer/edit-profile", func(context *gin.Context) {
-		users.RespondEmployerEditProfile(context, router.controller.EditEmployerProfile(context))
-	})
-
-	router.server.POST("/employer/get-profile", func(context *gin.Context) {
-		emp, err := router.controller.GetEmployerProfile(context)
-		users.RespondEmployerGetProfile(context, emp, err)
-	})
+	router.addIOEndpoints()
+	router.addEmployerEndpoints()
+	router.addFreelancerEndpoints()
 
 	router.server.Run(":" + router.port)
 	return nil

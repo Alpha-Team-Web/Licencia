@@ -1,6 +1,7 @@
 package database
 
 import (
+	"back-src/model/database/tables"
 	"back-src/model/existence"
 	"encoding/json"
 	"io/ioutil"
@@ -22,8 +23,14 @@ type Initializable interface {
 }
 
 type Database struct {
-	db   *pg.DB
-	meta *Metadata
+	db              *pg.DB
+	meta            *Metadata
+	AuthTokenTable  *tables.AuthTokenTable
+	EmployerTable   *tables.EmployerTable
+	FieldTable      *tables.FieldTable
+	FreelancerTable *tables.FreelancerTable
+	ProjectTable    *tables.ProjectTable
+	ReviewTable     *tables.ReviewTable
 }
 
 func NewDb() *Database {
@@ -41,7 +48,16 @@ func NewDb() *Database {
 	meta := &Metadata{}
 	err = json.Unmarshal(bytes, &meta)
 
-	return &Database{db, meta}
+	return &Database{
+		db:              db,
+		meta:            meta,
+		AuthTokenTable:  &tables.AuthTokenTable{db},
+		EmployerTable:   &tables.EmployerTable{db},
+		FieldTable:      &tables.FieldTable{db},
+		FreelancerTable: &tables.FreelancerTable{db},
+		ProjectTable:    &tables.ProjectTable{db},
+		ReviewTable:     &tables.ReviewTable{db},
+	}
 }
 
 func (db *Database) Initialize() error {
@@ -66,6 +82,9 @@ func (db *Database) Initialize() error {
 	}
 	if err := db.initSessionTable(); err != nil {
 		panic(err)
+	}
+	if err := db.initReviewTables(); err != nil {
+		return err
 	}
 
 	return nil
@@ -145,4 +164,14 @@ func (db *Database) initFreelancerTable() error {
 
 func (db *Database) initSessionTable() error {
 	return db.db.CreateTable(&existence.AuthToken{}, options)
+}
+
+func (db *Database) initReviewTables() error {
+	if err := db.db.CreateTable(&existence.FreelancerEmployerReview{}, options); err != nil {
+		return err
+	}
+	if err := db.db.CreateTable(&existence.EmployerFreelancerReview{}, options); err != nil {
+		return err
+	}
+	return nil
 }

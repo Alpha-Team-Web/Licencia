@@ -1,16 +1,16 @@
-package control
+package handle
 
 import (
-	"back-src/controller/control/utils/data"
-	"back-src/controller/control/utils/libs"
-	"back-src/controller/control/utils/users"
+	"back-src/controller/control/users"
+	"back-src/controller/utils/data"
+	"back-src/controller/utils/libs"
 	"back-src/model/existence"
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
-func (controller *Control) Register(ctx *gin.Context) error {
+func (handler *Handler) Register(ctx *gin.Context) error {
 
 	switch accountType := ctx.Query("account-type"); accountType {
 
@@ -34,7 +34,7 @@ func (controller *Control) Register(ctx *gin.Context) error {
 
 }
 
-func (controller *Control) Login(ctx *gin.Context) (token string, error error) {
+func (handler *Handler) Login(ctx *gin.Context) (token string, error error) {
 	loginReq := data.LoginRequest{}
 	if err := ctx.ShouldBindJSON(&loginReq); err != nil {
 		error = err
@@ -45,7 +45,6 @@ func (controller *Control) Login(ctx *gin.Context) (token string, error error) {
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
 		token, error = users.Login(loginReq, getUsernameGetter(loginReq.Id, loginReq.IsFreelancer), getPasswordGetter(loginReq.IsFreelancer), DB)
 	default:
-		fmt.Println("Here: " + accountType)
 		error = errors.New("invalid query: " + accountType)
 	}
 	return
@@ -53,9 +52,9 @@ func (controller *Control) Login(ctx *gin.Context) (token string, error error) {
 
 func getUsernameGetter(Id string, isFreelancer bool) func() (username string, error error) {
 	if isFreelancer {
-		return getUsernameById(Id, DB.DoesFreelancerExistWithEmail, DB.DoesFreelancerExistWithUsername, DB.GetFreelancerUsernameByEmail)
+		return getUsernameById(Id, DB.FreelancerTable.DoesFreelancerExistWithEmail, DB.FreelancerTable.DoesFreelancerExistWithUsername, DB.FreelancerTable.GetFreelancerUsernameByEmail)
 	} else {
-		return getUsernameById(Id, DB.DoesEmployerExistWithEmail, DB.DoesEmployerExistWithUsername, DB.GetEmployerUsernameByEmail)
+		return getUsernameById(Id, DB.EmployerTable.DoesEmployerExistWithEmail, DB.EmployerTable.DoesEmployerExistWithUsername, DB.EmployerTable.GetEmployerUsernameByEmail)
 	}
 }
 
@@ -89,8 +88,55 @@ func getUsernameById(Id string, doesUserExistWithEmail doesExist, doesUserExistW
 
 func getPasswordGetter(isFreelancer bool) func(string) (string, error) {
 	if isFreelancer {
-		return DB.GetFreelancerPasswordByUsername
+		return DB.FreelancerTable.GetFreelancerPasswordByUsername
 	} else {
-		return DB.GetEmployerPasswordByUsername
+		return DB.EmployerTable.GetEmployerPasswordByUsername
+	}
+}
+
+func CheckToken(token, userType string) (string, error) {
+	if isThereAuth, err := DB.AuthTokenTable.IsThereAuthWithToken(token); err != nil {
+		return "", err
+	} else if isThereAuth {
+		if auth, err := DB.AuthTokenTable.GetAuthByToken(token); err != nil {
+			return "", err
+		} else {
+			if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
+				if newToken, err := reInitToken(auth); err != nil {
+					return "", err
+				} else {
+					return newToken, nil
+				}
+			} else {
+				return "", errors.New("wrong user type token: " + token)
+			}
+		}
+	} else {
+		return "", errors.New("not authorized token: " + token)
+	}
+
+}
+
+func reInitToken(auth existence.AuthToken) (string, error) {
+	currentTime := time.Now()
+	if currentTime.Sub(auth.InitialTime) > AuthExpiryDur {
+		if err := DB.AuthTokenTable.ChangeAuthUsage(auth.Token, false); err != nil {
+			return "", err
+		} else {
+			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, DB)
+			if err != nil {
+				return "", err
+			}
+			if err := DB.AuthTokenTable.ChangeAuthUsage(newToken, true); err != nil {
+				return "", err
+			}
+			return newToken, nil
+		}
+	} else {
+		if err := DB.AuthTokenTable.ChangeAuthUsage(auth.Token, true); err != nil {
+			return "", err
+		} else {
+			return auth.Token, nil
+		}
 	}
 }

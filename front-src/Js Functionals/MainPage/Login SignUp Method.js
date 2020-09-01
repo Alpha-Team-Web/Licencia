@@ -71,33 +71,33 @@ function login() {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
-        const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
+        // document.cookie = "username=John Doe; expires=Thu, 18 Dec 2022 12:00:00 UTC";
+        Cookies.set("Fuck", "Fuck"/*, {
+            domain: "192.168.0.1"
+        }*/)
+        alert(Cookies.get("Fuck"))
+        alert('fuck')
+        // Cookies.set("isfreelancer", "true");
+        /*const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
             'Content-Type': 'application/json'
         }, {
             key: 'account-type',
             value: loginKind.value
-        });
+        });*/
     }
 }
 
 function handleSuccessLogin(value) {
 // todo go to Profile Menu And Save Auth
-    let splitter = value.message.indexOf(':');
-    let messageError = value.message.substring(0, splitter);
-    let messageField = value.message.substring(splitter + 1);
+    value = parseValue(value)
     alert("Login Successful")
-    alert("Server Message: " + value.message)
-    alert("Auth: " + value.messageField)
-    Cookies.set('auth', value.messageField)
-    Cookies.set('isfreelancer', loginKind.value === 'freelancer')
-    window.location.href = profilePageName;
+    // Cookies.set("isfreelancer", "true");
+    // setTimeout(() => window.location.href = profilePageName, 100000000000000)
 }
 
 function handleErrorLogin(value) {
     // todo error the fields
-    let splitter = value.message.indexOf(':');
-    let messageError = value.message.substring(0, splitter);
-    let messageField = value.message.substring(splitter + 1);
+    value = parseValue(value)
     alert("Login Failed")
     alert('Server Message: ' + value.message)
     switch (value.messageError) {

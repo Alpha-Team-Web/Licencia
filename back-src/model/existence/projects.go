@@ -8,6 +8,42 @@ type File struct {
 	Url       string
 }
 
+/*--------------------------------------Review--------------------------------------*/
+
+type booleanReviewFreelancer struct {
+	DeliveredCompletely         bool `json:"delivered-completely"`
+	DeliveredInTime             bool `json:"delivered-in-time"`
+	UsedThePromisedTechnologies bool `json:"used-the-promised-technologies"`
+	InformedProperly            bool `json:"informed-properly"`
+}
+
+type booleanReviewEmployer struct {
+	PayProperly          bool `json:"pay-properly"`
+	GotProjectBackInTime bool `json:"got-project-back-in-time"`
+	QuestionedProperly   bool `json:"questioned-properly"`
+	HelpedProperly       bool `json:"helped-properly"`
+}
+
+type EmployerFreelancerReview struct {
+	ProjectID string `json:"project-id" sql:",pk"`
+
+	EmployerToFreeLancerScore   int    `json:"emp-to-fr-score" binding:"lte=1,gte=5"`
+	EmployerToFreelancerComment string `json:"emp-to-fr-comment"  binding:"min=0,max=500"`
+	WasFreelancerCommitted      bool   `json:"was-freelancer-committed"`
+	booleanReviewFreelancer
+}
+
+type FreelancerEmployerReview struct {
+	ProjectID string `json:"project-id" sql:",pk"`
+
+	FreelancerToEmployerScore   int    `json:"fr-to-emp-score" binding:"lte=1,gte=5"`
+	FreelancerToEmployerComment string `json:"fr-to-emp-comment"  binding:"min=0,max=500"`
+	WasEmployerCommitted        bool   `json:"was-freelancer-committed"`
+	booleanReviewEmployer
+}
+
+/*--------------------------------------Project--------------------------------------*/
+
 //Project Stats
 const (
 	Open    = "Open"
@@ -35,13 +71,9 @@ type Project struct {
 	Duration   time.Duration `json:"dur"`
 	StartDate  time.Time     `json:"start"`
 	FinishDate time.Time     `json:"finish"`
-
-	//review
-	FreelancerToEmployerScore   int    `json:"fr-to-emp-score"`
-	FreelancerToEmployerComment string `json:"fr-to-emp-comment"  binding:"min=0,max=500"`
-	EmployerToFreeLancerScore   int    `json:"emp-to-fr-score"`
-	EmployerToFreelancerComment string `json:"emp-to-fr-comment"  binding:"min=0,max=500"`
 }
+
+/*--------------------------------------Sample--------------------------------------*/
 
 type OuterSample struct {
 	Id               string              `json:"id"`
