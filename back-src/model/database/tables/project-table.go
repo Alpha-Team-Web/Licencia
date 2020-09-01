@@ -111,3 +111,11 @@ func (table *ProjectTable) SetProjectStatus(id string, status string) error {
 	}
 	return nil
 }
+
+func (table *ProjectTable) DeleteProjectDescriptions(id string) error {
+	project := existence.Project{FreelancerRequestsWithDescription: map[string]string{}}
+	if _, err := table.Model(&project).Column("freelancer_requests_with_description").Where("id = ?", id).Update(); err != nil {
+		return err
+	}
+	return nil
+}

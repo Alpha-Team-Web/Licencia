@@ -104,3 +104,30 @@ func EditEmployerProject(token string, project existence.Project, DB *database.D
 		return err
 	}
 }
+
+func AssignProjectToFreelancer(token string, freelancer string, projectId string, DB *database.Database) error {
+	if _, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if requests, err := DB.ProjectTable.GetProjectRequests(projectId); err == nil {
+			for s := range requests {
+				DB.FreelancerTable.DeleteFreelancerRequestedProject(s, projectId)
+			}
+			if err := DB.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
+				return err
+			}
+			if err := DB.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
+				return err
+			}
+			if err := DB.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
+				return err
+			}
+			if err := DB.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
+				return err
+			}
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
