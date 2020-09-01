@@ -6,7 +6,10 @@ import (
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
-	"strconv"
+)
+
+const (
+	ProjectIdSize = 15
 )
 
 func EditEmployerProfile(token string, emp existence.Employer, DB *database.Database) error {
@@ -45,40 +48,65 @@ func GetEmployerProjects(username string, DB *database.Database) ([]existence.Pr
 	return DB.EmployerTable.GetEmployerProjects(username)
 }
 
-func AddProjectToEmployer(token string, project existence.Project, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if emp, err := DB.EmployerTable.GetEmployer(username); err == nil {
+func AddProjectToEmployer(token string, project existence.Project, db *database.Database) (e error) {
+	e = nil
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if emp, err := db.EmployerTable.GetEmployer(username); err == nil {
 			project.EmployerUsername = username
 			project.ProjectStatus = existence.Open
-
-			//add new skills to all skills
-			for field, skills := range project.FieldsWithSkills {
-				oldSkills, err := DB.FieldTable.GetFieldSkills(field)
-				//skips if field not found
-				if err != nil {
-					continue
-				}
-				for _, skill := range skills {
-					if !libs.ContainsString(oldSkills, skill) {
-						DB.FieldTable.AddSkillToField(field, skill)
+			if err := checkProjectSkills(project.FieldsWithSkills, db); err == nil {
+				if project.Id, err = makeNewProjectId(db); err == nil {
+					db.ProjectTable.AddProject(project)
+					emp.ProjectIds = append(emp.ProjectIds, project.Id)
+					if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
+						if e == nil {
+							e = nil
+						}
+					} else {
+						e = err
 					}
+				} else {
+					e = err
 				}
-			}
-
-			project.Id = username + "-project-" + strconv.Itoa(len(emp.ProjectIds))
-			DB.ProjectTable.AddProject(project)
-			emp.ProjectIds = append(emp.ProjectIds, project.Id)
-			if err := DB.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
-				return nil
 			} else {
-				return err
+				e = err
 			}
 		} else {
-			return err
+			e = err
 		}
 	} else {
-		return err
+		e = err
 	}
+	return
+}
+
+func makeNewProjectId(db *database.Database) (id string, e error) {
+	id = "p" + libs.GetRandomNumberAsString(ProjectIdSize-1, func(str string) bool {
+		if isThere, err := db.ProjectTable.IsThereProjectWithId("p" + str); err != nil {
+			e = err
+			return false
+		} else {
+			return isThere
+		}
+	})
+	return id, e
+}
+
+func checkProjectSkills(fieldsWithSkills map[string][]string, db *database.Database) error {
+	for field, skills := range fieldsWithSkills {
+		oldSkills, err := db.FieldTable.GetFieldSkills(field)
+		if err != nil {
+			continue
+		}
+		for _, skill := range skills {
+			if !libs.ContainsString(oldSkills, skill) {
+				if err := db.FieldTable.AddSkillToField(field, skill); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
 }
 
 func EditEmployerProject(token string, project existence.Project, DB *database.Database) error {

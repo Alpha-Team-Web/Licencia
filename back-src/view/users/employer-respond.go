@@ -16,8 +16,10 @@ func RespondEmployerEdit(context *gin.Context, token string, err error) {
 	} else {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			var status int = http.StatusInternalServerError
-			context.JSON(status, responses.Response{Message: err.Error()})
+			if !view.RespondDataValidationErrors(context, err) {
+				var status int = http.StatusInternalServerError
+				context.JSON(status, responses.Response{Message: err.Error()})
+			}
 		}
 	}
 }
@@ -43,8 +45,10 @@ func RespondEmployerAddProject(context *gin.Context, token string, err error) {
 	} else {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			var status int = http.StatusInternalServerError
-			context.JSON(status, responses.Response{Message: err.Error()})
+			if !view.RespondDataValidationErrors(context, err) {
+				var status int = http.StatusInternalServerError
+				context.JSON(status, responses.Response{Message: err.Error()})
+			}
 		}
 	}
 }
@@ -56,16 +60,18 @@ func RespondEmployerEditProject(context *gin.Context, token string, err error) {
 	} else {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			var status int
-			switch err.Error() {
-			case "project access denied":
-				status = http.StatusForbidden
-			case "project not open":
-				status = http.StatusBadRequest
-			default:
-				status = http.StatusInternalServerError
+			if !view.RespondDataValidationErrors(context, err) {
+				var status int
+				switch err.Error() {
+				case "project access denied":
+					status = http.StatusForbidden
+				case "project not open":
+					status = http.StatusBadRequest
+				default:
+					status = http.StatusInternalServerError
+				}
+				context.JSON(status, responses.Response{Message: err.Error()})
 			}
-			context.JSON(status, responses.Response{Message: err.Error()})
 		}
 	}
 }
@@ -77,8 +83,10 @@ func RespondEmployerAssignProject(context *gin.Context, token string, err error)
 	} else {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			var status int = http.StatusInternalServerError
-			context.JSON(status, responses.Response{Message: err.Error()})
+			if !view.RespondDataValidationErrors(context, err) {
+				var status int = http.StatusInternalServerError
+				context.JSON(status, responses.Response{Message: err.Error()})
+			}
 		}
 	}
 }

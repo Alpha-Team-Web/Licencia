@@ -16,8 +16,10 @@ func RespondFreelancerEdit(context *gin.Context, token string, err error) {
 	} else {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			var status int = http.StatusInternalServerError
-			context.JSON(status, responses.Response{Message: err.Error()})
+			if !view.RespondDataValidationErrors(context, err) {
+				var status int = http.StatusInternalServerError
+				context.JSON(status, responses.Response{Message: err.Error()})
+			}
 		}
 	}
 }
@@ -43,19 +45,21 @@ func RespondFreelancerRequestToProject(context *gin.Context, token string, err e
 	} else {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			//TODO : add switch cases if there are other types of error
-			var status int
-			switch {
-			case strings.Contains(err.Error(), "cant request more"):
-				status = http.StatusMethodNotAllowed
-			case strings.Contains(err.Error(), "invalid project id"):
-				status = http.StatusExpectationFailed
-			case strings.Contains(err.Error(), "project status not suitable"):
-				status = http.StatusBadRequest
-			default:
-				status = http.StatusInternalServerError
+			if !view.RespondDataValidationErrors(context, err) {
+				//TODO : add switch cases if there are other types of error
+				var status int
+				switch {
+				case strings.Contains(err.Error(), "cant request more"):
+					status = http.StatusMethodNotAllowed
+				case strings.Contains(err.Error(), "invalid project id"):
+					status = http.StatusExpectationFailed
+				case strings.Contains(err.Error(), "project status not suitable"):
+					status = http.StatusBadRequest
+				default:
+					status = http.StatusInternalServerError
+				}
+				context.JSON(status, responses.Response{Message: err.Error()})
 			}
-			context.JSON(status, responses.Response{Message: err.Error()})
 		}
 	}
 }

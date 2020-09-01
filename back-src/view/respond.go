@@ -23,3 +23,12 @@ func RespondTokenErrors(context *gin.Context, err error) bool {
 	}
 	return false
 }
+
+func RespondDataValidationErrors(context *gin.Context, err error) bool {
+	errorMessage := err.Error()
+	if strings.Contains(errorMessage, " tag") && strings.Contains(errorMessage, " validation for ") && strings.Contains(errorMessage, "Key: ") {
+		context.JSON(http.StatusBadRequest, responses.Response{Message: errorMessage})
+		return true
+	}
+	return false
+}
