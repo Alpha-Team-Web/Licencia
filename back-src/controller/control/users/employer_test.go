@@ -73,3 +73,25 @@ func TestAddProjectToEmployer(t *testing.T) {
 		t.Errorf("%s %v", "Number of projects is not 2.", emp.ProjectIds)
 	}
 }
+
+//{
+//	"id" : "ashkan-project-0",
+//	"description" : "new desc"
+//}
+
+func TestEditEmployerProject(t *testing.T) {
+	db := database.NewDb()
+	if err := db.Initialize(); err != nil {
+		t.Error(err)
+	}
+
+	//after sending requset
+	project, err := db.ProjectTable.GetProject("ashkan-project-0")
+	if err != nil {
+		t.Error(err)
+	}
+
+	if project.Description != "new desc" {
+		t.Error("mismatch")
+	}
+}

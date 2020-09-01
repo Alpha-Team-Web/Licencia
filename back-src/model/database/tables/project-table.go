@@ -38,3 +38,12 @@ func (table *ProjectTable) EditProject(id string, project existence.Project) err
 	}
 	return nil
 }
+
+func (table *ProjectTable) GetProject(id string) (existence.Project, error) {
+	project := &existence.Project{}
+	if err := table.Model(project).Where("id = ?", id).Select(); err != nil {
+		return existence.Project{}, err
+	} else {
+		return *project, nil
+	}
+}
