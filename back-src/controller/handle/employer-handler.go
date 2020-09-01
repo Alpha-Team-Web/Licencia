@@ -66,3 +66,17 @@ func (handler *Handler) AddEmployerProject(ctx *gin.Context) (string, error) {
 		return newToken, err
 	}
 }
+
+func (handler *Handler) EditEmployerProject(ctx *gin.Context) (string, error) {
+	token := ctx.GetHeader("Token")
+	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+		return newToken, err
+	} else {
+		project := existence.Project{}
+		if err := ctx.ShouldBindJSON(&project); err != nil {
+			return newToken, err
+		}
+		err := users.EditEmployerProject(token, project, DB)
+		return newToken, err
+	}
+}

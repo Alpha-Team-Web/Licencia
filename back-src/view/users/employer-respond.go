@@ -49,6 +49,27 @@ func RespondEmployerAddProject(context *gin.Context, token string, err error) {
 	}
 }
 
+func RespondEmployerEditProject(context *gin.Context, token string, err error) {
+	if err == nil {
+		context.Header("Token", token)
+		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+	} else {
+		if !view.RespondTokenErrors(context, err) {
+			context.Header("Token", token)
+			var status int
+			switch err.Error() {
+			case "project access denied":
+				status = http.StatusForbidden
+			case "project not open":
+				status = http.StatusBadRequest
+			default:
+				status = http.StatusInternalServerError
+			}
+			context.JSON(status, responses.Response{Message: err.Error()})
+		}
+	}
+}
+
 func RespondEmployerGetProjects(context *gin.Context, projects []existence.Project, err error) {
 	if err == nil {
 		context.JSON(http.StatusOK, struct {
