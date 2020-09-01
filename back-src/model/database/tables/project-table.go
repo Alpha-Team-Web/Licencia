@@ -47,3 +47,11 @@ func (table *ProjectTable) GetProject(id string) (existence.Project, error) {
 		return *project, nil
 	}
 }
+
+func (table *ProjectTable) GetOpenProjects() ([]existence.Project, error) {
+	projects := &[]existence.Project{}
+	if err := table.Model(projects).Where("project_status = ?", existence.Open).Select(); err != nil {
+		return nil, err
+	}
+	return *projects, nil
+}
