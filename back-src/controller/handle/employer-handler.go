@@ -75,3 +75,19 @@ func (handler *Handler) EditEmployerProject(ctx *gin.Context) (string, error) {
 		return newToken, err
 	}
 }
+
+func (handler *Handler) AssignProjectToFreelancer(ctx *gin.Context) (string, error) {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+		return newToken, err
+	} else {
+		assign := struct {
+			id         string `json:"string"`
+			freelancer string `json:"freelancer"`
+		}{}
+		if err := ctx.ShouldBindJSON(&assign); err != nil {
+			return newToken, err
+		}
+		err := users.AssignProjectToFreelancer(newToken, assign.freelancer, assign.id, DB)
+		return newToken, err
+	}
+}

@@ -36,6 +36,11 @@ func (router *router) addEmployerEndpoints() {
 		users.RespondEmployerEditProject(context, token, err)
 	})
 
+	router.addHandlerToPath("/assign", "employer-projects", Post, func(context *gin.Context) {
+		token, err := router.handler.AssignProjectToFreelancer(context)
+		users.RespondEmployerAssignProject(context, token, err)
+	})
+
 	router.addHandlerToPath("/review", "employer-projects", Post, func(context *gin.Context) {
 		token, err := router.handler.AddEmployerReview(context)
 		projects.RespondReview(context, token, err)
