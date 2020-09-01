@@ -6,32 +6,32 @@ import (
 )
 
 type ReviewTable struct {
-	*pg.DB
+	conn *pg.DB
 }
 
 func (table *ReviewTable) AddFreelancerReview(review existence.FreelancerEmployerReview) error {
-	_, err := table.Model(&review).Insert()
+	_, err := table.conn.Model(&review).Insert()
 	return err
 }
 
 func (table *ReviewTable) EditFreelancerReview(review existence.FreelancerEmployerReview) error {
-	_, err := table.Model(&review).Where("project_id = ?", review.ProjectID).Update()
+	_, err := table.conn.Model(&review).Where("project_id = ?", review.ProjectID).Update()
 	return err
 }
 
 func (table *ReviewTable) AddEmployerReview(review existence.EmployerFreelancerReview) error {
-	_, err := table.Model(&review).Insert()
+	_, err := table.conn.Model(&review).Insert()
 	return err
 }
 
 func (table *ReviewTable) EditEmployerReview(review existence.EmployerFreelancerReview) error {
-	_, err := table.Model(&review).Where("project_id = ?", review.ProjectID).Update()
+	_, err := table.conn.Model(&review).Where("project_id = ?", review.ProjectID).Update()
 	return err
 }
 
 func (table *ReviewTable) HasEmployerReviewed(projectId string) (bool, error) {
 	var reviews []existence.EmployerFreelancerReview
-	err := table.Model(&reviews).Where("project_id = ?", projectId).Select()
+	err := table.conn.Model(&reviews).Where("project_id = ?", projectId).Select()
 	if err != nil {
 		return false, err
 	}
@@ -40,7 +40,7 @@ func (table *ReviewTable) HasEmployerReviewed(projectId string) (bool, error) {
 
 func (table *ReviewTable) HasFreelancerReviewed(projectId string) (bool, error) {
 	var reviews []existence.FreelancerEmployerReview
-	err := table.Model(&reviews).Where("project_id = ?", projectId).Select()
+	err := table.conn.Model(&reviews).Where("project_id = ?", projectId).Select()
 	if err != nil {
 		return false, err
 	}

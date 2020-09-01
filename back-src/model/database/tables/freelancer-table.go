@@ -8,41 +8,41 @@ import (
 )
 
 type FreelancerTable struct {
-	*pg.DB
+	conn *pg.DB
 }
 
 func (table *FreelancerTable) DoesFreelancerExistWithUsername(username string) bool {
 	resultSet := &[]existence.Freelancer{}
-	_ = table.Model(resultSet).Where("username = ?", username).Select()
+	_ = table.conn.Model(resultSet).Where("username = ?", username).Select()
 	return len(*resultSet) != 0
 }
 
 func (table *FreelancerTable) DoesFreelancerExistWithEmail(email string) bool {
 	resultSet := &[]existence.Freelancer{}
-	_ = table.Model(resultSet).Where("email = ?", email).Select()
+	_ = table.conn.Model(resultSet).Where("email = ?", email).Select()
 	return len(*resultSet) != 0
 }
 
 func (table *FreelancerTable) InsertFreelancer(frl existence.Freelancer) error {
-	_, err := table.Model(&frl).Insert()
+	_, err := table.conn.Model(&frl).Insert()
 	return err
 }
 
 func (table *FreelancerTable) AddFreelancerSkills(username string, fieldId string, skills []string) error {
 	var frl existence.Freelancer
-	if err := table.Model(&frl). /*.Column("chosen_field_with_skills")*/ Where("username = ?", username).Select(); err != nil {
+	if err := table.conn.Model(&frl). /*.Column("chosen_field_with_skills")*/ Where("username = ?", username).Select(); err != nil {
 		return err
 	}
 	if frl.ChosenFieldWithSkills == nil {
 		frl.ChosenFieldWithSkills = map[string][]string{}
 	}
 	frl.ChosenFieldWithSkills[fieldId] = skills
-	_, err := table.Model(&frl).Column("chosen_field_with_skills").Where("username = ?", username).Update()
+	_, err := table.conn.Model(&frl).Column("chosen_field_with_skills").Where("username = ?", username).Update()
 	return err
 }
 
 func (table *FreelancerTable) UpdateFreelancerProfile(username string, frl existence.Freelancer) error {
-	if _, err := table.Model(&frl).Column("shown_name", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.conn.Model(&frl).Column("shown_name", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
@@ -55,14 +55,14 @@ func (table *FreelancerTable) UpdateFreelancerPassword(username string, oldPass 
 	}
 
 	frl.Password = newPass
-	if _, err := table.Model(&frl).Column("password").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.conn.Model(&frl).Column("password").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (table *FreelancerTable) UpdateFreelancerLinks(username string, frl existence.Freelancer) error {
-	if _, err := table.Model(&frl).Column("website", "github_account", "github_repos").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.conn.Model(&frl).Column("website", "github_account", "github_repos").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
@@ -70,7 +70,7 @@ func (table *FreelancerTable) UpdateFreelancerLinks(username string, frl existen
 
 func (table *FreelancerTable) GetFreelancerByUsername(username string) (existence.Freelancer, error) {
 	var frl existence.Freelancer
-	if err := table.Model(&frl).Where("username = ?", username).Select(); err != nil {
+	if err := table.conn.Model(&frl).Where("username = ?", username).Select(); err != nil {
 		return frl, err
 	}
 	return frl, nil
@@ -78,25 +78,25 @@ func (table *FreelancerTable) GetFreelancerByUsername(username string) (existenc
 
 func (table *FreelancerTable) GetFreelancerPasswordByUsername(username string) (string, error) {
 	freelancer := existence.Freelancer{}
-	err := table.Model(&freelancer).Where("username = ?", username).Column("password").Select()
+	err := table.conn.Model(&freelancer).Where("username = ?", username).Column("password").Select()
 	return freelancer.Password, err
 }
 
 func (table *FreelancerTable) GetFreelancerUsernameByEmail(email string) (string, error) {
 	freelancer := existence.Freelancer{}
-	err := table.Model(&freelancer).Where("email = ?", email).Column("username").Select()
+	err := table.conn.Model(&freelancer).Where("email = ?", email).Column("username").Select()
 	return freelancer.Username, err
 }
 
 func (table *FreelancerTable) GetFreelancer(username string) (existence.Freelancer, error) {
 	frl := new(existence.Freelancer)
-	err := table.Model(frl).Where("username = ?", username).Select()
+	err := table.conn.Model(frl).Where("username = ?", username).Select()
 	return *frl, err
 }
 
 func (table *FreelancerTable) GetFreelancerTypeByUsername(username string) (string, error) {
 	frl := existence.Freelancer{}
-	err := table.Model(&frl).Column("account_type").Where("username = ?", username).Select()
+	err := table.conn.Model(&frl).Column("account_type").Where("username = ?", username).Select()
 	if err != nil {
 		return "", err
 	}
@@ -105,7 +105,7 @@ func (table *FreelancerTable) GetFreelancerTypeByUsername(username string) (stri
 
 func (table *FreelancerTable) GetFreelancerRequestedProjectIds(username string) ([]string, error) {
 	frl := existence.Freelancer{}
-	err := table.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Select()
+	err := table.conn.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Select()
 	if err != nil {
 		return []string{}, err
 	}
@@ -116,7 +116,7 @@ func (table *FreelancerTable) AddRequestedProjectToFreelancer(username, projectI
 	frl := existence.Freelancer{}
 	if projectIds, err := table.GetFreelancerRequestedProjectIds(username); err == nil {
 		frl.ProjectIds = projectIds
-		if _, err := table.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Update(); err != nil {
+		if _, err := table.conn.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Update(); err != nil {
 			return err
 		}
 		return nil
@@ -138,7 +138,7 @@ func (table *FreelancerTable) DeleteFreelancerRequestedProject(username string, 
 		}
 	}
 	frl.RequestedProjectIds = libs.RemoveStringElement(frl.RequestedProjectIds, index)
-	if _, err = table.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Update(); err != nil {
+	if _, err = table.conn.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
@@ -159,7 +159,7 @@ func (table *FreelancerTable) AddFreelancerProjectId(username string, projectId 
 		return nil
 	}
 	frl.ProjectIds = append(frl.ProjectIds, projectId)
-	if _, err = table.Model(&frl).Column("project_ids").Where("username = ?", username).Update(); err != nil {
+	if _, err = table.conn.Model(&frl).Column("project_ids").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
