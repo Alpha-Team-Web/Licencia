@@ -1,3 +1,5 @@
+const isFreeLancer = Cookies.get('isfreelancer')
+
 const usernameField = document.getElementById("usernameField");
 const shownNameField = document.getElementById('showingNameField')
 const firstNameField = document.getElementById("firstNameField");
@@ -5,8 +7,6 @@ const lastNameField = document.getElementById("lastNameField");
 const emailField = document.getElementById("emailField");
 const siteAddressField = document.getElementById("siteAddressField");
 const telephoneNumberField = document.getElementById("telephoneNumberField");
-const passwordField = document.getElementById("passwordField");
-const repeatPasswordField = document.getElementById("repeatPasswordField");
 const gitHubAccountField = document.getElementById("githubAccountField");
 const descriptionField = document.getElementById("descriptionField");
 const addressField = document.getElementById("addressField");
@@ -42,8 +42,8 @@ function initGithubRepos() {
 
 function loadProfileMenu() {
     // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
-    alert('Cookies: "' + Cookies.get('isfreelancer') + "'")
-    if (!Cookies.get('isfreelancer')) {
+    alert('Cookies: "' + isFreeLancer + "'")
+    if (!isFreeLancer) {
         httpGet(urlGetEmployerProfileInfo, {
             'Content-Type': 'application/json',
             'Token': Cookies.get('auth')
@@ -64,17 +64,16 @@ function handleSuccessGetProfileInfo(value) {
     let messages = value;
     console.log(JSON.stringify(messages));
     username = messages.username;
-    shownName = messages['shown-name']
+    shownName = messages['shown-name'];
     firstname = messages.firstname;
     lastname = messages.lastname;
     email = messages.email;
     description = messages.description;
     telephoneNumber = messages.phonenumber;
     address = messages.addr;
-    password = messages.password;
     projectsId = messages['project-ids'];
     fillCommonFields();
-    if (Cookies.get('isfreelancer')) {
+    if (isFreeLancer) {
         gitHubAccount = messages.github;
         gitHubRepo = messages['github-repos'];
         siteAddress = messages.website;
@@ -90,13 +89,13 @@ function fillFreelancerSpecialFields() {
 
 function fillCommonFields() {
     usernameField.value = username;
+    shownNameField.value = shownName;
     firstNameField.value = firstname;
     lastNameField.value = lastname;
     emailField.value = email;
     telephoneNumberField.value = telephoneNumber;
     addressField.value = address;
     descriptionField.value = description;
-    passwordField.value = password;
 }
 
 function handleDenyGetProfileInfo(value) {
@@ -227,24 +226,28 @@ function modal(modalId, command) {
 
 function successSaveProfile(value) {
     alert('Profile Saved Successfully')
+    location.reload();
 }
 
 function errorSaveProfile(value) {
     //Error Handling
+    alert('value: ' + value.message)
 }
 
 function saveProfile() {
     let getValue = (firstValue, secondValue) => secondValue == null ? firstValue : secondValue;
     const data = {
         'shown-name': getValue(shownName, shownNameField.value),
-        'firstname': getValue(firstname, firstNameField.value),
-        'lastname': getValue(lastname, lastNameField.value),
-        'phonenumber': getValue(telephoneNumber, telephoneNumberField.value),
+        'first-name': getValue(firstname, firstNameField.value),
+        'last-name': getValue(lastname, lastNameField.value),
+        'phone-number': getValue(telephoneNumber, telephoneNumberField.value),
         'addr': getValue(address, addressField.value),
         'description': getValue(description, descriptionField.value)
     }
-    httpExcGET('post', saveProfileUrl, data, successSaveProfile, errorSaveProfile, {
-        'auth': Cookies.get('auth')
+    httpExcGET('post', isFreeLancer ? saveProfileUrlFreeLancer : saveProfileUrlEmployer,
+        data, successSaveProfile, errorSaveProfile, {
+        'Token': Cookies.get('auth'),
+            'Content-Type': 'application/json',
     })
 }
 
@@ -272,9 +275,10 @@ function submitGitPart() {
     gitHubAccount = githubAccountField.value;
     let headers = {
         'Content-Type': 'application/json',
-        'token': Cookies.get('auth')
+        'Token': Cookies.get('auth')
     }
-    httpExcGET('POST', saveGithubUrl, data, successGithubPartSubmit, denyGithubPartSubmit, headers);
+    httpExcGET('POST', isFreeLancer ? saveGithubUrlFreeLancer : saveGithubUrlEmployer,
+        data, successGithubPartSubmit, denyGithubPartSubmit, headers);
 }
 
 function successGithubPartSubmit(value) {
@@ -307,7 +311,8 @@ function changePassword() {
                     'token': Cookies.get('auth')
                 }
                 password = newPasswordField.value;
-                httpExcGET('POST', changePasswordUrl, data, successChangePassword, denyChangePassword, headers)
+                httpExcGET('POST', isFreeLancer ? changePasswordUrlFreeLancer : changePasswordUrlEmployer,
+                    data, successChangePassword, denyChangePassword, headers)
             }
         }
     }

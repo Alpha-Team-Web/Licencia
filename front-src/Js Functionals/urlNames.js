@@ -5,8 +5,10 @@ const urlGetFreelancerProfileInfo = "http://localhost:8008/freelancer/profile/ge
 const gitHubUrl = "https://github.com/"
 
 const saveProfileUrlEmployer="http://localhost:8008/employer/profile/general";
-const saveGithubUrlEmployer="http://localhost:8008/employer/profile/links";
 const changePasswordUrlEmployer="http://localhost:8008/employer/profile/password";
 const saveProfileUrlFreeLancer="http://localhost:8008/freelancer/profile/general";
 const saveGithubUrlFreeLancer="http://localhost:8008/freelancer/profile/links";
 const changePasswordUrlFreeLancer="http://localhost:8008/freelancer/profile/password";
+
+
+// --disable-web-security --user-data-dir="[some directory here]"
