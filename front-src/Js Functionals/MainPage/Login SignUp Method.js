@@ -82,22 +82,15 @@ function login() {
 
 function handleSuccessLogin(value) {
 // todo go to Profile Menu And Save Auth
-    let splitter = value.message.indexOf(':');
-    let messageError = value.message.substring(0, splitter);
-    let messageField = value.message.substring(splitter + 1);
+    value = parseValue(value)
     alert("Login Successful")
-    alert("Server Message: " + value.message)
-    alert("Auth: " + value.messageField)
-    Cookies.set('auth', value.messageField)
-    Cookies.set('isfreelancer', loginKind.value === 'freelancer')
-    window.location.href = profilePageName;
+    Cookies.set("isfreelancer", loginKind.value === "freelancer");
+    window.location.href = profilePageName
 }
 
 function handleErrorLogin(value) {
     // todo error the fields
-    let splitter = value.message.indexOf(':');
-    let messageError = value.message.substring(0, splitter);
-    let messageField = value.message.substring(splitter + 1);
+    value = parseValue(value)
     alert("Login Failed")
     alert('Server Message: ' + value.message)
     switch (value.messageError) {
