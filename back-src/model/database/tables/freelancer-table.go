@@ -41,7 +41,7 @@ func (table *FreelancerTable) AddFreelancerSkills(username string, fieldId strin
 }
 
 func (table *FreelancerTable) UpdateFreelancerProfile(username string, frl existence.Freelancer) error {
-	if _, err := table.Model(&frl).Column("shown_name", "email", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.Model(&frl).Column("shown_name", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil
@@ -61,7 +61,7 @@ func (table *FreelancerTable) UpdateFreelancerPassword(username string, oldPass 
 }
 
 func (table *FreelancerTable) UpdateFreelancerLinks(username string, frl existence.Freelancer) error {
-	if _, err := table.Model(&frl).Column("website", "github", "github-repos").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.Model(&frl).Column("website", "github", "github_repos").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func RespondFreelancerReview(context *gin.Context, token string, err error) {
+func RespondReview(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
 		context.JSON(http.StatusOK, responses.SuccessMessage)

@@ -25,3 +25,23 @@ func AddFreelancerReview(token string, review existence.FreelancerEmployerReview
 		}
 	}
 }
+
+func AddEmployerReview(token string, review existence.EmployerFreelancerReview, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err != nil {
+		return err
+	} else {
+		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(review.ProjectID); err != nil {
+			return err
+		} else if realUsername == username {
+			if hasReviewed, err := db.ReviewTable.HasEmployerReviewed(review.ProjectID); err != nil {
+				return err
+			} else if hasReviewed {
+				return db.ReviewTable.EditEmployerReview(review)
+			} else {
+				return db.ReviewTable.AddEmployerReview(review)
+			}
+		} else {
+			return errors.New("not involved in project the username: " + username)
+		}
+	}
+}

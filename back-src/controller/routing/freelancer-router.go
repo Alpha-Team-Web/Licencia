@@ -31,9 +31,9 @@ func (router *router) addFreelancerEndpoints() {
 		users.RespondFreelancerEdit(context, token, err)
 	})
 
-	router.addHandlerToPath("/review", "freelancer-profile", Post, func(context *gin.Context) {
+	router.addHandlerToPath("/review", "freelancer-projects", Post, func(context *gin.Context) {
 		token, err := router.handler.AddFreelancerReview(context)
-		projects.RespondFreelancerReview(context, token, err)
+		projects.RespondReview(context, token, err)
 	})
 
 }

@@ -6,18 +6,18 @@ const (
 )
 
 type user struct {
-	Username    string `json:"username" binding:"min=4,max=20" sql:"username,pk,notnull"`
-	Password    string `json:"password" binding:"min=6,max=20" sql:"password,notnull"`
+	Username    string `json:"username" binding:"min=4,max=20" sql:",pk,notnull"`
+	Password    string `json:"password" binding:"min=6,max=20" sql:",notnull"`
 	ShownName   string `json:"shown-name" binding:"min=0,max=30" sql:",notnull"`
 	Email       string `json:"email" binding:"email,min=5,max=100" sql:"email,unique"`
 	Description string `json:"description" sql:"description"`
 }
 
 type person struct {
-	FirstName   string `json:"firstname"`
-	LastName    string `json:"lastname"`
-	PhoneNumber string `json:"phonenumber"`
-	Address     string `json:"addr"`
+	FirstName   string `json:"first-name"`
+	LastName    string `json:"last-name"`
+	PhoneNumber string `json:"phone-number"`
+	Address     string `json:"address"`
 }
 
 type image struct {
@@ -45,10 +45,10 @@ type Freelancer struct {
 	person
 	image
 	ProjectIds            []string            `json:"project-ids"`
-	RequestedProjectIds   []string            `json:"req-project-ids"`
+	RequestedProjectIds   []string            `json:"requested-project-ids"`
 	AccountType           string              `json:"account-type"`
 	Website               string              `json:"website"`
-	GithubAccount         string              `json:"github"`
+	GithubAccount         string              `json:"github-account"`
 	GithubRepos           []string            `json:"github-repos"`
 	SkillsWithProject     map[string][]string `json:"skills-with-project"`
 	ChosenFieldWithSkills map[string][]string `json:"chosen-field-with-skills"`

@@ -28,7 +28,7 @@ func (table *EmployerTable) InsertEmployer(emp existence.Employer) error {
 }
 
 func (table *EmployerTable) UpdateEmployerProfile(username string, emp existence.Employer) error {
-	if _, err := table.Model(&emp).Column("shown_name", "email", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
+	if _, err := table.Model(&emp).Column("shown_name", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
 		return err
 	}
 	return nil

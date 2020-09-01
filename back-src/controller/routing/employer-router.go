@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"back-src/view/projects"
 	"back-src/view/users"
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,11 @@ func (router *router) addEmployerEndpoints() {
 	router.addHandlerToPath("/get", "employer-profile", Get, func(context *gin.Context) {
 		emp, token, err := router.handler.GetEmployerProfile(context)
 		users.RespondEmployerGetProfile(context, token, emp, err)
+	})
+
+	router.addHandlerToPath("/review", "freelancer-projects", Post, func(context *gin.Context) {
+		token, err := router.handler.AddEmployerReview(context)
+		projects.RespondReview(context, token, err)
 	})
 
 }
