@@ -8,34 +8,31 @@ import (
 )
 
 func (handler *Handler) EditEmployerProfile(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return "", err
 	} else {
 		emp := existence.Employer{}
 		if err := ctx.ShouldBindJSON(&emp); err != nil {
 			return newToken, err
 		}
-		return newToken, users.EditEmployerProfile(token, emp, DB)
+		return newToken, users.EditEmployerProfile(newToken, emp, DB)
 	}
 }
 
 func (handler *Handler) EditEmployerPassword(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return "", err
 	} else {
 		emp := data.ChangePassRequest{}
 		if err := ctx.ShouldBindJSON(&emp); err != nil {
 			return newToken, err
 		}
-		return newToken, users.EditEmployerPassword(token, emp, DB)
+		return newToken, users.EditEmployerPassword(newToken, emp, DB)
 	}
 }
 
 func (handler *Handler) GetEmployerProfile(ctx *gin.Context) (existence.Employer, string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return existence.Employer{}, "", err
 	} else {
 		emp, err := users.GetEmployer(newToken, DB)
@@ -54,15 +51,27 @@ func (handler *Handler) GetEmployerProjects(ctx *gin.Context) ([]existence.Proje
 }
 
 func (handler *Handler) AddEmployerProject(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return newToken, err
 	} else {
 		project := existence.Project{}
 		if err := ctx.ShouldBindJSON(&project); err != nil {
 			return newToken, err
 		}
-		err := users.AddProjectToEmployer(token, project, DB)
+		err := users.AddProjectToEmployer(newToken, project, DB)
+		return newToken, err
+	}
+}
+
+func (handler *Handler) EditEmployerProject(ctx *gin.Context) (string, error) {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+		return newToken, err
+	} else {
+		project := existence.Project{}
+		if err := ctx.ShouldBindJSON(&project); err != nil {
+			return newToken, err
+		}
+		err := users.EditEmployerProject(newToken, project, DB)
 		return newToken, err
 	}
 }

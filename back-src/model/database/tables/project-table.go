@@ -32,6 +32,30 @@ func (table *ProjectTable) AddProject(project existence.Project) error {
 	return nil
 }
 
+func (table *ProjectTable) EditProject(id string, project existence.Project) error {
+	if _, err := table.Model(&project).Column("duration", "start_date", "min_budget", "max_budget", "description").Where("id = ?", id).Update(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (table *ProjectTable) GetProject(id string) (existence.Project, error) {
+	project := &existence.Project{}
+	if err := table.Model(project).Where("id = ?", id).Select(); err != nil {
+		return existence.Project{}, err
+	} else {
+		return *project, nil
+	}
+}
+
+func (table *ProjectTable) GetOpenProjects() ([]existence.Project, error) {
+	projects := &[]existence.Project{}
+	if err := table.Model(projects).Where("project_status = ?", existence.Open).Select(); err != nil {
+		return nil, err
+	}
+	return *projects, nil
+}
+
 func (table *ProjectTable) IsThereProjectWithId(projectId string) (bool, error) {
 	var resultSet []existence.Project
 	error := table.Model(&resultSet).Where("id = ?", projectId).Select()

@@ -2,6 +2,7 @@ package users
 
 import (
 	"back-src/controller/utils/data"
+	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"errors"
@@ -48,11 +49,51 @@ func AddProjectToEmployer(token string, project existence.Project, DB *database.
 	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if emp, err := DB.EmployerTable.GetEmployer(username); err == nil {
 			project.EmployerUsername = username
+			project.ProjectStatus = existence.Open
+
+			//add new skills to all skills
+			for field, skills := range project.FieldsWithSkills {
+				oldSkills, err := DB.FieldTable.GetFieldSkills(field)
+				//skips if field not found
+				if err != nil {
+					continue
+				}
+				for _, skill := range skills {
+					if !libs.ContainsString(oldSkills, skill) {
+						DB.FieldTable.AddSkillToField(field, skill)
+					}
+				}
+			}
+
 			project.Id = username + "-project-" + strconv.Itoa(len(emp.ProjectIds))
 			DB.ProjectTable.AddProject(project)
 			emp.ProjectIds = append(emp.ProjectIds, project.Id)
 			if err := DB.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
 				return nil
+			} else {
+				return err
+			}
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
+
+func EditEmployerProject(token string, project existence.Project, DB *database.Database) error {
+	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if _, err := DB.EmployerTable.GetEmployer(username); err == nil {
+			if realProject, err := DB.ProjectTable.GetProject(project.Id); err == nil {
+				if realProject.EmployerUsername == username {
+					if realProject.ProjectStatus == existence.Open {
+						return DB.ProjectTable.EditProject(realProject.Id, project)
+					} else {
+						return errors.New("project not open")
+					}
+				} else {
+					return errors.New("project access denied")
+				}
 			} else {
 				return err
 			}
