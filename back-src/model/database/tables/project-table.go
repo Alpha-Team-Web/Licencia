@@ -52,12 +52,35 @@ func (table *ProjectTable) GetProject(id string) (existence.Project, error) {
 	}
 }
 
-func (table *ProjectTable) GetOpenProjects() ([]existence.Project, error) {
+func (table *ProjectTable) GetProjectsByStatus(status string) ([]existence.Project, error) {
 	projects := &[]existence.Project{}
-	if err := table.conn.Model(projects).Where("project_status = ?", existence.Open).Select(); err != nil {
+	if err := table.conn.Model(projects).Where("project_status = ?", status).Select(); err != nil {
 		return nil, err
 	}
 	return *projects, nil
+}
+
+func (table *ProjectTable) GetProjectIdsByStatusAndMaxBudget(status string, max, min float64) ([]string, error) {
+	var projects []existence.Project
+	query := table.conn.Model(&projects)
+	query = query.Where("project_status = ?", status).Where("max_budget > ?", (min-0.001)).Where("max_budget < ?", (max + 0.001))
+	query = query.Column("id")
+	if err := query.Select(); err != nil {
+		return nil, err
+	}
+	var ids []string
+	for _, project := range projects {
+		ids = append(ids, project.Id)
+	}
+	return ids, nil
+}
+
+func (table *ProjectTable) GetProjectDefinedColumns(id string, columns ...string) (existence.Project, error) {
+	project := existence.Project{}
+	if err := table.conn.Model(&project).Where("id = ?", id).Column(columns...).Select(); err != nil {
+		return existence.Project{}, err
+	}
+	return project, nil
 }
 
 func (table *ProjectTable) IsThereProjectWithId(projectId string) (bool, error) {

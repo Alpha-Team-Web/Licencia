@@ -90,14 +90,3 @@ type LicenciaSample struct {
 	ProjectId  string `json:"project-id"`
 	IsLicencia bool   `json:"is-licencia"`
 }
-
-type ListicProject struct {
-	Id                  string    `json:"id"`
-	Name                string    `json:"name"`
-	Description         string    `json:"description"`
-	StartDate           time.Time `json:"start-date"`
-	NumberOfSuggestions int       `json:"number_of_suggestions"`
-	Skills              []string  `json:"skills"`
-	EmployerUsername    string    `json:"employer_username"`
-	EmployerShownName   string    `json:"employer_shown_name"`
-}

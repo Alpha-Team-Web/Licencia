@@ -20,6 +20,15 @@ func (table *EmployerTable) DoesEmployerExistWithUsername(username string) bool 
 	return len(*resultSet) != 0
 }
 
+func (table *EmployerTable) GetEmployerShownNameByUsername(username string) (string, error) {
+	emp := existence.Employer{}
+	err := table.conn.Model(&emp).Where("username = ?", username).Column("shown_name").Select()
+	if err != nil {
+		return "", err
+	}
+	return emp.ShownName, nil
+}
+
 func (table *EmployerTable) DoesEmployerExistWithEmail(email string) bool {
 	resultSet := &[]existence.Employer{}
 	_ = table.conn.Model(resultSet).Where("email = ?", email).Select()
