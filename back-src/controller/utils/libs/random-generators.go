@@ -5,20 +5,19 @@ import (
 	"time"
 )
 
-var seededRand = rand.New(
-	rand.NewSource(time.Now().UnixNano()))
+var seededRand = rand.New(rand.NewSource(time.Now().UnixNano()))
 var charset = "qwertyuiop[]{}asdfghjkl;:zxcvbnm,.<>1234567890-_=+!@#$%^&*()"
 var numbSet = "0123456789"
 
 func getRandom(length int, set string, predator func(string) bool) (random string) {
 	for ok := true; ok; ok = predator(random) {
-		random = func(length int, charset string) string {
+		random = func(length int, set string) string {
 			b := make([]byte, length)
 			for i := range b {
-				b[i] = set[seededRand.Intn(len(charset))]
+				b[i] = set[seededRand.Intn(len(set))]
 			}
 			return string(b)
-		}(length, charset)
+		}(length, set)
 	}
 	return
 }

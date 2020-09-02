@@ -51,17 +51,21 @@ func GetEmployerProjects(username string, db *database.Database) ([]existence.Pr
 
 func AddProjectToEmployer(token string, project existence.Project, db *database.Database) (e error) {
 	e = nil
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if emp, err := db.EmployerTable.GetEmployer(username); err == nil {
-			project.EmployerUsername = username
-			project.ProjectStatus = existence.Open
-			if project.Id, err = makeNewProjectId(db); err == nil {
-				if err := checkProjectSkills(project.Id, project.FieldsWithSkills, db); err == nil {
-					db.ProjectTable.AddProject(project)
-					emp.ProjectIds = append(emp.ProjectIds, project.Id)
-					if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
-						if e == nil {
-							e = nil
+	if err := checkAddProjectFieldsValidity(project); err == nil {
+		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+			if emp, err := db.EmployerTable.GetEmployer(username); err == nil {
+				project.EmployerUsername = username
+				project.ProjectStatus = existence.Open
+				if project.Id, err = makeNewProjectId(db); err == nil {
+					if err := checkProjectSkills(project.Id, project.FieldsWithSkills, db); err == nil {
+						db.ProjectTable.AddProject(project)
+						emp.ProjectIds = append(emp.ProjectIds, project.Id)
+						if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
+							if e == nil {
+								e = nil
+							}
+						} else {
+							e = err
 						}
 					} else {
 						e = err
@@ -79,6 +83,14 @@ func AddProjectToEmployer(token string, project existence.Project, db *database.
 		e = err
 	}
 	return
+}
+
+func checkAddProjectFieldsValidity(project existence.Project) error {
+	error := errors.New("project fields not valid")
+	if project.MinBudget < project.MaxBudget {
+		return error
+	}
+	return nil
 }
 
 func makeNewProjectId(db *database.Database) (id string, e error) {

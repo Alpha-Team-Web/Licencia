@@ -3,6 +3,7 @@ package users
 import (
 	"back-src/model/database"
 	"back-src/model/existence"
+	"fmt"
 	"testing"
 )
 
@@ -94,4 +95,25 @@ func TestEditEmployerProject(t *testing.T) {
 	if project.Description != "new desc" {
 		t.Error("mismatch")
 	}
+}
+
+func TestMakeNewProjectId(t *testing.T) {
+	func() {
+		defer func() {
+			if r := recover(); r == nil {
+				fmt.Println("The code did not panic")
+			} else {
+				t.Errorf("Code Paniced: %v\n", r)
+			}
+		}()
+		db := database.NewDb()
+		if err := db.Initialize(); err != nil {
+			t.Error(err)
+		}
+		if id, err := makeNewProjectId(db); err != nil {
+			t.Errorf("err :%v\n", err)
+		} else {
+			fmt.Println("id: " + id)
+		}
+	}()
 }

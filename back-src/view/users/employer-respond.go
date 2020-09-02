@@ -46,7 +46,13 @@ func RespondEmployerAddProject(context *gin.Context, token string, err error) {
 		if !view.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
 			if !view.RespondDataValidationErrors(context, err) {
-				var status int = http.StatusInternalServerError
+				var status int
+				switch {
+				case strings.Contains(err.Error(), "project fields not valid"):
+					status = http.StatusBadRequest
+				default:
+					status = http.StatusInternalServerError
+				}
 				context.JSON(status, responses.Response{Message: err.Error()})
 			}
 		}
