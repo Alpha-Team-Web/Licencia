@@ -7,7 +7,7 @@ import (
 
 func (router *router) addProjectEndpoints() {
 	router.addNewEndpointGroup("/projects", "projects", "")
-	router.addNewEndpointGroup("/filters", "filters", "project")
+	router.addNewEndpointGroup("/filters", "filters", "projects")
 
 	router.addHandlerToPath("/freelancer", "filters", Get, func(ctx *gin.Context) {
 		projects, token, err := router.handler.FilterFreelancer(ctx)

@@ -23,5 +23,5 @@ type Filter struct {
 	MustIncludeSkills []string `json:"must-include-skills"`
 	IncludeSkills     []string `json:"include-skills"`
 	ExcludeSkills     []string `json:"exclude-skills"`
-	IsFilterBySkill   bool     `json:"is-filters-by-skill"`
+	IsFilterBySkill   bool     `json:"is-filter-by-skill"`
 }
