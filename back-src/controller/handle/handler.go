@@ -1,6 +1,7 @@
 package handle
 
 import (
+	"back-src/controller/control/projects/filters"
 	"back-src/model/database"
 	"time"
 )
@@ -25,6 +26,7 @@ func NewControl() *Handler {
 	if err != nil {
 		panic(err)
 	}
+	filters.Inv = filters.NewEngine(DB)
 	return &Handler{}
 }
 

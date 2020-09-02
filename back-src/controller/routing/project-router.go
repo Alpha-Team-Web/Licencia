@@ -1,13 +1,21 @@
 package routing
 
-import "github.com/gin-gonic/gin"
+import (
+	projects2 "back-src/view/projects"
+	"github.com/gin-gonic/gin"
+)
 
 func (router *router) addProjectEndpoints() {
 	router.addNewEndpointGroup("/projects", "projects", "")
-	router.addNewEndpointGroup("/filter", "filter", "project")
+	router.addNewEndpointGroup("/filters", "filters", "project")
 
-	router.addHandlerToPath("/freelancer", "filter", Get, func(ctx *gin.Context) {
-
+	router.addHandlerToPath("/freelancer", "filters", Get, func(ctx *gin.Context) {
+		projects, token, err := router.handler.FilterFreelancer(ctx)
+		projects2.RespondFilterProjects(ctx, projects, token, err)
+	})
+	router.addHandlerToPath("/employer", "filters", Get, func(ctx *gin.Context) {
+		projects, token, err := router.handler.FilterEmployer(ctx)
+		projects2.RespondFilterProjects(ctx, projects, token, err)
 	})
 
 }

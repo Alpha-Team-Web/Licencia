@@ -1,4 +1,4 @@
-package filter
+package filters
 
 import (
 	"back-src/controller/utils/data"
@@ -9,7 +9,7 @@ import (
 	"math"
 )
 
-var inv = &invertedEngine{map[string]sets.Set{}}
+var Inv invertedEngine
 
 func Filter(filter data.Filter, db *database.Database) ([]responses.ListicProject, error) {
 	if resultSet, err := filterByPriceAndStat(filter, db); err == nil {
@@ -76,7 +76,7 @@ func filterBySkills(filter data.Filter) sets.Set {
 func filterByMustInclude(mustIncludes []string) sets.Set {
 	var resultSets []sets.Set
 	for _, include := range mustIncludes {
-		resultSets = append(resultSets, inv.invertedMap[include])
+		resultSets = append(resultSets, Inv.invertedMap[include])
 	}
 	return sets.IntersectSets(resultSets...)
 }
@@ -84,13 +84,13 @@ func filterByMustInclude(mustIncludes []string) sets.Set {
 func filterByIncludes(includes []string) sets.Set {
 	var set = sets.NewSet()
 	for _, include := range includes {
-		set.UnionWith(inv.invertedMap[include])
+		set.UnionWith(Inv.invertedMap[include])
 	}
 	return set
 }
 
 func filterByExcludes(set sets.Set, excludes []string) {
 	for _, exclude := range excludes {
-		set.SubtractFrom(inv.invertedMap[exclude])
+		set.SubtractFrom(Inv.invertedMap[exclude])
 	}
 }

@@ -52,6 +52,14 @@ func (table *ProjectTable) GetProject(id string) (existence.Project, error) {
 	}
 }
 
+func (table *ProjectTable) GetAllProjects() ([]existence.Project, error) {
+	projects := []existence.Project{}
+	if err := table.conn.Model(&projects).Column("id", "fields_with_skills").Select(); err != nil {
+		return nil, err
+	}
+	return projects, nil
+}
+
 func (table *ProjectTable) GetProjectsByStatus(status string) ([]existence.Project, error) {
 	projects := &[]existence.Project{}
 	if err := table.conn.Model(projects).Where("project_status = ?", status).Select(); err != nil {
