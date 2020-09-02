@@ -1,7 +1,10 @@
 package filter
 
 import (
+	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs"
+	"back-src/model/database"
+	"back-src/model/existence"
 )
 
 type invertedIndex struct {
@@ -26,4 +29,8 @@ func (inv *invertedIndex) removeKey(skill string) {
 
 func AddSkillToProject(skill string, projectId string) {
 	inv.addKeyToMap(skill, projectId)
+}
+
+func Filter(filter data.Filter, db *database.Database) ([]existence.ListicProject, error) {
+	return nil, nil
 }

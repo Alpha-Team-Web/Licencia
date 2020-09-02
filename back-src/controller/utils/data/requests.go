@@ -15,3 +15,12 @@ type FreelancerRequestForProject struct {
 	Id          string `json:"id" binding:"min=15,max=15"`
 	Description string `json:"description" binding:"min:0,max=500"`
 }
+
+type Filter struct {
+	Status            string   `json:"status"`
+	MinPrice          float64  `json:"min-price"`
+	MaxPrice          float64  `json:"max-price"`
+	MustIncludeSkills []string `json:"must-include-skills"`
+	IncludeSkills     []string `json:"include-skills"`
+	ExcludeSkills     []string `json:"exclude-skills"`
+}

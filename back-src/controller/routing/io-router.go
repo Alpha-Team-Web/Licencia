@@ -7,6 +7,7 @@ import (
 
 func (router *router) addIOEndpoints() {
 	router.addNewEndpointGroup("/io", "io", "")
+	router.addNewEndpointGroup("/projects", "projects", "io")
 
 	router.addHandlerToPath("/register", "io", Post, func(context *gin.Context) {
 		view.RespondRegister(context, router.handler.Register(context))

@@ -17,14 +17,14 @@ func (set *Set) Delete(element string) *Set {
 	return set
 }
 
-func (set *Set) UnionWith(elements Set) *Set {
+func (set *Set) UnionWith(elements *Set) *Set {
 	for s, _ := range elements.keys {
 		set.Add(s)
 	}
 	return set
 }
 
-func (set *Set) SubtractFrom(elements Set) *Set {
+func (set *Set) SubtractFrom(elements *Set) *Set {
 	for s, _ := range elements.keys {
 		set.Delete(s)
 	}
@@ -43,4 +43,17 @@ func (set *Set) AddAll(members ...string) {
 	for _, s := range members {
 		set.Add(s)
 	}
+}
+
+func IntersectSets(sets ...Set) *Set {
+	mother := Set{}
+	for _, s := range sets {
+		mother.UnionWith(&s)
+	}
+	complement := &Set{}
+	for _, s := range sets {
+		temp := mother
+		complement.UnionWith(temp.SubtractFrom(&s))
+	}
+	return mother.SubtractFrom(complement)
 }
