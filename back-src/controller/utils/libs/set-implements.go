@@ -7,14 +7,6 @@ type Set struct {
 	keys   map[string]void
 }
 
-type SetImplementation interface {
-	Add(element string) SetImplementation
-	Delete(element string) SetImplementation
-	AddAll(elements SetImplementation) SetImplementation
-	DeleteAll(elements SetImplementation) SetImplementation
-	GetMemebers() []string
-}
-
 func (set *Set) Add(element string) *Set {
 	set.keys[element] = set.member
 	return set
@@ -25,14 +17,14 @@ func (set *Set) Delete(element string) *Set {
 	return set
 }
 
-func (set *Set) AddAll(elements Set) *Set {
+func (set *Set) UnionWith(elements Set) *Set {
 	for s, _ := range elements.keys {
 		set.Add(s)
 	}
 	return set
 }
 
-func (set *Set) DeleteAll(elements Set) *Set {
+func (set *Set) SubtractFrom(elements Set) *Set {
 	for s, _ := range elements.keys {
 		set.Delete(s)
 	}
@@ -45,4 +37,10 @@ func (set *Set) GetMembers() []string {
 		members = append(members, s)
 	}
 	return members
+}
+
+func (set *Set) AddAll(members ...string) {
+	for _, s := range members {
+		set.Add(s)
+	}
 }
