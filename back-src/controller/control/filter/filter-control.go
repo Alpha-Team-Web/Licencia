@@ -2,23 +2,22 @@ package filter
 
 import (
 	"back-src/controller/utils/data"
-	"back-src/controller/utils/libs"
+	"back-src/controller/utils/libs/sets"
 	"back-src/model/database"
 	"back-src/model/existence"
 )
 
 type invertedIndex struct {
-	invertedMap map[string]*libs.Set //skills -> set of projectIds
+	invertedMap map[string]sets.Set //skills -> set of projectIds
 }
 
-var inv *invertedIndex = &invertedIndex{}
+var inv = &invertedIndex{map[string]sets.Set{}}
 
 func (inv *invertedIndex) addKeyToMap(skill string, projectId string) {
 	if set, ok := inv.invertedMap[skill]; ok {
 		set.Add(projectId)
 	} else {
-		set2 := &libs.Set{}
-		set2.Add(projectId)
+		set2 := sets.NewSet(projectId)
 		inv.invertedMap[skill] = set2
 	}
 }
