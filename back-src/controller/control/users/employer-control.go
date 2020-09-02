@@ -1,6 +1,7 @@
 package users
 
 import (
+	"back-src/controller/control/filter"
 	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
@@ -54,8 +55,8 @@ func AddProjectToEmployer(token string, project existence.Project, db *database.
 		if emp, err := db.EmployerTable.GetEmployer(username); err == nil {
 			project.EmployerUsername = username
 			project.ProjectStatus = existence.Open
-			if err := checkProjectSkills(project.FieldsWithSkills, db); err == nil {
-				if project.Id, err = makeNewProjectId(db); err == nil {
+			if project.Id, err = makeNewProjectId(db); err == nil {
+				if err := checkProjectSkills(project.Id, project.FieldsWithSkills, db); err == nil {
 					db.ProjectTable.AddProject(project)
 					emp.ProjectIds = append(emp.ProjectIds, project.Id)
 					if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
@@ -92,7 +93,7 @@ func makeNewProjectId(db *database.Database) (id string, e error) {
 	return id, e
 }
 
-func checkProjectSkills(fieldsWithSkills map[string][]string, db *database.Database) error {
+func checkProjectSkills(projectId string, fieldsWithSkills map[string][]string, db *database.Database) error {
 	for field, skills := range fieldsWithSkills {
 		oldSkills, err := db.FieldTable.GetFieldSkills(field)
 		if err != nil {
@@ -104,7 +105,9 @@ func checkProjectSkills(fieldsWithSkills map[string][]string, db *database.Datab
 					return err
 				}
 			}
+			filter.AddSkillToProject(skill, projectId)
 		}
+
 	}
 	return nil
 }

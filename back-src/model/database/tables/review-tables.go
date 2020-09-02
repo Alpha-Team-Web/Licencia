@@ -9,6 +9,10 @@ type ReviewTable struct {
 	conn *pg.DB
 }
 
+func NewReviewTable(db *pg.DB) *ReviewTable {
+	return &ReviewTable{db}
+}
+
 func (table *ReviewTable) AddFreelancerReview(review existence.FreelancerEmployerReview) error {
 	_, err := table.conn.Model(&review).Insert()
 	return err

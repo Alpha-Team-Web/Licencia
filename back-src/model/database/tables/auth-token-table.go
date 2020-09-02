@@ -10,6 +10,10 @@ type AuthTokenTable struct {
 	conn *pg.DB
 }
 
+func NewAuthTokenTable(db *pg.DB) *AuthTokenTable {
+	return &AuthTokenTable{db}
+}
+
 func (table *AuthTokenTable) MakeNewAuth(username, token string, isFreelancer bool) (string, error) {
 	auth := existence.AuthToken{token, username, time.Now(), isFreelancer, false}
 	if _, err := table.conn.Model(&auth).Insert(); err != nil {

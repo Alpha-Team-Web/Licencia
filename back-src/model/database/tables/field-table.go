@@ -9,6 +9,10 @@ type FieldTable struct {
 	conn *pg.DB
 }
 
+func NewFieldsTable(db *pg.DB) *FieldTable {
+	return &FieldTable{db}
+}
+
 func (table *FieldTable) GetFieldSkills(fieldId string) (skills []string, error error) {
 	var field existence.Field
 	error = table.conn.Model(&field).Column("skills").Where("id = ?", fieldId).Select()

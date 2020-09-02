@@ -11,6 +11,10 @@ type FreelancerTable struct {
 	conn *pg.DB
 }
 
+func NewFreelancerTable(db *pg.DB) *FreelancerTable {
+	return &FreelancerTable{db}
+}
+
 func (table *FreelancerTable) DoesFreelancerExistWithUsername(username string) bool {
 	resultSet := &[]existence.Freelancer{}
 	_ = table.conn.Model(resultSet).Where("username = ?", username).Select()

@@ -51,17 +51,16 @@ func NewDb() *Database {
 	return &Database{
 		db:              db,
 		meta:            meta,
-		AuthTokenTable:  &tables.AuthTokenTable{db},
-		EmployerTable:   &tables.EmployerTable{db},
-		FieldTable:      &tables.FieldTable{db},
-		FreelancerTable: &tables.FreelancerTable{db},
-		ProjectTable:    &tables.ProjectTable{db},
-		ReviewTable:     &tables.ReviewTable{db},
+		AuthTokenTable:  tables.NewAuthTokenTable(db),
+		EmployerTable:   tables.NewEmployerTable(db),
+		FieldTable:      tables.NewFieldsTable(db),
+		FreelancerTable: tables.NewFreelancerTable(db),
+		ProjectTable:    tables.NewProjectTable(db),
+		ReviewTable:     tables.NewReviewTable(db),
 	}
 }
 
 func (db *Database) Initialize() error {
-
 	defer func() {
 		db.meta.IsFirstInit = false
 		if err := db.updateDBMetadata(); err != nil {

@@ -10,6 +10,10 @@ type EmployerTable struct {
 	conn *pg.DB
 }
 
+func NewEmployerTable(db *pg.DB) *EmployerTable {
+	return &EmployerTable{db}
+}
+
 func (table *EmployerTable) DoesEmployerExistWithUsername(username string) bool {
 	resultSet := &[]existence.Employer{}
 	_ = table.conn.Model(resultSet).Where("username = ?", username).Select()
@@ -35,7 +39,7 @@ func (table *EmployerTable) UpdateEmployerProfile(username string, emp existence
 }
 
 func (table *EmployerTable) UpdateEmployerPassword(username string, oldPass string, newPass string) error {
-	emp, _ := table.conn.GetEmployer(username)
+	emp, _ := table.GetEmployer(username)
 	if emp.Password != oldPass {
 		return errors.New("password mismatch")
 	}

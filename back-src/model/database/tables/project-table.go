@@ -9,6 +9,10 @@ type ProjectTable struct {
 	conn *pg.DB
 }
 
+func NewProjectTable(db *pg.DB) *ProjectTable {
+	return &ProjectTable{db}
+}
+
 func (table *ProjectTable) GetFreelancerUsernameByProjectId(projectId string) (string, error) {
 	project := existence.Project{}
 	if err := table.conn.Model(&project).Where("id = ?", projectId).Column("freelancer_username").Select(); err != nil {
