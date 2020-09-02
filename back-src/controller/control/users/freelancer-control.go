@@ -8,14 +8,14 @@ import (
 	"errors"
 )
 
-func ChooseFreelancerSkills(username string, fieldId string, skills []string, DB *database.Database) error {
-	if fieldSkills, err := DB.FieldTable.GetFieldSkills(fieldId); err == nil {
-		if err := DB.FreelancerTable.AddFreelancerSkills(username, fieldId, skills); err != nil {
+func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *database.Database) error {
+	if fieldSkills, err := db.FieldTable.GetFieldSkills(fieldId); err == nil {
+		if err := db.FreelancerTable.AddFreelancerSkills(username, fieldId, skills); err != nil {
 			return err
 		}
 		for _, skill := range skills {
 			if !libs.ContainsString(fieldSkills, skill) {
-				if err := DB.FieldTable.AddSkillToField(fieldId, skill); err != nil {
+				if err := db.FieldTable.AddSkillToField(fieldId, skill); err != nil {
 					return err
 				}
 			}
@@ -26,33 +26,33 @@ func ChooseFreelancerSkills(username string, fieldId string, skills []string, DB
 	}
 }
 
-func EditFreelancerProfile(token string, frl existence.Freelancer, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return DB.FreelancerTable.UpdateFreelancerProfile(username, frl)
+func EditFreelancerProfile(token string, frl existence.Freelancer, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		return db.FreelancerTable.UpdateFreelancerProfile(username, frl)
 	} else {
 		return err
 	}
 }
 
-func EditFreelancerPassword(token string, frl data.ChangePassRequest, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return DB.FreelancerTable.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
+func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		return db.FreelancerTable.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
 	} else {
 		return err
 	}
 }
 
-func EditFreelancerLinks(token string, frl existence.Freelancer, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return DB.FreelancerTable.UpdateFreelancerLinks(username, frl)
+func EditFreelancerLinks(token string, frl existence.Freelancer, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		return db.FreelancerTable.UpdateFreelancerLinks(username, frl)
 	} else {
 		return err
 	}
 }
 
-func GetFreelancer(token string, DB *database.Database) (existence.Freelancer, error) {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if frl, err := DB.FreelancerTable.GetFreelancer(username); err != nil {
+func GetFreelancer(token string, db *database.Database) (existence.Freelancer, error) {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if frl, err := db.FreelancerTable.GetFreelancer(username); err != nil {
 			return existence.Freelancer{}, err
 		} else {
 			frl.Password = "N/A"

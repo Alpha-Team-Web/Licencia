@@ -43,55 +43,11 @@ func (handler *Handler) Login(ctx *gin.Context) (token string, error error) {
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
-		token, error = users.Login(loginReq, getUsernameGetter(loginReq.Id, loginReq.IsFreelancer), getPasswordGetter(loginReq.IsFreelancer), DB)
+		token, error = users.Login(loginReq, DB)
 	default:
 		error = errors.New("invalid query: " + accountType)
 	}
 	return
-}
-
-func getUsernameGetter(Id string, isFreelancer bool) func() (username string, error error) {
-	if isFreelancer {
-		return getUsernameById(Id, DB.FreelancerTable.DoesFreelancerExistWithEmail, DB.FreelancerTable.DoesFreelancerExistWithUsername, DB.FreelancerTable.GetFreelancerUsernameByEmail)
-	} else {
-		return getUsernameById(Id, DB.EmployerTable.DoesEmployerExistWithEmail, DB.EmployerTable.DoesEmployerExistWithUsername, DB.EmployerTable.GetEmployerUsernameByEmail)
-	}
-}
-
-type doesExist func(string) bool
-type getUsernameByEmail func(string) (string, error)
-
-func getUsernameById(Id string, doesUserExistWithEmail doesExist, doesUserExistWithUsername doesExist, getUsername getUsernameByEmail) func() (string, error) {
-	var username string
-	var e error
-	if libs.IsEmailValid(Id) {
-		if doesUserExistWithEmail(Id) {
-			if user, err := getUsername(Id); err == nil {
-				username = user
-			} else {
-				e = err
-			}
-		} else {
-			e = errors.New("not signed up email: " + Id)
-		}
-	} else {
-		if doesUserExistWithUsername(Id) {
-			username = Id
-		} else {
-			e = errors.New("not signed up username: " + Id)
-		}
-	}
-	return func() (string, error) {
-		return username, e
-	}
-}
-
-func getPasswordGetter(isFreelancer bool) func(string) (string, error) {
-	if isFreelancer {
-		return DB.FreelancerTable.GetFreelancerPasswordByUsername
-	} else {
-		return DB.EmployerTable.GetEmployerPasswordByUsername
-	}
 }
 
 func CheckToken(token, userType string) (string, error) {

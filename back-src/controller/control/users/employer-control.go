@@ -12,25 +12,25 @@ const (
 	ProjectIdSize = 15
 )
 
-func EditEmployerProfile(token string, emp existence.Employer, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return DB.EmployerTable.UpdateEmployerProfile(username, emp)
+func EditEmployerProfile(token string, emp existence.Employer, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		return db.EmployerTable.UpdateEmployerProfile(username, emp)
 	} else {
 		return err
 	}
 }
 
-func EditEmployerPassword(token string, emp data.ChangePassRequest, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return DB.EmployerTable.UpdateEmployerPassword(username, emp.OldPass, emp.NewPass)
+func EditEmployerPassword(token string, emp data.ChangePassRequest, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		return db.EmployerTable.UpdateEmployerPassword(username, emp.OldPass, emp.NewPass)
 	} else {
 		return err
 	}
 }
 
-func GetEmployer(token string, DB *database.Database) (existence.Employer, error) {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if emp, err := DB.EmployerTable.GetEmployer(username); err != nil {
+func GetEmployer(token string, db *database.Database) (existence.Employer, error) {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if emp, err := db.EmployerTable.GetEmployer(username); err != nil {
 			return existence.Employer{}, err
 		} else {
 			emp.Password = "N/A"
@@ -41,11 +41,11 @@ func GetEmployer(token string, DB *database.Database) (existence.Employer, error
 	}
 }
 
-func GetEmployerProjects(username string, DB *database.Database) ([]existence.Project, error) {
-	if !DB.EmployerTable.DoesEmployerExistWithUsername(username) {
+func GetEmployerProjects(username string, db *database.Database) ([]existence.Project, error) {
+	if !db.EmployerTable.DoesEmployerExistWithUsername(username) {
 		return nil, errors.New("no user with such username :" + username)
 	}
-	return DB.EmployerTable.GetEmployerProjects(username)
+	return db.EmployerTable.GetEmployerProjects(username)
 }
 
 func AddProjectToEmployer(token string, project existence.Project, db *database.Database) (e error) {
@@ -109,13 +109,13 @@ func checkProjectSkills(fieldsWithSkills map[string][]string, db *database.Datab
 	return nil
 }
 
-func EditEmployerProject(token string, project existence.Project, DB *database.Database) error {
-	if username, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if _, err := DB.EmployerTable.GetEmployer(username); err == nil {
-			if realProject, err := DB.ProjectTable.GetProject(project.Id); err == nil {
+func EditEmployerProject(token string, project existence.Project, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if _, err := db.EmployerTable.GetEmployer(username); err == nil {
+			if realProject, err := db.ProjectTable.GetProject(project.Id); err == nil {
 				if realProject.EmployerUsername == username {
 					if realProject.ProjectStatus == existence.Open {
-						return DB.ProjectTable.EditProject(realProject.Id, project)
+						return db.ProjectTable.EditProject(realProject.Id, project)
 					} else {
 						return errors.New("project not open")
 					}
@@ -133,22 +133,22 @@ func EditEmployerProject(token string, project existence.Project, DB *database.D
 	}
 }
 
-func AssignProjectToFreelancer(token string, freelancer string, projectId string, DB *database.Database) error {
-	if _, err := DB.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if requests, err := DB.ProjectTable.GetProjectRequests(projectId); err == nil {
+func AssignProjectToFreelancer(token string, freelancer string, projectId string, db *database.Database) error {
+	if _, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if requests, err := db.ProjectTable.GetProjectRequests(projectId); err == nil {
 			for s := range requests {
-				DB.FreelancerTable.DeleteFreelancerRequestedProject(s, projectId)
+				db.FreelancerTable.DeleteFreelancerRequestedProject(s, projectId)
 			}
-			if err := DB.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
+			if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
 				return err
 			}
-			if err := DB.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
+			if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
 				return err
 			}
-			if err := DB.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
+			if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
 				return err
 			}
-			if err := DB.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
+			if err := db.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
 				return err
 			}
 			return nil
