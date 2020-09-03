@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class ProfilePage extends Component {
+class MainSignUpMenu extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ class ProfilePage extends Component {
     }
 }
 
-export default ProfilePage;
+export default MainSignUpMenu;
