@@ -2,7 +2,7 @@ package routing
 
 import (
 	"back-src/model/existence"
-	"back-src/view/to-be-deleted/files"
+	"back-src/view/api/respond"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,12 +13,10 @@ func (router *router) addFileEndpoints() {
 	router.addNewEndpointGroup("/employer", "employer-profile-pic", "profile-pic")
 
 	router.addHandlerToPath("/upload", "freelancer-profile-pic", Post, func(context *gin.Context) {
-		token, err := router.handler.UploadProfileImage(context, existence.FreelancerProfile)
-		files.RespondUploadProfileImage(context, token, err)
+		respond.Respond(router.handler.UploadProfileImage(context, existence.FreelancerProfile))
 	})
 
 	router.addHandlerToPath("/upload", "employer-profile-pic", Post, func(context *gin.Context) {
-		token, err := router.handler.UploadProfileImage(context, existence.EmployerProfile)
-		files.RespondUploadProfileImage(context, token, err)
+		respond.Respond(router.handler.UploadProfileImage(context, existence.EmployerProfile))
 	})
 }

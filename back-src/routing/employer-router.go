@@ -1,8 +1,7 @@
 package routing
 
 import (
-	"back-src/view/to-be-deleted/projects"
-	"back-src/view/to-be-deleted/users"
+	"back-src/view/api/respond"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,38 +11,31 @@ func (router *router) addEmployerEndpoints() {
 	router.addNewEndpointGroup("/projects", "employer-projects", "employer")
 
 	router.addHandlerToPath("/general", "employer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditEmployerProfile(context)
-		users.RespondEmployerEdit(context, token, err)
+		respond.Respond(router.handler.EditEmployerProfile(context))
 	})
 
 	router.addHandlerToPath("/password", "employer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditEmployerPassword(context)
-		users.RespondEmployerEdit(context, token, err)
+		respond.Respond(router.handler.EditEmployerPassword(context))
 	})
 
 	router.addHandlerToPath("/add", "employer-projects", Post, func(context *gin.Context) {
-		token, err := router.handler.AddEmployerProject(context)
-		users.RespondEmployerAddProject(context, token, err)
+		respond.Respond(router.handler.AddEmployerProject(context))
 	})
 
 	router.addHandlerToPath("/get", "employer-profile", Get, func(context *gin.Context) {
-		emp, token, err := router.handler.GetEmployerProfile(context)
-		users.RespondEmployerGetProfile(context, token, emp, err)
+		respond.Respond(router.handler.GetEmployerProfile(context))
 	})
 
 	router.addHandlerToPath("/edit", "employer-projects", Post, func(context *gin.Context) {
-		token, err := router.handler.EditEmployerProject(context)
-		users.RespondEmployerEditProject(context, token, err)
+		respond.Respond(router.handler.EditEmployerProject(context))
 	})
 
 	router.addHandlerToPath("/assign", "employer-projects", Post, func(context *gin.Context) {
-		token, err := router.handler.AssignProjectToFreelancer(context)
-		users.RespondEmployerAssignProject(context, token, err)
+		respond.Respond(router.handler.AssignProjectToFreelancer(context))
 	})
 
 	router.addHandlerToPath("/review", "employer-projects", Post, func(context *gin.Context) {
-		token, err := router.handler.AddEmployerReview(context)
-		projects.RespondReview(context, token, err)
+		respond.Respond(router.handler.AddEmployerReview(context))
 	})
 
 }

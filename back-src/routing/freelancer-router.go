@@ -1,8 +1,7 @@
 package routing
 
 import (
-	"back-src/view/to-be-deleted/projects"
-	"back-src/view/to-be-deleted/users"
+	"back-src/view/api/respond"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,33 +11,27 @@ func (router *router) addFreelancerEndpoints() {
 	router.addNewEndpointGroup("/projects", "freelancer-projects", "freelancer")
 
 	router.addHandlerToPath("/get", "freelancer-profile", Get, func(context *gin.Context) {
-		emp, token, err := router.handler.GetFreelancerProfile(context)
-		users.RespondFreelancerGetProfile(context, token, emp, err)
+		respond.Respond(router.handler.GetFreelancerProfile(context))
 	})
 
 	router.addHandlerToPath("/general", "freelancer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditFreelancerProfile(context)
-		users.RespondFreelancerEdit(context, token, err)
+		respond.Respond(router.handler.EditFreelancerProfile(context))
 	})
 
 	router.addHandlerToPath("/password", "freelancer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditFreelancerPassword(context)
-		users.RespondFreelancerEdit(context, token, err)
+		respond.Respond(router.handler.EditFreelancerPassword(context))
 	})
 
 	router.addHandlerToPath("/links", "freelancer-profile", Post, func(context *gin.Context) {
-		token, err := router.handler.EditFreelancerLinks(context)
-		users.RespondFreelancerEdit(context, token, err)
+		respond.Respond(router.handler.EditFreelancerLinks(context))
 	})
 
 	router.addHandlerToPath("/review", "freelancer-projects", Post, func(context *gin.Context) {
-		token, err := router.handler.AddFreelancerReview(context)
-		projects.RespondReview(context, token, err)
+		respond.Respond(router.handler.AddFreelancerReview(context))
 	})
 
-	router.addHandlerToPath("/request", "freelancer-projects", Post, func(ctx *gin.Context) {
-		token, err := router.handler.FreelancerRequestToProject(ctx)
-		users.RespondFreelancerRequestToProject(ctx, token, err)
+	router.addHandlerToPath("/request", "freelancer-projects", Post, func(context *gin.Context) {
+		respond.Respond(router.handler.FreelancerRequestToProject(context))
 	})
 
 }

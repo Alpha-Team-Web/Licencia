@@ -18,42 +18,42 @@ func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 	case existence.EmployerType:
 		employer := existence.Employer{}
 		if err := ctx.ShouldBindJSON(&employer); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken)
+			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
 		}
 		if err := users.RegisterEmployer(employer, DB); err != nil {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken)
+			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
 		}
 
 	case existence.FreelancerType:
 		freelancer := existence.Freelancer{}
 		if err := ctx.ShouldBindJSON(&freelancer); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken)
+			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
 		}
 		if err := users.RegisterFreelancer(freelancer, DB); err != nil {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken)
+			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
 		}
 
 	default:
-		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken)
+		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
 	}
-	return notifications.GetSuccessfulNotif(ctx, NotAssignedToken)
+	return notifications.GetSuccessfulNotif(ctx, NotAssignedToken, nil)
 }
 
 func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	loginReq := data.LoginRequest{}
 	if err := ctx.ShouldBindJSON(&loginReq); err != nil {
-		return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken)
+		return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
 	}
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
 		if token, err := users.Login(loginReq, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken)
+			return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
 		} else {
-			return notifications.GetSuccessfulNotif(ctx, token)
+			return notifications.GetSuccessfulNotif(ctx, token, nil)
 		}
 	default:
-		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken)
+		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
 	}
 }
 

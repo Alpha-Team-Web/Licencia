@@ -4,75 +4,89 @@ import (
 	"back-src/controller/control/users"
 	"back-src/controller/utils/data"
 	"back-src/model/existence"
+	"back-src/view/notifications"
 	"github.com/gin-gonic/gin"
 )
 
-func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
-		return "", err
+func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) notifications.Notification {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frl := existence.Freelancer{}
 		frl.Username = "NNNNNN"
 		frl.Password = "NNNNNN"
 		frl.Email = "N@N.N"
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
-			return newToken, err
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
-		return newToken, users.EditFreelancerProfile(token, frl, DB)
+		if err := users.EditFreelancerProfile(newToken, frl, DB); err != nil {
+			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+		}
 	}
 }
 
-func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
-		return "", err
+func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.Notification {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frl := data.ChangePassRequest{}
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
-			return newToken, err
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
-		return newToken, users.EditFreelancerPassword(token, frl, DB)
+		if err := users.EditFreelancerPassword(newToken, frl, DB); err != nil {
+			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+		}
 	}
 }
 
-func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
-		return "", err
+func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) notifications.Notification {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frl := existence.Freelancer{}
 		frl.Username = "NNNNNN"
 		frl.Password = "NNNNNN"
 		frl.Email = "N@N.N"
 		if err := ctx.ShouldBindJSON(&frl); err != nil {
-			return newToken, err
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
-		return newToken, users.EditFreelancerLinks(token, frl, DB)
+		if err := users.EditFreelancerLinks(newToken, frl, DB); err != nil {
+			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+		}
 	}
 }
 
-func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) (existence.Freelancer, string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
-		return existence.Freelancer{}, "", err
+func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) notifications.Notification {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
-		frl, err := users.GetFreelancer(newToken, DB)
-		return frl, newToken, err
+		if frl, err := users.GetFreelancer(newToken, DB); err != nil {
+			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, newToken, frl)
+		}
 	}
 }
 
-func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) (string, error) {
-	token := ctx.GetHeader("Token")
-	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
-		return "", err
+func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) notifications.Notification {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		request := data.FreelancerRequestForProject{}
 		if err := ctx.ShouldBindJSON(&request); err != nil {
-			return newToken, err
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		} else {
-			err := users.FreelancerRequestsForProject(newToken, request, DB)
-			return newToken, err
+			if err := users.FreelancerRequestsForProject(newToken, request, DB); err != nil {
+				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			} else {
+				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+			}
 		}
 	}
 }
