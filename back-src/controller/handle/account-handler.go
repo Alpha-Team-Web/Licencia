@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-const UserImageUploaderFormName = "userImage"
-
 func (handler *Handler) Register(ctx *gin.Context) error {
 
 	switch accountType := ctx.Query("account-type"); accountType {
@@ -106,17 +104,6 @@ func reInitToken(auth existence.AuthToken) (string, error) {
 			return "", err
 		} else {
 			return auth.Token, nil
-		}
-	}
-}
-
-func (handler *Handler) UploadUserImage(ctx *gin.Context) error {
-
-	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
-		if fileHeader, err := ctx.FormFile(UserImageUploaderFormName); err == nil {
-
-		} else {
-			return err
 		}
 	}
 }

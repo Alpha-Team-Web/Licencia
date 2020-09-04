@@ -40,8 +40,9 @@ func RespondFilterProjects(context *gin.Context, projects []responses.ListicProj
 			case strings.Contains(err.Error(), "not involved in project the username: "):
 				status = http.StatusMethodNotAllowed
 			default:
-				context.JSON(status, responses.Response{Message: err.Error()})
+				status = http.StatusInternalServerError
 			}
+			context.JSON(status, responses.Response{Message: err.Error()})
 		}
 	}
 }

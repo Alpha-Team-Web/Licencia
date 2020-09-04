@@ -12,7 +12,7 @@ const (
 )
 
 type Profile struct {
+	File
 	Id   string `json:"id" sql:",nopk"`
 	Type string `json:"type"`
-	File
 }

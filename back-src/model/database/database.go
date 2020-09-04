@@ -31,6 +31,7 @@ type Database struct {
 	FreelancerTable *tables.FreelancerTable
 	ProjectTable    *tables.ProjectTable
 	ReviewTable     *tables.ReviewTable
+	ProfileTable    *tables.ProfileTable
 }
 
 func NewDb() *Database {
@@ -57,6 +58,7 @@ func NewDb() *Database {
 		FreelancerTable: tables.NewFreelancerTable(db),
 		ProjectTable:    tables.NewProjectTable(db),
 		ReviewTable:     tables.NewReviewTable(db),
+		ProfileTable:    tables.NewProfileTable(db),
 	}
 }
 
