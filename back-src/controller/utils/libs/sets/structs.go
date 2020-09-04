@@ -9,16 +9,6 @@ type Set struct {
 	keys   map[string]void
 }
 
-/*
-set3: 223
-map: 110
-*/
-
-/*
-set4: 566
-map: 110
-*/
-
 func NewSet(firstElements ...string) Set {
 	set := Set{keys: map[string]void{}}
 	set.AddAll(firstElements...)
