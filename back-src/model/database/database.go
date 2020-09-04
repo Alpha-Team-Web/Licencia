@@ -85,6 +85,9 @@ func (db *Database) Initialize() error {
 	if err := db.initReviewTables(); err != nil {
 		return err
 	}
+	if err := db.initProfileTable(); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -173,4 +176,8 @@ func (db *Database) initReviewTables() error {
 		return err
 	}
 	return nil
+}
+
+func (db *Database) initProfileTable() error {
+	return db.db.CreateTable(&existence.Profile{}, options)
 }

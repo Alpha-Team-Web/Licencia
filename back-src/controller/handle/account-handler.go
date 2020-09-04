@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const UserImageUploaderFormName = "userImage"
+
 func (handler *Handler) Register(ctx *gin.Context) error {
 
 	switch accountType := ctx.Query("account-type"); accountType {
@@ -51,26 +53,37 @@ func (handler *Handler) Login(ctx *gin.Context) (token string, error error) {
 }
 
 func CheckToken(token, userType string) (string, error) {
-	if isThereAuth, err := DB.AuthTokenTable.IsThereAuthWithToken(token); err != nil {
-		return "", err
-	} else if isThereAuth {
-		if auth, err := DB.AuthTokenTable.GetAuthByToken(token); err != nil {
-			return "", err
+	if auth, err := formalCheckToken(token); err == nil {
+		if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
+			return reInitToken(auth)
 		} else {
-			if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
-				if newToken, err := reInitToken(auth); err != nil {
-					return "", err
-				} else {
-					return newToken, nil
-				}
-			} else {
-				return "", errors.New("wrong user type token: " + token)
-			}
+			return "", errors.New("wrong user type token: " + token)
 		}
 	} else {
-		return "", errors.New("not authorized token: " + token)
+		return "", err
 	}
+}
 
+func CheckTokenIgnoreType(token string) (string, error) {
+	if auth, err := formalCheckToken(token); err == nil {
+		return reInitToken(auth)
+	} else {
+		return "", err
+	}
+}
+
+func formalCheckToken(token string) (existence.AuthToken, error) {
+	if isThereAuth, err := DB.AuthTokenTable.IsThereAuthWithToken(token); err != nil {
+		return existence.AuthToken{}, err
+	} else if isThereAuth {
+		if auth, err := DB.AuthTokenTable.GetAuthByToken(token); err != nil {
+			return existence.AuthToken{}, err
+		} else {
+			return auth, err
+		}
+	} else {
+		return existence.AuthToken{}, errors.New("not authorized token: " + token)
+	}
 }
 
 func reInitToken(auth existence.AuthToken) (string, error) {
@@ -93,6 +106,17 @@ func reInitToken(auth existence.AuthToken) (string, error) {
 			return "", err
 		} else {
 			return auth.Token, nil
+		}
+	}
+}
+
+func (handler *Handler) UploadUserImage(ctx *gin.Context) error {
+
+	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+		if fileHeader, err := ctx.FormFile(UserImageUploaderFormName); err == nil {
+
+		} else {
+			return err
 		}
 	}
 }

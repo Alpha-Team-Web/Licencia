@@ -2,12 +2,6 @@ package existence
 
 import "time"
 
-type File struct {
-	ProjectID string
-	Title     string
-	Url       string
-}
-
 /*--------------------------------------Review--------------------------------------*/
 
 type booleanReviewFreelancer struct {
@@ -46,9 +40,9 @@ type FreelancerEmployerReview struct {
 
 //Project Stats
 const (
-	Open    = "Open"
-	Closed  = "Closed"
-	OnGoing = "OnGoing"
+	Open    = "open"
+	Closed  = "closed"
+	OnGoing = "ongoing"
 )
 
 type Project struct {

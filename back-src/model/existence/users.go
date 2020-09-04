@@ -20,16 +20,10 @@ type person struct {
 	Address     string `json:"address" binding:"max=100"`
 }
 
-type image struct {
-	Title string `json:"title"`
-	Url   string `json:"url"`
-}
-
 type Employer struct {
 	tableName struct{} `sql:"employers"`
 	user
 	person
-	image
 	ProjectIds []string `json:"project-ids"`
 }
 
@@ -49,7 +43,6 @@ type Freelancer struct {
 	tableName struct{} `sql:"freelancers"`
 	user
 	person
-	image
 	ProjectIds            []string            `json:"project-ids"`
 	RequestedProjectIds   []string            `json:"requested-project-ids"`
 	AccountType           string              `json:"account-type" sql:",notnull"`
