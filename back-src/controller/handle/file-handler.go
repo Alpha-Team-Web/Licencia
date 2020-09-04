@@ -18,6 +18,7 @@ func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string)
 			if file, header, err := ctx.Request.FormFile(ProfileImageUploaderForName); err == nil {
 				return newToken, files.UploadUserImage(newToken, profileType, file, header, DB)
 			} else {
+				panic(err)
 				return newToken, err
 			}
 		}
