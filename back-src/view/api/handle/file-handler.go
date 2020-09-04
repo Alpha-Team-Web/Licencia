@@ -4,6 +4,7 @@ import (
 	"back-src/controller/control/files"
 	"back-src/model/existence"
 	"back-src/view/notifications"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,6 +25,25 @@ func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string)
 				}
 			} else {
 				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			}
+		}
+	} else {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	}
+}
+
+func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType string) notifications.Notification {
+
+	if newToken, err := checkTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+		if profileType == existence.ProjectProfile {
+			//TODO
+			return notifications.Notification{}
+		} else {
+			if file, err := files.DownloadUserImage(newToken, profileType, DB); err != nil {
+				return notifications.GetDatabaseErrorNotif(ctx, newToken, nil)
+			} else {
+				fmt.Println(file)
+				return notifications.GetSuccessfulNotif(ctx, newToken, file)
 			}
 		}
 	} else {

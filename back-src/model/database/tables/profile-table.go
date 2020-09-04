@@ -19,7 +19,7 @@ func (table *ProfileTable) UpdateProfileImage(profile existence.Profile) error {
 	return err
 }
 
-func (table *ProfileTable) GetProfileImage(profileType string, id string) (existence.Profile, error) {
+func (table *ProfileTable) GetProfileImage(profileType, id string) (existence.Profile, error) {
 	profile := existence.Profile{}
 	err := table.conn.Model(&profile).Where("id = ?", id).Where("type = ?", profileType).Select()
 	return profile, err

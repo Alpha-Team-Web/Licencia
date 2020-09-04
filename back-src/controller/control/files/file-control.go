@@ -26,3 +26,15 @@ func UploadUserImage(token string, profileType string, file multipart.File, head
 		return db.ProfileTable.AddProfileImage(profile)
 	}
 }
+
+func DownloadUserImage(token string, profileType string, db *database.Database) (existence.File, error) {
+	username, err := db.AuthTokenTable.GetUsernameByToken(token)
+	if err != nil {
+		return existence.File{}, err
+	}
+	if prof, err := db.ProfileTable.GetProfileImage(profileType, username); err != nil {
+		return existence.File{}, err
+	} else {
+		return prof.File, nil
+	}
+}
