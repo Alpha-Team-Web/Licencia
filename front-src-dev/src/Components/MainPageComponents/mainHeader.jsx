@@ -3,6 +3,7 @@ import '../../CSS Designs/Header.css';
 import '../../CSS Designs/basic.css';
 import {Button, Image} from "semantic-ui-react";
 import HeaderListItem from "./HeaderListItem";
+import LicenciaLogo from '../../Pics/Licencia-Logo.png';
 // import '../../CSS Designs/MainPage';
 
 class MainHeader extends Component {
@@ -16,8 +17,7 @@ class MainHeader extends Component {
                     <HeaderListItem href='KireKhar' value='دنبال کننده ها'/>
                     <HeaderListItem href='KireKhar' value='دنبال شونده ها'/>
                 </ul>
-                {/*<a href="#badan" className="Header-Link"><img src="../../Pics/Licencia-Logo.png" alt="Licencia" id="Logo"/></a>*/}
-                <Image as='a' href="#badan" className='Header-Link' src='../../Pics/Licencia-Logo.png' alt="Licencia" id="Logo"/>
+                <Image as='a' href="#badan" className='Header-Link' src={LicenciaLogo} alt="Licencia" id="Logo"/>
             </div>
         );
     }
