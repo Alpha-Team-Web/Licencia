@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import '../../CSS Designs/MainPage/content1.css';
 import codingPersonImg from '../../Pics/codingPerson.jpg';
+import MainLoginMenu from "./mainLoginMenu";
 
 class MainContent extends Component {
     render() {
@@ -26,6 +27,8 @@ class MainContent extends Component {
                         <p className="textP">بزرگترین سایت ایران برای فریلنسر ها</p>
                     </div>
                 </div>
+
+                <MainLoginMenu/>
             </Fragment>
         );
     }
