@@ -5,52 +5,59 @@ import (
 	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs"
 	"back-src/model/existence"
+	"back-src/view/notifications"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"time"
 )
 
-func (handler *Handler) Register(ctx *gin.Context) error {
+func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 
 	switch accountType := ctx.Query("account-type"); accountType {
 
 	case existence.EmployerType:
 		employer := existence.Employer{}
 		if err := ctx.ShouldBindJSON(&employer); err != nil {
-			return err
+			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken)
 		}
-		return users.RegisterEmployer(employer, DB)
+		if err := users.RegisterEmployer(employer, DB); err != nil {
+			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken)
+		}
 
 	case existence.FreelancerType:
 		freelancer := existence.Freelancer{}
 		if err := ctx.ShouldBindJSON(&freelancer); err != nil {
-			return err
+			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken)
 		}
-		return users.RegisterFreelancer(freelancer, DB)
+		if err := users.RegisterFreelancer(freelancer, DB); err != nil {
+			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken)
+		}
 
 	default:
-		return errors.New("invalid query: " + accountType)
+		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken)
 	}
-
+	return notifications.GetSuccessfulNotif(ctx, NotAssignedToken)
 }
 
-func (handler *Handler) Login(ctx *gin.Context) (token string, error error) {
+func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	loginReq := data.LoginRequest{}
 	if err := ctx.ShouldBindJSON(&loginReq); err != nil {
-		error = err
-		return
+		return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken)
 	}
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
-		token, error = users.Login(loginReq, DB)
+		if token, err := users.Login(loginReq, DB); err != nil {
+			return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken)
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, token)
+		}
 	default:
-		error = errors.New("invalid query: " + accountType)
+		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken)
 	}
-	return
 }
 
-func CheckToken(token, userType string) (string, error) {
+func checkToken(token, userType string) (string, error) {
 	if auth, err := formalCheckToken(token); err == nil {
 		if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
 			return reInitToken(auth)
@@ -62,7 +69,7 @@ func CheckToken(token, userType string) (string, error) {
 	}
 }
 
-func CheckTokenIgnoreType(token string) (string, error) {
+func checkTokenIgnoreType(token string) (string, error) {
 	if auth, err := formalCheckToken(token); err == nil {
 		return reInitToken(auth)
 	} else {

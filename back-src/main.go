@@ -1,7 +1,7 @@
 package main
 
 import (
-	"back-src/controller/routing"
+	"back-src/routing"
 )
 
 func main() {

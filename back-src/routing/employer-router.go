@@ -1,8 +1,8 @@
 package routing
 
 import (
-	"back-src/view/projects"
-	"back-src/view/users"
+	"back-src/view/to-be-deleted/projects"
+	"back-src/view/to-be-deleted/users"
 	"github.com/gin-gonic/gin"
 )
 

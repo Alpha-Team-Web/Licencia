@@ -8,7 +8,7 @@ import (
 
 func (handler *Handler) AddFreelancerReview(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frlReview := existence.FreelancerEmployerReview{}
@@ -21,7 +21,7 @@ func (handler *Handler) AddFreelancerReview(ctx *gin.Context) (string, error) {
 
 func (handler *Handler) AddEmployerReview(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		empReview := existence.EmployerFreelancerReview{}

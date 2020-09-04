@@ -2,7 +2,7 @@ package routing
 
 import (
 	"back-src/model/existence"
-	"back-src/view/files"
+	"back-src/view/to-be-deleted/files"
 	"github.com/gin-gonic/gin"
 )
 

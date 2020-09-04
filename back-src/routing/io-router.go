@@ -1,7 +1,7 @@
 package routing
 
 import (
-	"back-src/view"
+	"back-src/view/to-be-deleted"
 	"github.com/gin-gonic/gin"
 )
 
@@ -9,13 +9,13 @@ func (router *router) addIOEndpoints() {
 	router.addNewEndpointGroup("/io", "io", "")
 
 	router.addHandlerToPath("/register", "io", Post, func(context *gin.Context) {
-		view.RespondRegister(context, router.handler.Register(context))
+		to_be_deleted.RespondIO(router.handler.Register(context))
 	})
 	router.addHandlerToPath("/login", "io", Post, func(context *gin.Context) {
-		token, err := router.handler.Login(context)
-		if err == nil {
-			router.handler.AddNewClock(token)
+		notification := router.handler.Login(context)
+		if notification.StatusCode == 200 {
+			router.handler.AddNewClock(notification.Token)
 		}
-		view.RespondLogin(context, token, err)
+		to_be_deleted.RespondIO(notification)
 	})
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func (handler *Handler) EditEmployerProfile(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return "", err
 	} else {
 		emp := existence.Employer{}
@@ -23,7 +23,7 @@ func (handler *Handler) EditEmployerProfile(ctx *gin.Context) (string, error) {
 }
 
 func (handler *Handler) EditEmployerPassword(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return "", err
 	} else {
 		emp := data.ChangePassRequest{}
@@ -35,7 +35,7 @@ func (handler *Handler) EditEmployerPassword(ctx *gin.Context) (string, error) {
 }
 
 func (handler *Handler) GetEmployerProfile(ctx *gin.Context) (existence.Employer, string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return existence.Employer{}, "", err
 	} else {
 		emp, err := users.GetEmployer(newToken, DB)
@@ -54,7 +54,7 @@ func (handler *Handler) GetEmployerProjects(ctx *gin.Context) ([]existence.Proje
 }
 
 func (handler *Handler) AddEmployerProject(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return newToken, err
 	} else {
 		project := existence.Project{}
@@ -67,7 +67,7 @@ func (handler *Handler) AddEmployerProject(ctx *gin.Context) (string, error) {
 }
 
 func (handler *Handler) EditEmployerProject(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return newToken, err
 	} else {
 		project := existence.Project{}
@@ -80,7 +80,7 @@ func (handler *Handler) EditEmployerProject(ctx *gin.Context) (string, error) {
 }
 
 func (handler *Handler) AssignProjectToFreelancer(ctx *gin.Context) (string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return newToken, err
 	} else {
 		assign := struct {

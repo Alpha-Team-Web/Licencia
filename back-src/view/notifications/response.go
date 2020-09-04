@@ -1,12 +1,11 @@
-package responses
+package notifications
 
 import "time"
 
 type Response struct {
-	Message string `json:"message"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
-
-var SuccessMessage = Response{"successful"}
 
 type ListicProject struct {
 	Id                  string    `json:"id"`

@@ -2,8 +2,8 @@ package users
 
 import (
 	"back-src/model/existence"
-	"back-src/view"
-	"back-src/view/responses"
+	"back-src/view/notifications"
+	"back-src/view/to-be-deleted"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -12,13 +12,13 @@ import (
 func RespondEmployerEdit(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
-		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+		context.JSON(http.StatusOK, notifications.Response{Message: "Successful"})
 	} else {
-		if !view.RespondTokenErrors(context, err) {
+		if !to_be_deleted.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			if !view.RespondDataValidationErrors(context, err) {
+			if !to_be_deleted.RespondDataValidationErrors(context, err) {
 				var status int = http.StatusInternalServerError
-				context.JSON(status, responses.Response{Message: err.Error()})
+				context.JSON(status, notifications.Response{Message: err.Error()})
 			}
 		}
 	}
@@ -29,11 +29,11 @@ func RespondEmployerGetProfile(context *gin.Context, token string, emp existence
 		context.Header("Token", token)
 		context.JSON(http.StatusOK, emp)
 	} else {
-		if !view.RespondTokenErrors(context, err) {
+		if !to_be_deleted.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
 			//TODO : add switch cases if there are other types of error
 			var status int = http.StatusInternalServerError
-			context.JSON(status, responses.Response{Message: err.Error()})
+			context.JSON(status, notifications.Response{Message: err.Error()})
 		}
 	}
 }
@@ -41,11 +41,11 @@ func RespondEmployerGetProfile(context *gin.Context, token string, emp existence
 func RespondEmployerAddProject(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
-		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+		context.JSON(http.StatusOK, notifications.Response{Message: "Successful"})
 	} else {
-		if !view.RespondTokenErrors(context, err) {
+		if !to_be_deleted.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			if !view.RespondDataValidationErrors(context, err) {
+			if !to_be_deleted.RespondDataValidationErrors(context, err) {
 				var status int
 				switch {
 				case strings.Contains(err.Error(), "project fields not valid"):
@@ -53,7 +53,7 @@ func RespondEmployerAddProject(context *gin.Context, token string, err error) {
 				default:
 					status = http.StatusInternalServerError
 				}
-				context.JSON(status, responses.Response{Message: err.Error()})
+				context.JSON(status, notifications.Response{Message: err.Error()})
 			}
 		}
 	}
@@ -62,11 +62,11 @@ func RespondEmployerAddProject(context *gin.Context, token string, err error) {
 func RespondEmployerEditProject(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
-		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+		context.JSON(http.StatusOK, notifications.Response{Message: "Successful"})
 	} else {
-		if !view.RespondTokenErrors(context, err) {
+		if !to_be_deleted.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			if !view.RespondDataValidationErrors(context, err) {
+			if !to_be_deleted.RespondDataValidationErrors(context, err) {
 				var status int
 				switch err.Error() {
 				case "project access denied":
@@ -76,7 +76,7 @@ func RespondEmployerEditProject(context *gin.Context, token string, err error) {
 				default:
 					status = http.StatusInternalServerError
 				}
-				context.JSON(status, responses.Response{Message: err.Error()})
+				context.JSON(status, notifications.Response{Message: err.Error()})
 			}
 		}
 	}
@@ -85,13 +85,13 @@ func RespondEmployerEditProject(context *gin.Context, token string, err error) {
 func RespondEmployerAssignProject(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
-		context.JSON(http.StatusOK, responses.Response{Message: "Successful"})
+		context.JSON(http.StatusOK, notifications.Response{Message: "Successful"})
 	} else {
-		if !view.RespondTokenErrors(context, err) {
+		if !to_be_deleted.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
-			if !view.RespondDataValidationErrors(context, err) {
+			if !to_be_deleted.RespondDataValidationErrors(context, err) {
 				var status int = http.StatusInternalServerError
-				context.JSON(status, responses.Response{Message: err.Error()})
+				context.JSON(status, notifications.Response{Message: err.Error()})
 			}
 		}
 	}
@@ -110,6 +110,6 @@ func RespondEmployerGetProjects(context *gin.Context, projects []existence.Proje
 		default:
 			status = http.StatusInternalServerError
 		}
-		context.JSON(status, responses.Response{Message: err.Error()})
+		context.JSON(status, notifications.Response{Message: err.Error()})
 	}
 }

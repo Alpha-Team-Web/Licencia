@@ -1,8 +1,8 @@
 package files
 
 import (
-	"back-src/view"
-	"back-src/view/responses"
+	"back-src/view/notifications"
+	"back-src/view/to-be-deleted"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -10,12 +10,12 @@ import (
 func RespondUploadProfileImage(context *gin.Context, token string, err error) {
 	if err == nil {
 		context.Header("Token", token)
-		context.JSON(http.StatusOK, responses.Response{"Successful"})
+		context.JSON(http.StatusOK, notifications.Response{"Successful"})
 	} else {
-		if !view.RespondTokenErrors(context, err) {
+		if !to_be_deleted.RespondTokenErrors(context, err) {
 			context.Header("Token", token)
 			status := http.StatusInternalServerError
-			context.JSON(status, responses.Response{Message: err.Error()})
+			context.JSON(status, notifications.Response{Message: err.Error()})
 		}
 	}
 }

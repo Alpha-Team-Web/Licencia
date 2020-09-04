@@ -1,7 +1,7 @@
 package routing
 
 import (
-	projects2 "back-src/view/projects"
+	projects2 "back-src/view/to-be-deleted/projects"
 	"github.com/gin-gonic/gin"
 )
 

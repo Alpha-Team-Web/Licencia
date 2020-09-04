@@ -9,7 +9,7 @@ import (
 
 func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
@@ -25,7 +25,7 @@ func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) (string, error) 
 
 func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := data.ChangePassRequest{}
@@ -38,7 +38,7 @@ func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) (string, error)
 
 func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		frl := existence.Freelancer{}
@@ -54,7 +54,7 @@ func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) (string, error) {
 
 func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) (existence.Freelancer, string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return existence.Freelancer{}, "", err
 	} else {
 		frl, err := users.GetFreelancer(newToken, DB)
@@ -64,7 +64,7 @@ func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) (existence.Freela
 
 func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) (string, error) {
 	token := ctx.GetHeader("Token")
-	if newToken, err := CheckToken(token, existence.FreelancerType); err != nil {
+	if newToken, err := checkToken(token, existence.FreelancerType); err != nil {
 		return "", err
 	} else {
 		request := data.FreelancerRequestForProject{}

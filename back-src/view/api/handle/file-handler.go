@@ -10,7 +10,7 @@ const ProfileImageUploaderForName = "profileImage"
 
 func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string) (string, error) {
 
-	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+	if newToken, err := checkTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
 		if profileType == existence.ProjectProfile {
 			//TODO
 			return newToken, nil

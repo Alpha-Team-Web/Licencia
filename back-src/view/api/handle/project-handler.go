@@ -4,12 +4,12 @@ import (
 	"back-src/controller/control/projects/filters"
 	"back-src/controller/utils/data"
 	"back-src/model/existence"
-	"back-src/view/responses"
+	"back-src/view/notifications"
 	"github.com/gin-gonic/gin"
 )
 
-func (handler *Handler) FilterFreelancer(ctx *gin.Context) ([]responses.ListicProject, string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+func (handler *Handler) FilterFreelancer(ctx *gin.Context) ([]notifications.ListicProject, string, error) {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return nil, "", err
 	} else {
 		filterReq := data.Filter{}
@@ -24,8 +24,8 @@ func (handler *Handler) FilterFreelancer(ctx *gin.Context) ([]responses.ListicPr
 	}
 }
 
-func (handler *Handler) FilterEmployer(ctx *gin.Context) ([]responses.ListicProject, string, error) {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+func (handler *Handler) FilterEmployer(ctx *gin.Context) ([]notifications.ListicProject, string, error) {
+	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return nil, "", err
 	} else {
 		filterReq := data.Filter{}

@@ -1,7 +1,7 @@
 package routing
 
 import (
-	"back-src/controller/handle"
+	"back-src/view/api/handle"
 	"github.com/gin-gonic/gin"
 )
 

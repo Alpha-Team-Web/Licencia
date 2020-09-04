@@ -5,25 +5,25 @@ import (
 	"back-src/controller/utils/libs/sets"
 	"back-src/model/database"
 	"back-src/model/existence"
-	"back-src/view/responses"
+	"back-src/view/notifications"
 	"math"
 )
 
 var Inv invertedEngine
 
-func Filter(filter data.Filter, db *database.Database) ([]responses.ListicProject, error) {
+func Filter(filter data.Filter, db *database.Database) ([]notifications.ListicProject, error) {
 	if resultSet, err := filterByPriceAndStat(filter, db); err == nil {
 		if filter.IsFilterBySkill {
 			resultSet = sets.IntersectSets(resultSet, filterBySkills(filter))
 		}
 		return getListicProjectsByIds(resultSet.GetMembers(), db), nil
 	} else {
-		return []responses.ListicProject{}, err
+		return []notifications.ListicProject{}, err
 	}
 }
 
-func getListicProjectsByIds(ids []string, db *database.Database) []responses.ListicProject {
-	listicProjects := []responses.ListicProject{}
+func getListicProjectsByIds(ids []string, db *database.Database) []notifications.ListicProject {
+	listicProjects := []notifications.ListicProject{}
 	for _, id := range ids {
 		if project, err := db.ProjectTable.GetProjectDefinedColumns(id, "id", "name", "description", "start_date", "employer_username", "freelancer_requests_with_description", "fields_with_skills"); err == nil {
 			listicProjects = append(listicProjects, getListicProjectFromProject(project, db))
@@ -32,8 +32,8 @@ func getListicProjectsByIds(ids []string, db *database.Database) []responses.Lis
 	return listicProjects
 }
 
-func getListicProjectFromProject(project existence.Project, db *database.Database) responses.ListicProject {
-	listicProject := responses.ListicProject{
+func getListicProjectFromProject(project existence.Project, db *database.Database) notifications.ListicProject {
+	listicProject := notifications.ListicProject{
 		Id:                  project.Id,
 		Name:                project.Name,
 		Description:         project.Description,

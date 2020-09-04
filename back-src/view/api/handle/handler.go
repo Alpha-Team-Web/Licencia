@@ -9,6 +9,8 @@ import (
 type Handler struct {
 }
 
+const NotAssignedToken = "N/A"
+
 const notUsedExpiry = 10
 
 var AuthExpiryDur time.Duration
