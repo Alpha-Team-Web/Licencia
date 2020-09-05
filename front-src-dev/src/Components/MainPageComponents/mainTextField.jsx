@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../../CSS Designs/MainPage/loginSignupInput.css';
 import '../../CSS Designs/MainPage/LoginMenu.css';
+// import setFieldError from "./setFieldError";
 
 class MainTextField extends Component {
     constructor(props, context) {
@@ -21,18 +22,14 @@ class MainTextField extends Component {
 
     static setFieldError(id, isError) {
         let field = document.getElementById(id)
-        alert('field: ' + field)
 
         if (field != null) {
-            alert('not null field')
             if ((isError === undefined || isError) && !field.parentElement.classList.contains("error")) {
                 // field.style.border = "1px solid red";
                 field.parentElement.classList.add("error");
             } else if (!isError && field.parentElement.classList.contains("error")) {
                 field.parentElement.classList.remove("error")
             }
-        } else {
-            alert('null Field')
         }
     }
 

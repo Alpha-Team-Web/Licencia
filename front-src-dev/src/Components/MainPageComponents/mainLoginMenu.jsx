@@ -1,8 +1,6 @@
 import React, {Fragment, Component} from 'react';
 import '../../CSS Designs/MainPage/LoginMenu.css';
 import MainTextField from "./mainTextField";
-import loginSignUpMethod from '../../Js Functionals/MainPage/Login SignUp Method';
-import loginSignUpShow from '../../Js Functionals/MainPage/Login SignUp Show';
 
 class MainLoginMenu extends Component {
     render() {
@@ -50,9 +48,6 @@ class MainLoginMenu extends Component {
                         </footer>
                     </div>
                 </div>
-
-                <script src={loginSignUpMethod}/>
-                <script src={loginSignUpShow}/>
             </Fragment>
         );
     }

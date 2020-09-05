@@ -28,7 +28,6 @@ class MainContent extends Component {
                     </div>
                 </div>
 
-                <MainLoginMenu/>
             </Fragment>
         );
     }
