@@ -5,14 +5,15 @@ import {Button, Image} from "semantic-ui-react";
 import HeaderListItem from "./HeaderListItem";
 import LicenciaLogo from '../../Pics/Licencia-Logo.png';
 import LogSinMenu from "./LogSinMenuModal";
-// import '../../CSS Designs/MainPage';
+import ModalExampleModal from "../file";
 
 class MainHeader extends Component {
     render() {
         return (
             <div className="header" id="Header">
                 {/*<Button className="loginButton" onClick="openLogSinMenu()">ورود / ثبت نام</Button>*/}
-                <LogSinMenu/>
+                {/*<LogSinMenu/>*/}
+                <ModalExampleModal/>
                 <ul id='Header-UnOrderedList'>
                     <HeaderListItem href='KireKhar' value='دسته بندی ها'/>
                     <HeaderListItem href='KireKhar' value='مشاهده'/>

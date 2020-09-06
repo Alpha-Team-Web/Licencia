@@ -1,5 +1,5 @@
-const greenColor = "green"
-const whiteColor = "white"
+export const greenColor = "green"
+export const whiteColor = "white"
 let onLoginPage = false;
 const loginButton = document.getElementById("LoginMenuButton")
 const signupButton = document.getElementById("SignUpMenuButton")
