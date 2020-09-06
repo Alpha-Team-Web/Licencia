@@ -45,8 +45,8 @@ function ModalExampleModal() {
                     </div>
                     <h3 id="welcomeHeader">Welcome To Licencia</h3>
                 </div>
-                <MainLoginMenu/>
-                <MainSignUpMenu style = {style1}/>
+                <MainLoginMenu id='Login-Menu'/>
+                <MainSignUpMenu style = {style1} id='SignUp-Menu'/>
             </Modal.Content>
             {/*<Modal.Actions>
                 <Button color='black' onClick={() => setOpen(false)}>

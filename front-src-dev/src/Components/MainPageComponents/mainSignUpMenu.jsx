@@ -2,9 +2,13 @@ import React, {Fragment, Component} from 'react';
 import MainTextField from "./mainTextField";
 
 class MainSignUpMenu extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
-            <div style = {this.props.style} className="content Login-SignUp-Menu" >
+            <div id={this.props.id} style = {this.props.style} className="content Login-SignUp-Menu" >
                 <div className="ui form formPadding">
                     {/*<div className="ui form formPadding">
                         <div className="ui field">

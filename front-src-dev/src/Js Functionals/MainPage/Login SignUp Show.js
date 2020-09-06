@@ -1,10 +1,10 @@
 export const greenColor = "green"
 export const whiteColor = "white"
-let onLoginPage = false;
-const loginButton = document.getElementById("LoginMenuButton")
-const signupButton = document.getElementById("SignUpMenuButton")
-const signupMenu = document.getElementById("SignUp-Menu")
-const LoginMenu = document.getElementById("Login-Menu")
+let onLoginPage = true;
+let loginButton = document.getElementById("LoginMenuButton")
+let signupButton = document.getElementById("SignUpMenuButton")
+let signupMenu = document.getElementById("SignUp-Menu")
+let LoginMenu = document.getElementById("Login-Menu")
 
 function emptyLoginFields() {
 
@@ -26,6 +26,11 @@ export function signUpMenu() {
 }
 
 function change(color1, color2, display1, display2) {
+    loginButton = document.getElementById("LoginMenuButton")
+    signupButton = document.getElementById("SignUpMenuButton")
+    signupMenu = document.getElementById("SignUp-Menu")
+    LoginMenu = document.getElementById("Login-Menu")
+
     loginButton.style.backgroundColor = color1;
     signupButton.style.backgroundColor = color2;
     signupMenu.style.display = display1;
