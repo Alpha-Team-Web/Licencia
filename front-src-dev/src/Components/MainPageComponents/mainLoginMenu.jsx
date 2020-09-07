@@ -3,6 +3,7 @@ import '../../CSS Designs/MainPage/LoginMenu.css';
 import MainTextField from "./mainTextField";
 import {login} from "../../Js Functionals/MainPage/Login SignUp Method";
 import {signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
+import {Label} from "semantic-ui-react";
 
 class MainLoginMenu extends Component {
     render() {
@@ -45,8 +46,10 @@ class MainLoginMenu extends Component {
                                    value="login" />
                         </label>
                         <footer className="loginFooter">
-                            <p className="div-div-footer-p" id="LoginMenu-SignUp-Link">آیا حساب ندارید؟<a
-                                href={() => signUpMenu()} className="div-div-footer-signupLink" >ثبت نام</a></p>
+                            <p className="div-div-footer-p" id="LoginMenu-SignUp-Link">
+                                <Label as='a' onClick={() => signUpMenu()} className="div-div-footer-signupLink" >ثبت نام</Label>
+                                آیا حساب ندارید؟
+                            </p>
                         </footer>
                     </div>
                 </div>
