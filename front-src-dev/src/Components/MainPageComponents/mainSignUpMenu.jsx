@@ -54,7 +54,7 @@ class MainSignUpMenu extends Component {
                                    placeholder="Password" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-Password" maxLength='30' textName='رمز عبور' placeHolder='Password' />
+                    <MainTextField id="SignUp-Password" maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} />
 
                     {/*<div className="ui form formPadding">
                         <div className="ui field">
@@ -64,7 +64,7 @@ class MainSignUpMenu extends Component {
                                    placeholder="Repeat Password" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-RepeatPassword" maxLength='30' textName='تکرار رمز عبور' placeHolder='Repeat Password' />
+                    <MainTextField id="SignUp-RepeatPassword" maxLength='30' textName='تکرار رمز عبور' placeHolder='Repeat Password' isPassword={true} />
 
 
                     <div className="ui form formPadding">

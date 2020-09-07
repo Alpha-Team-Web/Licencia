@@ -28,7 +28,7 @@ class MainLoginMenu extends Component {
 
                     <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' />
 
-                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' />
+                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} />
 
                     <div className="ui form formPadding">
                         <div className="ui field">

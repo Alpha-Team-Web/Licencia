@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 export function httpExcGET(method, url, data, handleSuccess, handleDeny, headers, ...params) {
     alert('url: ' + url)
+    alert('method: ' + method)
     return fetch(url + createQuery(params), {
         method: method,
         mode: 'cors',
@@ -25,7 +26,7 @@ export function httpGet(url, headers, handleSuccess, handleDeny, ...params){
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
     }).then(response => success(response, handleSuccess, handleDeny))
-        .catch(deny);
+        .catch(response => deny(response));
 }
 
 function createQuery(params) {
@@ -61,7 +62,8 @@ function success(response, handleSuccess, handleError) {
 
 function deny(response) {
     alert('Error Connecting To Licencia Server')
-    // todo
+    alert('response: ' + response)
+    //todo
 }
 
 function handleResponseJsonCatch(reason) {

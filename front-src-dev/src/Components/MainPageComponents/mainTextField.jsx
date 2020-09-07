@@ -13,7 +13,7 @@ class MainTextField extends Component {
             <div className="ui form formPadding">
                 <div className="ui field">
                     <p className="paragraphInput">{this.props.textName}</p>
-                    <input maxLength={this.props.maxLength} type="text" placeholder={this.props.placeHolder}
+                    <input maxLength={this.props.maxLength} type={this.props.isPassword ? 'password' : "text"} placeholder={this.props.placeHolder}
                            id={this.props.id} onFocus={MainTextField.setFieldError(this.props.id, false)} />
                 </div>
             </div>

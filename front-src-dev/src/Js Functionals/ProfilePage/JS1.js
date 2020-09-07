@@ -1,3 +1,6 @@
+import {httpGet} from "../AlphaAPI";
+
+
 const usernameField = document.getElementById("usernameField");
 const shownNameField = document.getElementById('showingNameField')
 const firstNameField = document.getElementById("firstNameField");

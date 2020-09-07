@@ -3,15 +3,25 @@ import {httpExcGET, parseValue} from "../AlphaAPI";
 import {urlSignUp, urlLogin} from "../urlNames";
 import {profilePageName} from "../FileNames";
 
-const signUpUsername = document.getElementById("SignUp-UserName")
-const signUpFirstName = document.getElementById("SignUp-FirstName")
-const signUpLastName = document.getElementById("SignUp-LastName")
-const signUpEmail = document.getElementById("SignUp-Email")
-const signUpPassword = document.getElementById("SignUp-Password")
-const signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
-const signupKind = document.getElementById("signUpKind")
+let signUpUsername
+let signUpFirstName
+let signUpLastName
+let signUpEmail
+let signUpPassword
+let signUpRepeatPassword
+let signupKind
+function setSignUpFields() {
+    signUpUsername = document.getElementById("SignUp-UserName")
+    signUpFirstName = document.getElementById("SignUp-FirstName")
+    signUpLastName = document.getElementById("SignUp-LastName")
+    signUpEmail = document.getElementById("SignUp-Email")
+    signUpPassword = document.getElementById("SignUp-Password")
+    signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
+    signupKind = document.getElementById("signUpKind")
+}
 
 export function signUp() {
+    setSignUpFields();
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
         setFieldError(doc, true)
@@ -30,6 +40,7 @@ export function signUp() {
             email: signUpEmail.value,
             password: signUpPassword.value
         }
+        alert('data: ' + JSON.stringify(data))
         const promise = httpExcGET('post', urlSignUp, data, handleSuccessSignUp, handleErrorSignUp, {
             'Content-Type': 'application/json'
         }, {
