@@ -96,7 +96,8 @@ func formalCheckToken(token string) (existence.AuthToken, error) {
 func reInitToken(auth existence.AuthToken) (string, error) {
 	currentTime := time.Now()
 	if currentTime.Sub(auth.InitialTime) > AuthExpiryDur {
-		if err := DB.AuthTokenTable.ChangeAuthUsage(auth.Token, false); err != nil {
+
+		if err := DB.AuthTokenTable.ExpireAuth(auth.Token); err != nil {
 			return "", err
 		} else {
 			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, DB)
