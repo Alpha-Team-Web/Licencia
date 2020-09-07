@@ -10,7 +10,7 @@ class MainHeader extends Component {
     render() {
         return (
             <div className="header" id="Header">
-                <ModalLogSin/>
+                <ModalLogSin id="aa"/>
                 <ul id='Header-UnOrderedList'>
                     <HeaderListItem href='KireKhar' value='دسته بندی ها'/>
                     <HeaderListItem href='KireKhar' value='مشاهده'/>

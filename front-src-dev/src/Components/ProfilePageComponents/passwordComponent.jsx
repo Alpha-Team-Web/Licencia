@@ -1,11 +1,10 @@
 import React from 'react'
-import { Button, Header, Image, Modal } from 'semantic-ui-react'
-import {greenColor, loginMenu, signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
-import licenciaImg from "../../Pics/Licencia-Logo.png";
-import MainLoginMenu from "./mainLoginMenu";
-import MainSignUpMenu from "./mainSignUpMenu";
+import {Button, Header, Image, Modal} from 'semantic-ui-react'
+import '../../CSS Designs/ProfilePage/CSS1.css'
 
-function ModalLogSin() {
+// import {changePassword} from '../../Js Functionals/ProfilePage/JS1';
+
+function ModalPassword() {
     const [open, setOpen] = React.useState(false)
 
     return (
@@ -13,24 +12,34 @@ function ModalLogSin() {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button className="loginButton">ورود / ثبت نام</Button>}
+            trigger={<Button className="button red">pass</Button>}
         >
-            <Modal.Content>
-                <div className="header" id="Login-Menu-Header">
-                    <div id="Signup-Login">
-                        <div style={style2} className="Signup-login-text" id="LoginMenuButton" onClick={() => loginMenu()}>ورود</div>
-                        <div className="Signup-login-text" id="SignUpMenuButton" onClick={() => signUpMenu()}>ثبت نام</div>
+
+            <Modal.Content className="ui form flexColumn modal" id="changingPasswordContent">
+                <div className="three fields" id="passwordFields">
+                    <div className="field">
+                        <label className="rightAligned">رمز عبور قدیمی</label>
+                        <input id="oldPasswordField" placeholder="Old Password"/>
                     </div>
-                    <div className="image content">
-                        <img src={licenciaImg} id="logoImage" alt="logoLicencia"/>
+                    <div className="field">
+                        <label className="rightAligned">رمز عبور</label>
+                        <input id="passwordField" placeholder="Password"/>
                     </div>
-                    <h3 id="welcomeHeader">Welcome To Licencia</h3>
+                    <div className="field">
+                        <label className="rightAligned">تکرار رمز عبور</label>
+                        <input id="repeatPasswordField" placeholder="Repeat Password"/>
+                    </div>
                 </div>
-                <MainLoginMenu id='Login-Menu'/>
-                <MainSignUpMenu style = {style1} id='SignUp-Menu'/>
+
+                <button className="positive ui button rightAligned" id="changePasswordButton"
+                        onClick={() => {
+                            setOpen(false);
+                            // changePassword();
+                        }}>تغییر رمز عبور
+                </button>
             </Modal.Content>
         </Modal>
-    )
+    );
 }
 
-export default ModalLogSin
+export default ModalPassword;

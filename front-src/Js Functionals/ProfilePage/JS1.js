@@ -292,7 +292,7 @@ const oldPasswordField = document.getElementById("oldPasswordField");
 const newPasswordField = document.getElementById("passwordField");
 const repeatNewPasswordField = document.getElementById("repeatPasswordField");
 
-function changePassword() {
+export function changePassword() {
     if (oldPasswordField.value === "" || newPasswordField.value === "" || repeatNewPasswordField.value === "") {
         alert("you have empty field")
     } else {
