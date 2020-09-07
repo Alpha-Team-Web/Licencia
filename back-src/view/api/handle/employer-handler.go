@@ -76,22 +76,6 @@ func (handler *Handler) GetEmployerProjects(ctx *gin.Context) ([]existence.Proje
 	return users.GetEmployerProjects(user.username, DB)
 }
 
-/*func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notification {
-	//TODO : fix attachments
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
-	} else {
-		project := existence.Project{}
-		if err := ctx.ShouldBindJSON(&project); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
-		}
-		if err := users.AddProjectToEmployer(newToken, project, []existence.ProjectAttachment{}, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-		}
-	}
-}*/
 //TODO : handle projectImage, handle proper responses
 func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notification {
 	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {

@@ -33,3 +33,13 @@ type ProjectForm struct {
 	Profile     *multipart.FileHeader   `form:"profile" binding:"-"`
 	Project     string                  `form:"project" binding:"required"`
 }
+
+type AttachFileForm struct {
+	Attachment *multipart.FileHeader `form:"attachment" binding:"required"`
+	ProjectId  string                `form:"id" binding:"required"`
+}
+
+type UpdateFileForm struct {
+	Attachment *multipart.FileHeader `form:"attachment" binding:"required"`
+	FileId     string                `form:"id" binding:"required"`
+}
