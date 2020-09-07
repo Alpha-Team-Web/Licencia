@@ -13,10 +13,10 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <Route path="/">
+                <Route path="/dgdgdg">
                     <MainPage/>
                 </Route>
-                <Route path="/ProfilePage">
+                <Route path="/">
                     <ProfilePage/>
                 </Route>
             </Router>

@@ -196,12 +196,11 @@ function accountGithubChanged() {
 }
 
 const MainProfileTransition = 'fade up';
-const mainProfileContent = document.getElementById('MainProfileContent');
-const profile = document.getElementById('profile');
-const gitHubRepoContent = document.getElementById('githubReposContent');
-const changePasswordContent = document.getElementById('changingPasswordContent');
-
-function changeMainProfileContent(content) {
+export const mainProfileContent = document.getElementById('MainProfileContent');
+export const profile = document.getElementById('profile');
+export const gitHubRepoContent = document.getElementById('githubReposContent');
+export const changePasswordContent = document.getElementById('changingPasswordContent');
+export function changeMainProfileContent(content) {
     let showingDisplay = getShowingDisplay();
     if (showingDisplay != null && content.id !== showingDisplay.id) {
         $('#' + showingDisplay.id).transition(MainProfileTransition);

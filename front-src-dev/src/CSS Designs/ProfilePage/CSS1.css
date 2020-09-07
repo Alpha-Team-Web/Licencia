@@ -10,7 +10,7 @@
     flex-direction: column;
 }
 
-#projectsContent {
+#profileCards {
     padding-top: 70px;
     margin: 0 auto 35px;
     display: grid;
