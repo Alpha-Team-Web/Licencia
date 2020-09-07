@@ -30,7 +30,7 @@ class ProfileContent extends Component {
 
                     <ProfileCard id='gitHubAccountPart' onClick={{/*() => changeMainProfileContent(gitHubRepoContent)*/}} hId='viewLinks' number={35} cardContent='مشاهده پیوند ها'/>
 
-                    <ProfileCard onClick={{/*() => changeMainProfileContent(gitHubRepoContent)*/}} hId='changePassword' number={35} cardContent='تغییر رمز عبور'/>
+                    <ProfileCard onClick={{/*modal('changingPasswordContent', 'show')*/}} hId='changePassword' number={35} cardContent='تغییر رمز عبور'/>
 
                     <ProfileCard onClick={{/*() => changeMainProfileContent(gitHubRepoContent)*/}} hId='doneProjects' number={35} cardContent='پروژه های انجام شده در لیسنسیا'/>
 
