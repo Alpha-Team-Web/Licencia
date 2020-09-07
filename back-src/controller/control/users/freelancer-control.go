@@ -1,6 +1,7 @@
 package users
 
 import (
+	"back-src/controller/control/media"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
@@ -28,7 +29,12 @@ func ChooseFreelancerSkills(username string, fieldId string, skills []string, db
 
 func EditFreelancerProfile(token string, frl existence.Freelancer, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return db.FreelancerTable.UpdateFreelancerProfile(username, frl)
+		if err := db.FreelancerTable.UpdateFreelancerProfile(username, frl); err == nil {
+			media.AddUpdateProfileEvent(username, true, db)
+			return nil
+		} else {
+			return err
+		}
 	} else {
 		return err
 	}
@@ -44,7 +50,12 @@ func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *databa
 
 func EditFreelancerLinks(token string, frl existence.Freelancer, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return db.FreelancerTable.UpdateFreelancerLinks(username, frl)
+		if err := db.FreelancerTable.UpdateFreelancerLinks(username, frl); err == nil {
+			media.AddUpdateProfileEvent(username, true, db)
+			return nil
+		} else {
+			return err
+		}
 	} else {
 		return err
 	}
@@ -68,6 +79,7 @@ func FreelancerRequestsForProject(token string, request data.FreelancerRequestFo
 		if err := checkAbilityToRequestNewProject(username, db); err == nil {
 			if err := checkProjectStatus(request.Id, existence.Open, db); err == nil {
 				if err := db.FreelancerTable.AddRequestedProjectToFreelancer(username, request.Id); err == nil {
+					media.AddRequestEvent(username, request.Id, db)
 					return db.ProjectTable.AddRequestToProject(request.Id, username, request.Description)
 				} else {
 					return err
@@ -107,20 +119,30 @@ func checkAbilityToRequestNewProject(username string, db *database.Database) err
 	e := errors.New("cant request more")
 	if accountType, err := db.FreelancerTable.GetFreelancerTypeByUsername(username); err == nil {
 		if requestedProjectIds, err := db.FreelancerTable.GetFreelancerRequestedProjectIds(username); err == nil {
-			len := len(requestedProjectIds)
-			switch accountType {
-			case existence.FreelancerBronze:
-				if len >= existence.BronzeRequestSize {
-					return e
+			if projectIds, err := db.FreelancerTable.GetFreelancerProjectIds(username); err == nil {
+				len := len(requestedProjectIds)
+				for _, id := range projectIds {
+					stat, _ := db.ProjectTable.GetProjectStatus(id)
+					if stat == existence.OnGoing {
+						len++
+					}
 				}
-			case existence.FreelancerSilver:
-				if len >= existence.SilverRequestSize {
-					return e
+				switch accountType {
+				case existence.FreelancerBronze:
+					if len >= existence.BronzeRequestSize {
+						return e
+					}
+				case existence.FreelancerSilver:
+					if len >= existence.SilverRequestSize {
+						return e
+					}
+				case existence.FreelancerGold:
+					if len >= existence.GoldRequestSize {
+						return e
+					}
 				}
-			case existence.FreelancerGold:
-				if len >= existence.GoldRequestSize {
-					return e
-				}
+			} else {
+				return err
 			}
 		} else {
 			return err

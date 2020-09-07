@@ -10,6 +10,7 @@ type Follow struct {
 //Freelancer events
 const (
 	FEUpdateProfile    = "update profile"
+	FEReqProject       = "request project"
 	FETakeProject      = "take project"
 	FEDeliverProject   = "deliver project"
 	FEFollowFreelancer = "follow freelancer"

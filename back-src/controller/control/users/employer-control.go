@@ -163,33 +163,39 @@ func AssignProjectToFreelancer(token string, freelancer string, projectId string
 		} else if username != realUsername {
 			return errors.New("not valid token for this project")
 		} else {
-			if requests, err := db.ProjectTable.GetProjectRequests(projectId); err == nil {
-				for s := range requests {
-					db.FreelancerTable.DeleteFreelancerRequestedProject(s, projectId)
-				}
-				if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
-					return err
-				}
-				if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
-					return err
-				}
-				if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
-					return err
-				}
-				if err := db.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
-					return err
-				}
-				media.AddAssignProjectEvent(username, projectId, db)
-				return nil
-			} else {
+			if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
 				return err
 			}
+			if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
+				return err
+			}
+			if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
+				return err
+			}
+			if err := removeProjectRequests(projectId, db); err != nil {
+				return err
+			}
+			media.AddAssignProjectEvent(username, freelancer, projectId, db)
+			return nil
 		}
 
 	} else {
 		return err
 	}
 }
+
+func removeProjectRequests(projectId string, db *database.Database) error {
+	if givenMap, err := db.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
+		return err
+	} else {
+		usernames := libs.GetKeySet(givenMap)
+		for _, username := range usernames {
+			db.FreelancerTable.DeleteFreelancerRequestedProject(username, projectId)
+		}
+	}
+	return nil
+}
+
 func ExtendProject(token string, projectId string, finishDate time.Time, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
@@ -234,7 +240,8 @@ func CloseProject(token string, projectId string, db *database.Database) error {
 				} else if status != existence.OnGoing {
 					return errors.New("not valid project status")
 				} else {
-					media.AddCloseProjectEvent(username, projectId, db)
+					freelancer, _ := db.ProjectTable.GetFreelancerUsernameByProjectId(projectId)
+					media.AddCloseProjectEvent(username, freelancer, projectId, db)
 					panic(errors.New("not implemented function error"))
 					//TODO(El Tipo, Close Project)
 				}

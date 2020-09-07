@@ -150,12 +150,17 @@ func (table *ProjectTable) SetProjectStatus(id string, status string) error {
 	return nil
 }
 
-func (table *ProjectTable) DeleteProjectDescriptions(id string) error {
-	project := existence.Project{FreelancerRequestsWithDescription: map[string]string{}}
-	if _, err := table.conn.Model(&project).Column("freelancer_requests_with_description").Where("id = ?", id).Update(); err != nil {
-		return err
+func (table *ProjectTable) DeleteProjectDescriptions(id string) (map[string]string, error) {
+	project := existence.Project{}
+	if err := table.conn.Model(&project).Column("freelancer_requests_with_description").Where("id = ?", id).Select(); err != nil {
+		return map[string]string{}, err
 	}
-	return nil
+	usernamesWithDesc := project.FreelancerRequestsWithDescription
+	project2 := existence.Project{FreelancerRequestsWithDescription: map[string]string{}}
+	if _, err := table.conn.Model(&project2).Column("freelancer_requests_with_description").Where("id = ?", id).Update(); err != nil {
+		return map[string]string{}, err
+	}
+	return usernamesWithDesc, nil
 }
 
 func (table *ProjectTable) GetProjectFinishDate(projectId string) (time.Time, error) {

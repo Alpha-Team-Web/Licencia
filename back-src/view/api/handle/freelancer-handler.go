@@ -83,7 +83,11 @@ func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) notificatio
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		} else {
 			if err := users.FreelancerRequestsForProject(newToken, request, DB); err != nil {
-				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+				if err.Error() == "cant request more" {
+					return notifications.GetExpectationFailedError(ctx, newToken, nil)
+				} else {
+					return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+				}
 			} else {
 				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
 			}

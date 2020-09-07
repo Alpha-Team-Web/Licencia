@@ -168,3 +168,12 @@ func (table *FreelancerTable) AddFreelancerProjectId(username string, projectId 
 	}
 	return nil
 }
+
+func (table *FreelancerTable) GetFreelancerProjectIds(username string) ([]string, error) {
+	frl := existence.Freelancer{}
+	err := table.conn.Model(&frl).Column("project_ids").Where("username = ?", username).Select()
+	if err != nil {
+		return []string{}, err
+	}
+	return frl.ProjectIds, nil
+}

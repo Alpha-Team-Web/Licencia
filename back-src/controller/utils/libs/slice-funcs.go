@@ -25,3 +25,11 @@ func AreStringSetsEqual(set1 []string, set2 []string) (boolean bool) {
 func RemoveStringElement(slice []string, index int) []string {
 	return append(slice[index:], slice[index+1:]...)
 }
+
+func GetKeySet(givenMap map[string]string) []string {
+	keys := make([]string, 0, len(givenMap))
+	for k := range givenMap {
+		keys = append(keys, k)
+	}
+	return keys
+}
