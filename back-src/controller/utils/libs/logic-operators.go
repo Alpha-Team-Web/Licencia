@@ -10,3 +10,11 @@ func Xor(bool1, bool2 bool) bool {
 func XNor(bool1, bool2 bool) bool {
 	return !Xor(bool1, bool2)
 }
+
+func Ternary(flag bool, first interface{}, second interface{}) interface{} {
+	if flag {
+		return first
+	} else {
+		return second
+	}
+}

@@ -33,8 +33,9 @@ func (router *router) getEndpointGroupByName(name string) *endpointGroup {
 }
 
 const (
-	Post = "POST"
-	Get  = "GET"
+	Post   = "POST"
+	Get    = "GET"
+	Delete = "DELETE"
 )
 
 func (router *router) addHandlerToPath(addr, endpointGroupName, method string, handle func(ctx *gin.Context)) {
@@ -46,6 +47,8 @@ func (router *router) addHandlerToPath(addr, endpointGroupName, method string, h
 			router.getEndpointGroupByName(endpointGroupName).group.POST(addr, handle)
 		case "GET":
 			router.getEndpointGroupByName(endpointGroupName).group.GET(addr, handle)
+		case "DELETE":
+			router.getEndpointGroupByName(endpointGroupName).group.DELETE(addr, handle)
 		}
 	}
 }

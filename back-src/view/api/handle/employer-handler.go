@@ -9,7 +9,7 @@ import (
 )
 
 func (handler *Handler) EditEmployerProfile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		emp := existence.Employer{}
@@ -29,7 +29,7 @@ func (handler *Handler) EditEmployerProfile(ctx *gin.Context) notifications.Noti
 }
 
 func (handler *Handler) EditEmployerPassword(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		emp := data.ChangePassRequest{}
@@ -46,7 +46,7 @@ func (handler *Handler) EditEmployerPassword(ctx *gin.Context) notifications.Not
 }
 
 func (handler *Handler) GetEmployerProfile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		if emp, err := users.GetEmployer(newToken, DB); err != nil {
@@ -69,7 +69,7 @@ func (handler *Handler) GetEmployerProjects(ctx *gin.Context) ([]existence.Proje
 }
 
 func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		project := existence.Project{}
@@ -85,7 +85,7 @@ func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notif
 }
 
 func (handler *Handler) EditEmployerProject(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		project := existence.Project{}
@@ -101,7 +101,7 @@ func (handler *Handler) EditEmployerProject(ctx *gin.Context) notifications.Noti
 }
 
 func (handler *Handler) AssignProjectToFreelancer(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		assign := struct {

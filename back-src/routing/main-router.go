@@ -27,6 +27,7 @@ func (router *router) Listen() error {
 	router.addFreelancerEndpoints()
 	router.addProjectEndpoints()
 	router.addFileEndpoints()
+	router.addMediaEndpoints()
 
 	router.server.Run(":" + router.port)
 	return nil

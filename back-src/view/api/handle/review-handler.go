@@ -8,7 +8,7 @@ import (
 )
 
 func (handler *Handler) AddFreelancerReview(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frlReview := existence.FreelancerEmployerReview{}
@@ -24,7 +24,7 @@ func (handler *Handler) AddFreelancerReview(ctx *gin.Context) notifications.Noti
 }
 
 func (handler *Handler) AddEmployerReview(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		empReview := existence.EmployerFreelancerReview{}

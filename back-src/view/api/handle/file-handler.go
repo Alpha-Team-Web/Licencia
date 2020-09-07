@@ -12,7 +12,7 @@ const ProfileImageUploaderForName = "profileImage"
 
 func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string) notifications.Notification {
 
-	if newToken, err := checkTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
 		if profileType == existence.ProjectProfile {
 			//TODO
 			return notifications.Notification{}
@@ -34,7 +34,7 @@ func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string)
 
 func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType string) notifications.Notification {
 
-	if newToken, err := checkTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
 		if profileType == existence.ProjectProfile {
 			//TODO
 			return notifications.Notification{}

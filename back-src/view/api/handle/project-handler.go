@@ -9,7 +9,7 @@ import (
 )
 
 func (handler *Handler) FilterFreelancer(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		filterReq := data.Filter{}
@@ -25,7 +25,7 @@ func (handler *Handler) FilterFreelancer(ctx *gin.Context) notifications.Notific
 }
 
 func (handler *Handler) FilterEmployer(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		filterReq := data.Filter{}

@@ -9,6 +9,10 @@ type ProfileTable struct {
 	conn *pg.DB
 }
 
+func NewProfileTable(db *pg.DB) *ProfileTable {
+	return &ProfileTable{db}
+}
+
 func (table *ProfileTable) AddProfileImage(profile existence.Profile) error {
 	_, err := table.conn.Model(&profile).Insert()
 	return err
@@ -32,8 +36,4 @@ func (table *ProfileTable) HasProfile(id, profileType string) (bool, error) {
 		return false, err
 	}
 	return len(profiles) != 0, nil
-}
-
-func NewProfileTable(db *pg.DB) *ProfileTable {
-	return &ProfileTable{db}
 }

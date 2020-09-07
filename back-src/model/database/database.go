@@ -32,6 +32,7 @@ type Database struct {
 	ProjectTable    *tables.ProjectTable
 	ReviewTable     *tables.ReviewTable
 	ProfileTable    *tables.ProfileTable
+	MediaTable      *tables.MediaTable
 }
 
 func NewDb() *Database {
@@ -59,6 +60,7 @@ func NewDb() *Database {
 		ProjectTable:    tables.NewProjectTable(db),
 		ReviewTable:     tables.NewReviewTable(db),
 		ProfileTable:    tables.NewProfileTable(db),
+		MediaTable:      tables.NewMediaTable(db),
 	}
 }
 
@@ -88,6 +90,9 @@ func (db *Database) Initialize() error {
 		return err
 	}
 	if err := db.initProfileTable(); err != nil {
+		return err
+	}
+	if err := db.initFollowTable(); err != nil {
 		return err
 	}
 
@@ -182,4 +187,8 @@ func (db *Database) initReviewTables() error {
 
 func (db *Database) initProfileTable() error {
 	return db.db.CreateTable(&existence.Profile{}, options)
+}
+
+func (db *Database) initFollowTable() error {
+	return db.db.CreateTable(&existence.Follow{}, options)
 }

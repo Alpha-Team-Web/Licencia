@@ -9,7 +9,7 @@ import (
 )
 
 func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frl := existence.Freelancer{}
@@ -28,7 +28,7 @@ func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) notifications.No
 }
 
 func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frl := data.ChangePassRequest{}
@@ -44,7 +44,7 @@ func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.N
 }
 
 func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		frl := existence.Freelancer{}
@@ -63,7 +63,7 @@ func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) notifications.Noti
 }
 
 func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		if frl, err := users.GetFreelancer(newToken, DB); err != nil {
@@ -75,7 +75,7 @@ func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) notifications.Not
 }
 
 func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		request := data.FreelancerRequestForProject{}

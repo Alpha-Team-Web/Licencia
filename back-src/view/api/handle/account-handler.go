@@ -1,8 +1,10 @@
 package handle
 
 import (
+	"back-src/controller/control/media"
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
+	"back-src/model/database"
 	"back-src/model/existence"
 	"back-src/view/data"
 	"back-src/view/notifications"
@@ -57,7 +59,7 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	}
 }
 
-func checkToken(token, userType string) (string, error) {
+func CheckToken(token, userType string) (string, error) {
 	if auth, err := formalCheckToken(token); err == nil {
 		if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
 			return reInitToken(auth)
@@ -69,7 +71,7 @@ func checkToken(token, userType string) (string, error) {
 	}
 }
 
-func checkTokenIgnoreType(token string) (string, error) {
+func CheckTokenIgnoreType(token string) (string, error) {
 	if auth, err := formalCheckToken(token); err == nil {
 		return reInitToken(auth)
 	} else {
@@ -111,6 +113,24 @@ func reInitToken(auth existence.AuthToken) (string, error) {
 			return "", err
 		} else {
 			return auth.Token, nil
+		}
+	}
+}
+
+func (handler *Handler) ModifyFollow(ctx *gin.Context, isFollow bool) notifications.Notification {
+	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	} else {
+		follow := existence.Follow{}
+		if err := ctx.ShouldBindJSON(&follow); err == nil {
+			job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(string, existence.Follow, *database.Database) error)
+			if err := job(newToken, follow, DB); err == nil {
+				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+			} else {
+				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			}
+		} else {
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
 	}
 }
