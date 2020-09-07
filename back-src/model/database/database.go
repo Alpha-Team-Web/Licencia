@@ -95,6 +95,9 @@ func (db *Database) Initialize() error {
 	if err := db.initFollowTable(); err != nil {
 		return err
 	}
+	if err := db.initEventTable(); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -191,4 +194,8 @@ func (db *Database) initProfileTable() error {
 
 func (db *Database) initFollowTable() error {
 	return db.db.CreateTable(&existence.Follow{}, options)
+}
+
+func (db *Database) initEventTable() interface{} {
+	return db.db.CreateTable(&existence.Event{}, options)
 }

@@ -31,3 +31,8 @@ func (table *MediaTable) IsThereFollow(follower string, following string) (bool,
 	}
 	return len(fls) != 0, nil
 }
+
+func (table *MediaTable) AddEvent(event existence.Event) error {
+	_, err := table.conn.Model(&event).Insert()
+	return err
+}

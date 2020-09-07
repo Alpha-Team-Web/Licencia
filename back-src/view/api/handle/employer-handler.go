@@ -112,7 +112,11 @@ func (handler *Handler) AssignProjectToFreelancer(ctx *gin.Context) notification
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
 		if err := users.AssignProjectToFreelancer(newToken, assign.freelancer, assign.id, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			if err.Error() == "not valid token for this project" {
+				return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+			} else {
+				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			}
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
 		}

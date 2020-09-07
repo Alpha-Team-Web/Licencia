@@ -1,6 +1,7 @@
 package users
 
 import (
+	"back-src/controller/control/media"
 	"back-src/controller/control/projects/filters"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
@@ -15,7 +16,12 @@ const (
 
 func EditEmployerProfile(token string, emp existence.Employer, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return db.EmployerTable.UpdateEmployerProfile(username, emp)
+		if err := db.EmployerTable.UpdateEmployerProfile(username, emp); err == nil {
+			media.AddUpdateProfileEvent(username, false, db)
+			return nil
+		} else {
+			return err
+		}
 	} else {
 		return err
 	}
@@ -61,6 +67,7 @@ func AddProjectToEmployer(token string, project existence.Project, db *database.
 						db.ProjectTable.AddProject(project)
 						emp.ProjectIds = append(emp.ProjectIds, project.Id)
 						if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
+							media.AddAddProjectEvent(username, project.Id, db)
 							if e == nil {
 								e = nil
 							}
@@ -149,27 +156,35 @@ func EditEmployerProject(token string, project existence.Project, db *database.D
 }
 
 func AssignProjectToFreelancer(token string, freelancer string, projectId string, db *database.Database) error {
-	if _, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if requests, err := db.ProjectTable.GetProjectRequests(projectId); err == nil {
-			for s := range requests {
-				db.FreelancerTable.DeleteFreelancerRequestedProject(s, projectId)
-			}
-			if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
-				return err
-			}
-			if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
-				return err
-			}
-			if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
-				return err
-			}
-			if err := db.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
-				return err
-			}
-			return nil
-		} else {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
 			return err
+		} else if username != realUsername {
+			return errors.New("not valid token for this project")
+		} else {
+			if requests, err := db.ProjectTable.GetProjectRequests(projectId); err == nil {
+				for s := range requests {
+					db.FreelancerTable.DeleteFreelancerRequestedProject(s, projectId)
+				}
+				if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
+					return err
+				}
+				if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
+					return err
+				}
+				if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
+					return err
+				}
+				if err := db.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
+					return err
+				}
+				media.AddAssignProjectEvent(username, projectId, db)
+				return nil
+			} else {
+				return err
+			}
 		}
+
 	} else {
 		return err
 	}
