@@ -20,6 +20,7 @@ func UploadUserImage(token string, profileType string, file multipart.File, head
 	}
 	profile.Name = name
 	profile.Data = result
+	profile.Size = header.Size
 	if has, _ := db.ProfileTable.HasProfile(username, profileType); has {
 		return db.ProfileTable.UpdateProfileImage(profile)
 	} else {

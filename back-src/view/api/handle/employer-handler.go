@@ -12,7 +12,7 @@ import (
 
 const (
 	ProjectFilesFormName = "attachments"
-	ProjectImageFormName = "profileImage"
+	ProjectImageFormName = "profile"
 	ProjectDataFormName  = "project"
 )
 
@@ -121,6 +121,12 @@ func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notif
 				attachments = append(attachments, attachment)
 			}
 		}
+		/*profileImage := mForm.File[ProjectImageFormName]
+		if len(profileImage) > 0 {
+			if file, err := profileImage[0].Open(); err != nil {
+
+			}
+		}*/
 		if err := users.AddProjectToEmployer(newToken, project, attachments, DB); err != nil {
 			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
 		} else {

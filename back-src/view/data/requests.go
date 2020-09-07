@@ -31,5 +31,5 @@ type Filter struct {
 type ProjectForm struct {
 	Attachments []*multipart.FileHeader `form:"attachments" binding:"-"`
 	Profile     *multipart.FileHeader   `form:"profile" binding:"-"`
-	Project     string                  `form:"profile" binding:"required"`
+	Project     string                  `form:"project" binding:"required"`
 }
