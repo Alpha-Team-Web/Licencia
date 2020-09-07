@@ -1,5 +1,6 @@
 import React, {Fragment, Component} from 'react';
 import MainTextField from "./mainTextField";
+import {signUp} from "../../Js Functionals/MainPage/Login SignUp Method";
 
 class MainSignUpMenu extends Component {
     constructor(props, context) {
@@ -79,7 +80,7 @@ class MainSignUpMenu extends Component {
 
                     <div className="ui form formPadding">
                         <label>
-                            <input /*onClick="signUp()"*/ type="submit" id="signUpButton" className="ui green button"
+                            <input onClick={() => signUp()} type="submit" id="signUpButton" className="ui green button"
                                    value="ثبت نام"/>
                         </label>
                     </div>

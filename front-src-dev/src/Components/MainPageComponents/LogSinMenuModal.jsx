@@ -21,7 +21,6 @@ function ModalLogSin() {
             onOpen={() => setOpen(true)}
             open={open}
             trigger={<Button className="loginButton">ورود / ثبت نام</Button>}
-
         >
             <Modal.Content>
                 <div className="header" id="Login-Menu-Header">

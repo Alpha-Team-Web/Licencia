@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import '../../CSS Designs/MainPage/LoginMenu.css';
 import MainTextField from "./mainTextField";
+import {login} from "../../Js Functionals/MainPage/Login SignUp Method";
+import {signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
 
 class MainLoginMenu extends Component {
     render() {
@@ -39,12 +41,12 @@ class MainLoginMenu extends Component {
 
                     <div className="ui form formPadding" id="Login-Footer-Form">
                         <label>
-                            <input /*onClick="login()" */type="submit" id="loginButton" className="ui green button"
+                            <input onClick={() => login()} type="submit" id="loginButton" className="ui green button"
                                    value="login" />
                         </label>
                         <footer className="loginFooter">
                             <p className="div-div-footer-p" id="LoginMenu-SignUp-Link">آیا حساب ندارید؟<a
-                                className="div-div-footer-signupLink" >ثبت نام</a></p>
+                                href={() => signUpMenu()} className="div-div-footer-signupLink" >ثبت نام</a></p>
                         </footer>
                     </div>
                 </div>

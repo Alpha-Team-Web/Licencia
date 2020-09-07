@@ -11,7 +11,7 @@ const signUpPassword = document.getElementById("SignUp-Password")
 const signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
 const signupKind = document.getElementById("signUpKind")
 
-function signUp() {
+export function signUp() {
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
         setFieldError(doc, true)
@@ -66,7 +66,7 @@ const loginKeypoint = document.getElementById("login-KeyPoint");
 const loginPassword = document.getElementById("login-Password");
 const loginKind = document.getElementById("loginKind")
 
-function login() {
+export function login() {
     let doc = hasEmpty(loginKeypoint, loginPassword);
     if (doc != null) {
         setFieldError(doc, true)
