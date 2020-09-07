@@ -8,6 +8,11 @@ export default class TransitionComponent extends Component {
 
     state = { visible: true }
 
+    toggleVisibility() {
+        alert('soefijseofi')
+        this.setState((prevState) => ({ visible: !prevState.visible }))
+    }
+
     render() {
         // this.toggleVisibility.bind(this)
         const { visible } = this.state

@@ -21,23 +21,18 @@ class ProfileContent extends Component {
         loadProfileMenu();
     }
 
-    toggleVisibility() {
-        alert('this: ' + this)
-        this.setState((prevState) => ({ visible: !prevState.visible }))
-    }
+    profileComponent = new TransitionComponent({animation: 'scale', content: <p>jfofsie</p>}, "");
 
-    profileComponent = <TransitionComponent toggleVisibility={() => this.profileComponent.setState((prevState) => ({ visible: !prevState.visible }))} animation='scale' content={<p>fjsoefij</p>}/>
-
-    linksComponent = <TransitionComponent toggleVisibility={() => this.linksComponent.setState((prevState) => ({ visible: !prevState.visible }))} animation='scale' content={<LinksComponent id='gitHubReposContent'/>}/>
+    linksComponent = new TransitionComponent({animation: 'scale', content: <LinksComponent id='gitHubReposContent'/>}, "");
 
 
     render() {
         return (
             <div className='content' id={this.props.id} >
                 <div className='content transition visible flexRow' id='ProfileContents'>
-                    {this.profileComponent}
+                    {this.profileComponent.render()}
 
-                    {this.linksComponent}
+                    {this.linksComponent.render()}
                 </div>
 
                 <Divider id='divider1'/>
