@@ -65,6 +65,9 @@ type Project struct {
 	Duration   time.Duration `json:"duration"`
 	StartDate  time.Time     `json:"start-date"`
 	FinishDate time.Time     `json:"finish-date"`
+
+	//files
+	FileIds []string `json:"file_ids"`
 }
 
 /*--------------------------------------Sample--------------------------------------*/

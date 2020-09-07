@@ -27,4 +27,5 @@ func (router *router) addFileEndpoints() {
 	router.addHandlerToPath("/download", "employer-profile-pic", Get, func(context *gin.Context) {
 		respond.Respond(router.handler.DownloadProfileImage(context, existence.EmployerProfile))
 	})
+
 }

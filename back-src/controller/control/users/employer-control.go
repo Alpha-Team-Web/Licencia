@@ -11,6 +11,7 @@ import (
 
 const (
 	ProjectIdSize = 15
+	FileIdSize    = 16
 )
 
 func EditEmployerProfile(token string, emp existence.Employer, db *database.Database) error {
@@ -49,20 +50,36 @@ func GetEmployerProjects(username string, db *database.Database) ([]existence.Pr
 	return db.EmployerTable.GetEmployerProjects(username)
 }
 
-func AddProjectToEmployer(token string, project existence.Project, db *database.Database) (e error) {
+//func AddProjectWithFilesToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *database.Database) error {
+//	project.FileIds = []string{}
+//	if err := AddProjectToEmployer(token, project, db); err != nil {
+//		return err
+//	}
+//	if err := checkProjectFiles(project, attachments); err != nil {
+//		return err
+//	}
+//	return nil
+//}
+
+func AddProjectToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *database.Database) (e error) {
 	e = nil
 	if err := checkAddProjectFieldsValidity(project); err == nil {
 		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 			if emp, err := db.EmployerTable.GetEmployer(username); err == nil {
 				project.EmployerUsername = username
 				project.ProjectStatus = existence.Open
+				project.FileIds = []string{}
 				if project.Id, err = makeNewProjectId(db); err == nil {
 					if err := checkProjectSkills(project.Id, project.FieldsWithSkills, db); err == nil {
 						db.ProjectTable.AddProject(project)
 						emp.ProjectIds = append(emp.ProjectIds, project.Id)
 						if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
-							if e == nil {
-								e = nil
+							if err := checkProjectFiles(project.Id, attachments, db); err == nil {
+								if e == nil {
+									e = nil
+								}
+							} else {
+								e = err
 							}
 						} else {
 							e = err
@@ -91,6 +108,34 @@ func checkAddProjectFieldsValidity(project existence.Project) error {
 		return error
 	}
 	return nil
+}
+
+func checkProjectFiles(projectId string, attachments []existence.ProjectAttachment, db *database.Database) error {
+	for i, attachment := range attachments {
+		if id, err := makeNewFileId(db); err == nil {
+			attachment.ProjectId = projectId
+			attachment.FileId = id
+			db.ProjectAttachmentTable.AddProjectAttachment(attachment)
+			db.ProjectAttachmentTable.AddAttachmentIdToProject(id, projectId)
+		}
+		if i > 2 {
+			break
+		}
+	}
+	return nil
+}
+
+func makeNewFileId(db *database.Database) (string, error) {
+	var e error
+	id := "f" + libs.GetRandomNumberAsString(FileIdSize-1, func(str string) bool {
+		if isThere, err := db.ProjectAttachmentTable.IsThereFileWithId("f" + str); err != nil {
+			e = err
+			return false
+		} else {
+			return isThere
+		}
+	})
+	return id, e
 }
 
 func makeNewProjectId(db *database.Database) (id string, e error) {
