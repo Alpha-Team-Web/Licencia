@@ -1,5 +1,7 @@
 package data
 
+import "mime/multipart"
+
 type LoginRequest struct {
 	Id           string `json:"id" binding:"min=4,max=100"`
 	Password     string `json:"password" binding:"min=6,max=20"`
@@ -24,4 +26,10 @@ type Filter struct {
 	IncludeSkills     []string `json:"include-skills"`
 	ExcludeSkills     []string `json:"exclude-skills"`
 	IsFilterBySkill   bool     `json:"is-filter-by-skill"`
+}
+
+type ProjectForm struct {
+	Attachments []*multipart.FileHeader `form:"attachments" binding:"-"`
+	Profile     *multipart.FileHeader   `form:"profile" binding:"-"`
+	Project     string                  `form:"profile" binding:"required"`
 }
