@@ -3,6 +3,7 @@ package tables
 import (
 	"back-src/model/existence"
 	"github.com/go-pg/pg"
+	"time"
 )
 
 type ProjectTable struct {
@@ -12,6 +13,8 @@ type ProjectTable struct {
 func NewProjectTable(db *pg.DB) *ProjectTable {
 	return &ProjectTable{db}
 }
+
+var DefaultTime = time.Date(2001, time.July, 17, 12, 0, 0, 0, time.UTC)
 
 func (table *ProjectTable) GetFreelancerUsernameByProjectId(projectId string) (string, error) {
 	project := existence.Project{}
@@ -153,4 +156,12 @@ func (table *ProjectTable) DeleteProjectDescriptions(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (table *ProjectTable) GetProjectFinishDate(projectId string) (time.Time, error) {
+	project := existence.Project{}
+	if err := table.conn.Model(&project).Where("id = ?", projectId).Column("finish_date").Select(); err != nil {
+		return DefaultTime, err
+	}
+	return project.FinishDate, nil
 }

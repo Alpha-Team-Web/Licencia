@@ -35,3 +35,22 @@ func AddAssignProjectEvent(username, projectId string, db *database.Database) er
 	}
 	return db.MediaTable.AddEvent(event)
 }
+
+func AddExtendProjectEvent(username, projectId string, db *database.Database) error {
+	event := existence.Event{
+		Username:     username,
+		IsFreelancer: false,
+		EventMessage: existence.EEExtendProject,
+		Id:           projectId,
+	}
+	return db.MediaTable.AddEvent(event)
+}
+func AddCloseProjectEvent(username, projectId string, db *database.Database) error {
+	event := existence.Event{
+		Username:     username,
+		IsFreelancer: false,
+		EventMessage: existence.EECloseProject,
+		Id:           projectId,
+	}
+	return db.MediaTable.AddEvent(event)
+}

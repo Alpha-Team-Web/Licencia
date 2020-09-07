@@ -63,6 +63,7 @@ type Project struct {
 
 	//time
 	Duration   time.Duration `json:"duration"`
+	InitDate   time.Time     `json:"init-date"`
 	StartDate  time.Time     `json:"start-date"`
 	FinishDate time.Time     `json:"finish-date"`
 }

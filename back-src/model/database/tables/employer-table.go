@@ -4,6 +4,7 @@ import (
 	"back-src/model/existence"
 	"errors"
 	"github.com/go-pg/pg"
+	"time"
 )
 
 type EmployerTable struct {
@@ -100,4 +101,12 @@ func (table *EmployerTable) GetEmployerUsernameByEmail(email string) (string, er
 	employer := existence.Employer{}
 	err := table.conn.Model(&employer).Where("email = ?", email).Column("username").Select()
 	return employer.Username, err
+}
+
+func (table *EmployerTable) ExtendProject(id string, date time.Time) error {
+	project := existence.Project{
+		FinishDate: date,
+	}
+	_, err := table.conn.Model(&project).Column("finish_date").Where("id = ?", id).Update()
+	return err
 }

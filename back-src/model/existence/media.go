@@ -22,7 +22,7 @@ const (
 	EEAddProject       = "add project"
 	EEAssignProject    = "assign project"
 	EEExtendProject    = "extend project"
-	EEFinishProject    = "finish project"
+	EECloseProject     = "close project"
 	EEFollowFreelancer = "follow freelancer"
 	EEFollowEmployer   = "follow employer"
 )

@@ -8,6 +8,7 @@ import (
 	"back-src/model/existence"
 	"back-src/view/data"
 	"errors"
+	"time"
 )
 
 const (
@@ -185,6 +186,60 @@ func AssignProjectToFreelancer(token string, freelancer string, projectId string
 			}
 		}
 
+	} else {
+		return err
+	}
+}
+func ExtendProject(token string, projectId string, finishDate time.Time, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
+			return err
+		} else if username != realUsername {
+			return errors.New("not valid token for this project")
+		} else {
+			if firstFinishDate, err := db.ProjectTable.GetProjectFinishDate(projectId); err != nil {
+				return err
+			} else if finishDate.Before(firstFinishDate) {
+				return errors.New("not valid time")
+			} else {
+				if status, err := db.ProjectTable.GetProjectStatus(projectId); err != nil {
+					return err
+				} else if status != existence.Open {
+					return errors.New("not valid project status")
+				} else {
+					media.AddExtendProjectEvent(username, projectId, db)
+					return db.EmployerTable.ExtendProject(projectId, finishDate)
+				}
+			}
+		}
+	} else {
+		return err
+	}
+}
+
+func CloseProject(token string, projectId string, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
+			return err
+		} else if username != realUsername {
+			return errors.New("not valid token for this project")
+		} else {
+			if finishDate, err := db.ProjectTable.GetProjectFinishDate(projectId); err != nil {
+				return err
+			} else if finishDate.Before(time.Now()) {
+				return errors.New("not valid time")
+			} else {
+				if status, err := db.ProjectTable.GetProjectStatus(projectId); err != nil {
+					return err
+				} else if status != existence.OnGoing {
+					return errors.New("not valid project status")
+				} else {
+					media.AddCloseProjectEvent(username, projectId, db)
+					panic(errors.New("not implemented function error"))
+					//TODO(El Tipo, Close Project)
+				}
+			}
+		}
 	} else {
 		return err
 	}

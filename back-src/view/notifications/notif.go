@@ -78,3 +78,14 @@ func GetTokenNotAuthorizedErrorNotif(ctx *gin.Context, data interface{}) Notific
 	}
 	return notif
 }
+
+func GetExpectationFailedError(ctx *gin.Context, token string, data interface{}) Notification {
+	notif := Notification{
+		Context:    ctx,
+		Token:      token,
+		Message:    "some data not as expected",
+		StatusCode: http.StatusExpectationFailed, //417
+		Data:       data,
+	}
+	return notif
+}

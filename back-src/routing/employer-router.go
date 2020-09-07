@@ -34,6 +34,14 @@ func (router *router) addEmployerEndpoints() {
 		respond.Respond(router.handler.AssignProjectToFreelancer(context))
 	})
 
+	router.addHandlerToPath("/extend", "employer-projects", Post, func(context *gin.Context) {
+		respond.Respond(router.handler.ExtendProject(context))
+	})
+
+	router.addHandlerToPath("/close", "employer-projects", Post, func(ctx *gin.Context) {
+		respond.Respond(router.handler.CloseProject(ctx))
+	})
+
 	router.addHandlerToPath("/review", "employer-projects", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.AddEmployerReview(context))
 	})

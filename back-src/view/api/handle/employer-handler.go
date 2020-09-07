@@ -6,6 +6,7 @@ import (
 	"back-src/view/data"
 	"back-src/view/notifications"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 func (handler *Handler) EditEmployerProfile(ctx *gin.Context) notifications.Notification {
@@ -105,16 +106,67 @@ func (handler *Handler) AssignProjectToFreelancer(ctx *gin.Context) notification
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
 		assign := struct {
-			id         string `json:"string"`
-			freelancer string `json:"freelancer"`
+			Id         string `json:"id"`
+			Freelancer string `json:"freelancer"`
 		}{}
 		if err := ctx.ShouldBindJSON(&assign); err != nil {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
-		if err := users.AssignProjectToFreelancer(newToken, assign.freelancer, assign.id, DB); err != nil {
+		if err := users.AssignProjectToFreelancer(newToken, assign.Freelancer, assign.Id, DB); err != nil {
 			if err.Error() == "not valid token for this project" {
 				return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 			} else {
+				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			}
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+		}
+	}
+}
+
+func (handler *Handler) ExtendProject(ctx *gin.Context) notifications.Notification {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	} else {
+		extend := struct {
+			Id         string    `json:"id"`
+			FinishDate time.Time `json:"finish-date"`
+		}{}
+		if err := ctx.ShouldBindJSON(&extend); err != nil {
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		}
+		if err := users.ExtendProject(newToken, extend.Id, extend.FinishDate, DB); err != nil {
+			switch err.Error() {
+			case "not valid token for this project":
+				return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+			case "not valid time", "not valid project status":
+				return notifications.GetExpectationFailedError(ctx, newToken, nil)
+			default:
+				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			}
+		} else {
+			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
+		}
+	}
+}
+
+func (handler *Handler) CloseProject(ctx *gin.Context) notifications.Notification {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	} else {
+		close := struct {
+			Id string `json:"id"`
+		}{}
+		if err := ctx.ShouldBindJSON(&close); err != nil {
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		}
+		if err := users.CloseProject(newToken, close.Id, DB); err != nil {
+			switch err.Error() {
+			case "not valid token for this project":
+				return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+			case "not valid time", "not valid project status":
+				return notifications.GetExpectationFailedError(ctx, newToken, nil)
+			default:
 				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
 			}
 		} else {
