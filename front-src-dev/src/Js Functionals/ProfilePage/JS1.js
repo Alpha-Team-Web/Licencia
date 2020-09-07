@@ -55,7 +55,13 @@ function initGithubRepos() {
 }
 
 let isFreeLancer = true;
-function loadProfileMenu() {
+
+export function initTransitionsStart(profileTransition, ...transitions) {
+    alert('transitions: ' + transitions)
+    // transitions.forEach((value => value.toggleVisibility()))
+}
+
+export function loadProfileMenu() {
     // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
     isFreeLancer = Cookies.get('isfreelancer');
     alert('Cookies: "' + isFreeLancer + "'")
@@ -71,8 +77,6 @@ function loadProfileMenu() {
             'Token': Cookies.get('auth')
         }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
     }
-    $('#' + gitHubRepoContent.id).transition(MainProfileTransition)
-    $('#' + profile.id).transition(MainProfileTransition).transition(MainProfileTransition)
     initGithubRepos();
 }
 
@@ -214,11 +218,11 @@ export const profile = document.getElementById('profile');
 export const gitHubRepoContent = document.getElementById('githubReposContent');
 export const changePasswordContent = document.getElementById('changingPasswordContent');
 export function changeMainProfileContent(content) {
-    let showingDisplay = getShowingDisplay();
+    /*let showingDisplay = getShowingDisplay();
     if (showingDisplay != null && content.id !== showingDisplay.id) {
         $('#' + showingDisplay.id).transition(MainProfileTransition);
         $('#' + content.id).transition(MainProfileTransition);
-    }
+    }*/
 }
 
 function getShowingDisplay() {
@@ -234,10 +238,10 @@ function getShowingDisplay() {
 
 
 function modal(modalId, command) {
-    if (document.getElementById(modalId) != null) {
+    /*if (document.getElementById(modalId) != null) {
         $('#' + modalId)
             .modal(command);
-    }
+    }*/
 }
 
 function successSaveProfile(value) {
@@ -272,15 +276,15 @@ function submitGitPart() {
         let gitLinks = [];
         let size = 0;
         if (firstRepoDiv.style.display !== "none") {
-            gitLinks[size] = $('#linkRepo1').text();
+            gitLinks[size] = document.getElementById('linkRepo1').text();
             size += 1;
         }
         if (secondRepoDiv.style.display !== "none") {
-            gitLinks[size] = $('#linkRepo2').text();
+            gitLinks[size] = document.getElementById('linkRepo2').text();
             size += 1;
         }
         if (thirdRepoDiv.style.display !== "none") {
-            gitLinks[size] = $('#linkRepo3').text();
+            gitLinks[size] = document.getElementById('linkRepo3').text();
             size += 1;
         }
         let data = {
@@ -345,7 +349,7 @@ function denyChangePassword(value) {
 
 
 function openClose() {
-    $('.ui.sidebar')
+    /*$('.ui.sidebar')
         .sidebar('toggle')
-    ;
+    ;*/
 }

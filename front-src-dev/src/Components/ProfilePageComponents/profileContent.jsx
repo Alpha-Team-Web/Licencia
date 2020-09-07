@@ -7,30 +7,48 @@ import ProfileCard from "./profileCard";
 import '../../CSS Designs/basic.css';
 import '../../CSS Designs/ProfilePage/CSS1.css';
 import '../../CSS Designs/Header.css';
+import ModalPassword from "./passwordComponent";
+import TransitionComponent from "./transitionComponent";
+import {initTransitionsStart, loadProfileMenu} from "../../Js Functionals/ProfilePage/JS1";
 
 class ProfileContent extends Component {
     constructor(props, context) {
         super(props, context);
     }
 
+    initProfileContent = () => {
+        initTransitionsStart(this.profileComponent, this.linksComponent);
+        loadProfileMenu();
+    }
+
+    toggleVisibility() {
+        alert('this: ' + this)
+        this.setState((prevState) => ({ visible: !prevState.visible }))
+    }
+
+    profileComponent = <TransitionComponent toggleVisibility={() => this.profileComponent.setState((prevState) => ({ visible: !prevState.visible }))} animation='scale' content={<p>fjsoefij</p>}/>
+
+    linksComponent = <TransitionComponent toggleVisibility={() => this.linksComponent.setState((prevState) => ({ visible: !prevState.visible }))} animation='scale' content={<LinksComponent id='gitHubReposContent'/>}/>
+
+
     render() {
         return (
-            <div className='content' id={this.props.id}>
+            <div className='content' id={this.props.id} >
                 <div className='content transition visible flexRow' id='ProfileContents'>
-                    <ProfileComponent id='profile'/>
+                    {this.profileComponent}
 
-                    <LinksComponent id='gitHubReposContent'/>
+                    {this.linksComponent}
                 </div>
 
                 <Divider id='divider1'/>
 
                 <div className='content' id='profileCards'>
 
-                    <ProfileCard onClick={{/*() => changeMainProfileContent(profile)*/}} hId='viewProfile' number={35} cardContent='مشاهده پروفایل'/>
+                    <ProfileCard onClick={() => this.profileComponent.toggleVisibility()} hId='viewProfile' number={35} cardContent='مشاهده پروفایل'/>
 
-                    <ProfileCard id='gitHubAccountPart' onClick={{/*() => changeMainProfileContent(gitHubRepoContent)*/}} hId='viewLinks' number={35} cardContent='مشاهده پیوند ها'/>
+                    <ProfileCard id='gitHubAccountPart' onClick={() => this.linksComponent.toggleVisibility()} hId='viewLinks' number={35} cardContent='مشاهده پیوند ها'/>
 
-                    <ProfileCard onClick={{/*modal('changingPasswordContent', 'show')*/}} hId='changePassword' number={35} cardContent='تغییر رمز عبور'/>
+                    <ModalPassword/>
 
                     <ProfileCard onClick={{/*() => changeMainProfileContent(gitHubRepoContent)*/}} hId='doneProjects' number={35} cardContent='پروژه های انجام شده در لیسنسیا'/>
 

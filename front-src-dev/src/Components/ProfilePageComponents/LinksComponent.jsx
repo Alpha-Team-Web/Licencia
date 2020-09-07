@@ -26,7 +26,6 @@ function LinksComponent() {
                     <i className="large github middle aligned icon"/>
                     <div className="content">
                         <a className="header" id="linkRepo1">Semantic-Org/Semantic-UI</a>
-                        <!--                        <div class="description">Updated 10 mins ago</div>-->
                     </div>
                     <i className="large window minimize middle aligned link icon"
                        onClick={() => {
@@ -37,7 +36,6 @@ function LinksComponent() {
                     <i className="large github middle aligned icon"/>
                     <div className="content">
                         <a className="header" id="linkRepo2">Semantic-Org/Semantic-UI-Docs</a>
-                        <!--                        <div class="description">Updated 22 mins ago</div>-->
                     </div>
                     <i className="large window minimize middle aligned link icon"
                        onClick={() => {
@@ -48,7 +46,6 @@ function LinksComponent() {
                     <i className="large github middle aligned icon"/>
                     <div className="content">
                         <a className="header" id="linkRepo3">Semantic-Org/Semantic-UI-Meteor</a>
-                        <!--                        <div class="description">Updated 34 mins ago</div>-->
                     </div>
                     <i className="large window minimize middle aligned link icon"
                        onClick={() => {
