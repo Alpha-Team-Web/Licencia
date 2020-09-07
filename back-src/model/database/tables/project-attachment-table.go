@@ -20,11 +20,11 @@ func (table *ProjectAttachmentTable) AddProjectAttachment(attachment existence.P
 
 func (table *ProjectAttachmentTable) AddAttachmentIdToProject(fileId string, projectId string) error {
 	project := existence.Project{}
-	if err := table.conn.Model(&project).Where("project_id = ?", projectId).Select(); err != nil {
+	if err := table.conn.Model(&project).Where("id = ?", projectId).Select(); err != nil {
 		return err
 	}
 	project.FileIds = append(project.FileIds, fileId)
-	_, err := table.conn.Model(&project).Column("file_ids").Where("project_id = ?", projectId).Update()
+	_, err := table.conn.Model(&project).Column("file_ids").Where("id = ?", projectId).Update()
 	return err
 }
 
@@ -35,7 +35,7 @@ func (table *ProjectAttachmentTable) UpdateProjectAttachment(fileId string, atta
 
 func (table *ProjectAttachmentTable) GetProjectAttachments(projectId string) ([]existence.ProjectAttachment, error) {
 	files := []existence.ProjectAttachment{}
-	err := table.conn.Model(&files).Where("project_id = ?", projectId).Select()
+	err := table.conn.Model(&files).Where("id = ?", projectId).Select()
 	return files, err
 }
 
