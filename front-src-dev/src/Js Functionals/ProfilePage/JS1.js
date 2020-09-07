@@ -1,4 +1,15 @@
-import {httpGet} from "../AlphaAPI";
+import {httpExcGET, httpGet} from "../AlphaAPI";
+import {mainPageName} from "../FileNames";
+import Cookies from 'js-cookie';
+import {
+    changePasswordUrlEmployer,
+    changePasswordUrlFreeLancer,
+    gitHubUrl, saveGithubUrlFreeLancer,
+    saveProfileUrlEmployer,
+    saveProfileUrlFreeLancer,
+    urlGetEmployerProfileInfo,
+    urlGetFreelancerProfileInfo
+} from "../urlNames";
 
 
 const usernameField = document.getElementById("usernameField");
@@ -43,10 +54,12 @@ function initGithubRepos() {
     iconDiv.style.display = 'none';
 }
 
+let isFreeLancer = true;
 function loadProfileMenu() {
     // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
-    alert('Cookies: "' + Cookies.get('isfreelancer') + "'")
-    if (!Cookies.get('isfreelancer')) {
+    isFreeLancer = Cookies.get('isfreelancer');
+    alert('Cookies: "' + isFreeLancer + "'")
+    if (!isFreeLancer) {
         httpGet(urlGetEmployerProfileInfo, {
             'Content-Type': 'application/json',
             'Token': Cookies.get('auth')
@@ -77,7 +90,7 @@ function handleSuccessGetProfileInfo(value) {
     password = messages.password;
     projectsId = messages['project-ids'];
     fillCommonFields();
-    if (Cookies.get('isfreelancer')) {
+    if (isFreeLancer) {
         gitHubAccount = messages.github;
         gitHubRepo = messages['github-repos'];
         siteAddress = messages.website;
@@ -248,38 +261,41 @@ function saveProfile() {
     telephoneNumber = telephoneNumberField.value;
     address = addressField.value;
     description = descriptionField.value;
-    httpExcGET('post', saveProfileUrl, data, successSaveProfile, errorSaveProfile, {
+    httpExcGET('post', isFreeLancer ? saveProfileUrlFreeLancer : saveProfileUrlEmployer,
+        data, successSaveProfile, errorSaveProfile, {
         'auth': Cookies.get('auth')
     })
 }
 
 function submitGitPart() {
-    let gitLinks = [];
-    let size = 0;
-    if (firstRepoDiv.style.display !== "none") {
-        gitLinks[size] = $('#linkRepo1').text();
-        size += 1;
+    if (isFreeLancer) {
+        let gitLinks = [];
+        let size = 0;
+        if (firstRepoDiv.style.display !== "none") {
+            gitLinks[size] = $('#linkRepo1').text();
+            size += 1;
+        }
+        if (secondRepoDiv.style.display !== "none") {
+            gitLinks[size] = $('#linkRepo2').text();
+            size += 1;
+        }
+        if (thirdRepoDiv.style.display !== "none") {
+            gitLinks[size] = $('#linkRepo3').text();
+            size += 1;
+        }
+        let data = {
+            'website': siteAddressField.value,
+            'github-repos': gitLinks,
+            'github': githubAccountField.value
+        }
+        siteAddress = siteAddressField.value;
+        gitHubAccount = githubAccountField.value;
+        let headers = {
+            'Content-Type': 'application/json',
+            'token': Cookies.get('auth')
+        }
+        httpExcGET('POST', saveGithubUrlFreeLancer, data, successGithubPartSubmit, denyGithubPartSubmit, headers);
     }
-    if (secondRepoDiv.style.display !== "none") {
-        gitLinks[size] = $('#linkRepo2').text();
-        size += 1;
-    }
-    if (thirdRepoDiv.style.display !== "none") {
-        gitLinks[size] = $('#linkRepo3').text();
-        size += 1;
-    }
-    let data = {
-        'website': siteAddressField.value,
-        'github-repos': gitLinks,
-        'github': githubAccountField.value
-    }
-    siteAddress = siteAddressField.value;
-    gitHubAccount = githubAccountField.value;
-    let headers = {
-        'Content-Type': 'application/json',
-        'token': Cookies.get('auth')
-    }
-    httpExcGET('POST', saveGithubUrl, data, successGithubPartSubmit, denyGithubPartSubmit, headers);
 }
 
 function successGithubPartSubmit(value) {
@@ -312,7 +328,8 @@ function changePassword() {
                     'token': Cookies.get('auth')
                 }
                 password = newPasswordField.value;
-                httpExcGET('POST', changePasswordUrl, data, successChangePassword, denyChangePassword, headers)
+                httpExcGET('POST', isFreeLancer ? changePasswordUrlFreeLancer : changePasswordUrlEmployer,
+                    data, successChangePassword, denyChangePassword, headers)
             }
         }
     }
