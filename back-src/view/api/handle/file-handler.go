@@ -50,3 +50,22 @@ func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType strin
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	}
 }
+
+func (handler *Handler) DownloadProjectFile(ctx *gin.Context) notifications.Notification {
+	if newToken, err := checkTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+		fileStruct := struct {
+			id string `json:"id"`
+		}{}
+		if err := ctx.ShouldBindJSON(&fileStruct); err == nil {
+			if file, err := files.DownloadProjectFile(fileStruct.id, DB); err != nil {
+				return notifications.GetDatabaseErrorNotif(ctx, newToken, nil)
+			} else {
+				return notifications.GetSuccessfulNotif(ctx, newToken, file)
+			}
+		} else {
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		}
+	} else {
+		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	}
+}

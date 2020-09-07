@@ -39,3 +39,11 @@ func DownloadUserImage(token string, profileType string, db *database.Database) 
 		return prof.File, nil
 	}
 }
+
+func DownloadProjectFile(fileId string, db *database.Database) (existence.File, error) {
+	attachment, err := db.ProjectAttachmentTable.GetProjectAttachmentById(fileId)
+	if err != nil {
+		return existence.File{}, err
+	}
+	return attachment.File, nil
+}
