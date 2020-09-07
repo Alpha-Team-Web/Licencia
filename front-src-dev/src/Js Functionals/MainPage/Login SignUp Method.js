@@ -73,11 +73,17 @@ function handleErrorSignUp(value) {
 }
 
 
-const loginKeypoint = document.getElementById("login-KeyPoint");
-const loginPassword = document.getElementById("login-Password");
-const loginKind = document.getElementById("loginKind")
+let loginKeypoint;
+let loginPassword;
+let loginKind;
+function setLoginFields() {
+    loginKeypoint = document.getElementById("login-KeyPoint");
+    loginPassword = document.getElementById("login-Password");
+    loginKind = document.getElementById("loginKind");
+}
 
 export function login() {
+    setLoginFields()
     let doc = hasEmpty(loginKeypoint, loginPassword);
     if (doc != null) {
         setFieldError(doc, true)
@@ -87,6 +93,7 @@ export function login() {
             id: loginKeypoint.value,
             password: loginPassword.value
         }
+        alert('data: ' + JSON.stringify(data))
         const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
             'Content-Type': 'application/json'
         }, {
