@@ -5,7 +5,8 @@ import licenciaImg from "../../Pics/Licencia-Logo.png";
 import MainLoginMenu from "./mainLoginMenu";
 import MainSignUpMenu from "./mainSignUpMenu";
 
-function ModalLogSin() {
+function ModalLogSin(props) {
+
     const [open, setOpen] = React.useState(false)
 
     let style1 = {
