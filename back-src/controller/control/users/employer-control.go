@@ -112,7 +112,7 @@ func checkAddProjectFieldsValidity(project existence.Project) error {
 
 func checkProjectFiles(projectId string, attachments []existence.ProjectAttachment, db *database.Database) error {
 	for i, attachment := range attachments {
-		if id, err := makeNewFileId(db); err == nil {
+		if id, err := MakeNewFileId(db); err == nil {
 			attachment.ProjectId = projectId
 			attachment.FileId = id
 			db.ProjectAttachmentTable.AddProjectAttachment(attachment)
@@ -125,7 +125,7 @@ func checkProjectFiles(projectId string, attachments []existence.ProjectAttachme
 	return nil
 }
 
-func makeNewFileId(db *database.Database) (string, error) {
+func MakeNewFileId(db *database.Database) (string, error) {
 	var e error
 	id := "f" + libs.GetRandomNumberAsString(FileIdSize-1, func(str string) bool {
 		if isThere, err := db.ProjectAttachmentTable.IsThereFileWithId("f" + str); err != nil {

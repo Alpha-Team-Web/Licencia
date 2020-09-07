@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"back-src/controller/utils/libs"
 	"back-src/model/existence"
 	"github.com/go-pg/pg"
 )
@@ -24,6 +25,26 @@ func (table *ProjectAttachmentTable) AddAttachmentIdToProject(fileId string, pro
 		return err
 	}
 	project.FileIds = append(project.FileIds, fileId)
+	_, err := table.conn.Model(&project).Column("file_ids").Where("id = ?", projectId).Update()
+	return err
+}
+
+func (table *ProjectAttachmentTable) RemoveProjectAttachment(fileId string) error {
+	_, err := table.conn.Model(&existence.ProjectAttachment{}).Where("file_id = ?", fileId).Delete()
+	return err
+}
+
+func (table *ProjectAttachmentTable) RemoveAttachmentIdFromProject(fileId string, projectId string) error {
+	project := existence.Project{}
+	if err := table.conn.Model(&project).Where("id = ?", projectId).Select(); err != nil {
+		return err
+	}
+	fileIds := project.FileIds
+	for i, id := range fileIds {
+		if id == fileId {
+			fileIds = libs.RemoveStringElement(fileIds, i)
+		}
+	}
 	_, err := table.conn.Model(&project).Column("file_ids").Where("id = ?", projectId).Update()
 	return err
 }

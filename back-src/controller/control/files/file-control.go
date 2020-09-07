@@ -1,8 +1,11 @@
 package files
 
 import (
+	"back-src/controller/control/users"
+	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
+	"errors"
 	"io/ioutil"
 	"mime/multipart"
 )
@@ -46,4 +49,83 @@ func DownloadProjectFile(fileId string, db *database.Database) (existence.File, 
 		return existence.File{}, err
 	}
 	return attachment.File, nil
+}
+
+func AttachFileToProject(token string, attachment existence.ProjectAttachment, db *database.Database) error {
+	username, err := db.AuthTokenTable.GetUsernameByToken(token)
+	if err != nil {
+		return err
+	}
+	if project, err := db.ProjectTable.GetProject(attachment.ProjectId); err != nil {
+		return err
+	} else {
+		if emp, err := db.EmployerTable.GetEmployer(username); err != nil {
+			return err
+		} else {
+			if !libs.ContainsString(emp.ProjectIds, project.Id) {
+				return errors.New("access to project denied")
+			}
+		}
+		if len(project.FileIds) == 3 {
+			return errors.New("max number of files exceeded")
+		}
+	}
+	if id, err := users.MakeNewFileId(db); err != nil {
+		return err
+	} else {
+		attachment.FileId = id
+		if err := db.ProjectAttachmentTable.AddProjectAttachment(attachment); err != nil {
+			return err
+		}
+		if err := db.ProjectAttachmentTable.AddAttachmentIdToProject(attachment.FileId, attachment.ProjectId); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func DetachFileFromProject(token string, fileId string, db *database.Database) error {
+	username, err := db.AuthTokenTable.GetUsernameByToken(token)
+	if err != nil {
+		return err
+	}
+	var projectId string
+	if attachment, err := db.ProjectAttachmentTable.GetProjectAttachmentById(fileId); err != nil {
+		return err
+	} else {
+		if emp, err := db.EmployerTable.GetEmployer(username); err != nil {
+			return err
+		} else {
+			if !libs.ContainsString(emp.ProjectIds, attachment.ProjectId) {
+				return errors.New("access to project denied")
+			}
+			projectId = attachment.ProjectId
+		}
+	}
+	if err := db.ProjectAttachmentTable.RemoveProjectAttachment(fileId); err != nil {
+		return err
+	}
+	if err := db.ProjectAttachmentTable.RemoveAttachmentIdFromProject(fileId, projectId); err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateFileInProject(token string, attachment existence.ProjectAttachment, db *database.Database) error {
+	username, err := db.AuthTokenTable.GetUsernameByToken(token)
+	if err != nil {
+		return err
+	}
+	if project, err := db.ProjectTable.GetProject(attachment.ProjectId); err != nil {
+		return err
+	} else {
+		if emp, err := db.EmployerTable.GetEmployer(username); err != nil {
+			return err
+		} else {
+			if !libs.ContainsString(emp.ProjectIds, project.Id) {
+				return errors.New("access to project denied")
+			}
+		}
+	}
+	return db.ProjectAttachmentTable.UpdateProjectAttachment(attachment.FileId, attachment)
 }
