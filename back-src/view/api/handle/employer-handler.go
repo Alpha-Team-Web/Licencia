@@ -2,8 +2,8 @@ package handle
 
 import (
 	"back-src/controller/control/users"
-	"back-src/controller/utils/data"
 	"back-src/model/existence"
+	"back-src/view/data"
 	"back-src/view/notifications"
 	"github.com/gin-gonic/gin"
 )

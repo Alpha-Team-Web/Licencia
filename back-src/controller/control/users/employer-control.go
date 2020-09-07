@@ -2,10 +2,10 @@ package users
 
 import (
 	"back-src/controller/control/projects/filters"
-	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/view/data"
 	"errors"
 )
 

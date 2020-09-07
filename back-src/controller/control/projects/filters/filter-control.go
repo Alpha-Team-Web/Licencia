@@ -1,10 +1,10 @@
 package filters
 
 import (
-	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs/sets"
 	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/view/data"
 	"back-src/view/notifications"
 	"math"
 )

@@ -2,9 +2,9 @@ package handle
 
 import (
 	"back-src/controller/control/users"
-	"back-src/controller/utils/data"
 	"back-src/controller/utils/libs"
 	"back-src/model/existence"
+	"back-src/view/data"
 	"back-src/view/notifications"
 	"errors"
 	"github.com/gin-gonic/gin"
