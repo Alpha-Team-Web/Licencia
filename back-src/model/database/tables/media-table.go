@@ -19,6 +19,15 @@ func (table *MediaTable) AddFollow(follow existence.Follow) error {
 }
 
 func (table *MediaTable) RemoveFollow(follow existence.Follow) error {
-	_, err := table.conn.Model(&follow).Where("follower_username = ?", follow.FollowerFreelancer).Where("following_username = ?", follow.FollowingUsername).Delete()
+	_, err := table.conn.Model(&follow).Where("follower_username = ?", follow.FollowerUsername).Where("following_username = ?", follow.FollowingUsername).Delete()
 	return err
+}
+
+func (table *MediaTable) IsThereFollow(follower string, following string) (bool, error) {
+	var fls []existence.Follow
+	err := table.conn.Model(&fls).Where("follower_username = ?", follower).Where("following_username = ?", following).Select()
+	if err != nil {
+		return false, err
+	}
+	return len(fls) != 0, nil
 }
