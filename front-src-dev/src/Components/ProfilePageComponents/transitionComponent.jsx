@@ -18,7 +18,7 @@ export default class TransitionComponent extends Component {
         const { visible } = this.state
 
         return (
-                <Transition id={this.props.id} visible={visible} animation={this.props.animation} duration={this.props.duration == undefined ? 500 : this.props.duration}>
+                <Transition id={this.props.id} visible={this.props.visible} animation={this.props.animation} duration={this.props.duration == undefined ? 500 : this.props.duration}>
                     {this.props.content}
                 </Transition>
         )
