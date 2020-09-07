@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import MainHeader from "../Components/MainPageComponents/mainHeader";
 import MainContent from "../Components/MainPageComponents/mainContent";
-import ModalExampleModal from "../Components/file";
+import ModalLogSin from "../Components/MainPageComponents/LogSinMenuModal";
 
 class MainPage extends Component {
     render() {
