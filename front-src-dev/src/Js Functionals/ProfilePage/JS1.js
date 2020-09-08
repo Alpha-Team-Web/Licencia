@@ -54,7 +54,7 @@ function initGithubRepos() {
     iconDiv.style.display = 'none';
 }
 
-let isFreeLancer = true;
+export let isFreeLancer = true;
 
 export function initTransitionsStart(profileTransition, ...transitions) {
     alert('transitions: ' + transitions)
