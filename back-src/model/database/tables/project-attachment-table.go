@@ -42,7 +42,7 @@ func (table *ProjectAttachmentTable) RemoveAttachmentIdFromProject(fileId string
 	fileIds := project.FileIds
 	for i, id := range fileIds {
 		if id == fileId {
-			fileIds = libs.RemoveStringElement(fileIds, i)
+			project.FileIds = libs.RemoveStringElement(fileIds, i)
 		}
 	}
 	_, err := table.conn.Model(&project).Column("file_ids").Where("id = ?", projectId).Update()

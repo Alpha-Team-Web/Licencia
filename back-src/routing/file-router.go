@@ -33,15 +33,15 @@ func (router *router) addFileEndpoints() {
 		respond.Respond(router.handler.DownloadProjectFile(context))
 	})
 
-	router.addHandlerToPath("/upload", "project-files", Get, func(context *gin.Context) {
+	router.addHandlerToPath("/upload", "project-files", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.UploadProjectFile(context))
 	})
 
-	router.addHandlerToPath("/update", "project-files", Get, func(context *gin.Context) {
+	router.addHandlerToPath("/update", "project-files", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.UpdateProjectFile(context))
 	})
 
-	router.addHandlerToPath("/remove", "project-files", Get, func(context *gin.Context) {
+	router.addHandlerToPath("/remove", "project-files", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.RemoveProjectFile(context))
 	})
 }

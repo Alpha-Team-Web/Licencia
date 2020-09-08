@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"net/http"
 )
 
 const ProfileImageUploaderForName = "profileImage"
@@ -118,7 +119,13 @@ func (handler *Handler) UpdateProjectFile(ctx *gin.Context) notifications.Notifi
 		}
 		attachment.FileId = form.FileId
 		if err := files.UpdateFileInProject(newToken, attachment, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			return notifications.Notification{
+				Context:    ctx,
+				Token:      newToken,
+				StatusCode: http.StatusInternalServerError,
+				Message:    err.Error(),
+				Data:       nil,
+			}
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
 		}
@@ -130,10 +137,10 @@ func (handler *Handler) UpdateProjectFile(ctx *gin.Context) notifications.Notifi
 func (handler *Handler) RemoveProjectFile(ctx *gin.Context) notifications.Notification {
 	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
 		fileStruct := struct {
-			id string `json:"id"`
+			Id string `json:"id"`
 		}{}
 		if err := ctx.ShouldBindJSON(&fileStruct); err == nil {
-			if err := files.DetachFileFromProject(newToken, fileStruct.id, DB); err != nil {
+			if err := files.DetachFileFromProject(newToken, fileStruct.Id, DB); err != nil {
 				return notifications.GetDatabaseErrorNotif(ctx, newToken, nil)
 			} else {
 				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
