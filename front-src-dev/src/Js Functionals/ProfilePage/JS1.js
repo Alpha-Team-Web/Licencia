@@ -124,19 +124,19 @@ function handleDenyGetProfileInfo(value) {
     console.log("raft too handleDenyGetProfileInfo");
 }
 
-const repoDiv = document.getElementById("addRepoDiv");
-const iconDiv = document.getElementById("plusRepoIconDiv");
-const repoInput = document.getElementById("addRepoInput");
-const firstRepoDiv = document.getElementById("firstRepo");
-const secondRepoDiv = document.getElementById("secondRepo");
-const thirdRepoDiv = document.getElementById("thirdRepo");
-const firstRepoLink = document.getElementById("linkRepo1");
-const secondRepoLink = document.getElementById("linkRepo2");
-const thirdRepoLink = document.getElementById("linkRepo3");
-const githubAccountField = document.getElementById("githubAccountField");
-const gitHubReposDiv = document.getElementById("gitHubRepos");
+let repoDiv = document.getElementById("addRepoDiv");
+let iconDiv = document.getElementById("plusRepoIconDiv");
+let repoInput = document.getElementById("addRepoInput");
+export let firstRepoDiv = document.getElementById("firstRepo");
+export let secondRepoDiv = document.getElementById("secondRepo");
+export let thirdRepoDiv = document.getElementById("thirdRepo");
+let firstRepoLink = document.getElementById("linkRepo1");
+let secondRepoLink = document.getElementById("linkRepo2");
+let thirdRepoLink = document.getElementById("linkRepo3");
+let githubAccountField = document.getElementById("githubAccountField");
+let gitHubReposDiv = document.getElementById("gitHubRepos");
 
-function openAddRepoDiv() {
+export function openAddRepoDiv() {
     let counter = 0;
     if (firstRepoDiv.style.display !== "none") counter += 1;
     if (secondRepoDiv.style.display !== "none") counter += 1;
@@ -152,7 +152,7 @@ function openAddRepoDiv() {
 }
 
 
-function closeAddRepoDiv() {
+export function closeAddRepoDiv() {
     if (repoInput.value === "") {
         // $ep
         repoDiv.style.display = "none";
@@ -189,7 +189,7 @@ function showRepo(repoDiv, repoLink, text) {
     repoDiv.style.display = "block";
 }
 
-function removeRepo(element) {
+export function removeRepo(element) {
     element.style.display = "none";
     iconDiv.style.display = "block";
 }
@@ -200,7 +200,7 @@ function removeAllChild(element) {
     }
 }
 
-function accountGithubChanged() {
+export function accountGithubChanged() {
     if (githubAccountField.value === "") {
         firstRepoDiv.style.display = "none";
         secondRepoDiv.style.display = "none";
@@ -272,7 +272,7 @@ function saveProfile() {
         })
 }
 
-function submitGitPart() {
+export function submitGitPart() {
     if (isFreeLancer) {
         let gitLinks = [];
         let size = 0;

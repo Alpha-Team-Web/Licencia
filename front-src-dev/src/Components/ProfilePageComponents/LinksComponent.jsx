@@ -1,10 +1,17 @@
 import React, {Component} from 'react';
 import {Button} from "semantic-ui-react";
+import {
+    accountGithubChanged, closeAddRepoDiv,
+    firstRepoDiv, openAddRepoDiv,
+    removeRepo,
+    secondRepoDiv, submitGitPart,
+    thirdRepoDiv
+} from "../../Js Functionals/ProfilePage/JS1";
 
 class LinksComponent extends Component {
     render() {
         return (
-            <div className="ui form flexColumn" id={this.props.id}>
+            <div className="ui form flexColumn" id={this.props.id} style={this.props.style}>
                 <div className="two fields">
                     <div className="field">
                         <label className="rightAligned">آدرس سایت</label>
@@ -17,7 +24,7 @@ class LinksComponent extends Component {
                         <label className="rightAligned">اکانت گیت هاب</label>
                         <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text"
                                onfocusout={() => {
-                                   // accountGithubChanged();
+                                   accountGithubChanged();
                                }}/>
                     </div>
                 </div>
@@ -30,7 +37,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
-                               // removeRepo(firstRepo);
+                               removeRepo(firstRepoDiv);
                            }}/>
                     </div>
                     <div className="item" id="secondRepo">
@@ -40,7 +47,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
-                               // removeRepo(secondRepo);
+                               removeRepo(secondRepoDiv);
                            }}/>
                     </div>
                     <div className="item" id="thirdRepo">
@@ -50,32 +57,32 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
-                               // removeRepo(thirdRepo);
+                               removeRepo(thirdRepoDiv);
                            }}/>
                     </div>
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
                             <input type="text" placeholder="Search..." id="addRepoInput"
                                    onfocusout={() => {
-                                       // closeAddRepoDiv()
+                                       closeAddRepoDiv()
                                    }}/>
                             }
                             <Button className="ui icon button" onClick={() => {
-                                // closeAddRepoDiv();
+                                closeAddRepoDiv();
                             }}>
                                 <i className="plus circle icon"/>
                             </Button>
                         </div>
                     </div>
                     <div className="item" id="plusRepoIconDiv" onClick={() => {
-                        // openAddRepoDiv();
+                        openAddRepoDiv();
                     }}>
                         <i className="large plus circle middle aligned link icon central"/>
                     </div>
                 </div>
 
                 <button className="positive ui button rightAligned" id="saveLinksButton" onClick={() => {
-                    // submitGitPart();
+                    submitGitPart();
                 }}>ثبت
                     پیوند
                     ها

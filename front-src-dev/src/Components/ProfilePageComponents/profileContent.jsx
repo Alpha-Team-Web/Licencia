@@ -15,6 +15,7 @@ import {
     switchLinksToProfile,
     switchProfileToLinks
 } from "../../Js Functionals/ProfilePage/JS1";
+import ProfileForm from "./ProfileForm";
 
 class ProfileContent extends Component {
     constructor(props, context) {
@@ -25,52 +26,14 @@ class ProfileContent extends Component {
         profileDisplay: true,
         linksDisplay: false,
     }
-    /*
-        showProfile = () => {
-            this.profileComponent.changeState();
-            this.linksComponent.changeState();
-            /!*!// if (!this.state.profileDisplay) {
-                this.setState((prevState) => {
-                    return {profileDisplay: true, linksDisplay: false}
-                });
-                alert('state: ' + JSON.stringify(this.state))
-            // }*!/
-        }
-
-        showLinks = () => {
-            this.profileComponent.changeState();
-            this.linksComponent.changeState();
-            /!*!// if (!this.state.linksDisplay) {
-                this.setState((prevState) => {
-                    return {profileDisplay: false, linksDisplay: true}
-                })
-                alert('state: ' + JSON.stringify(this.state))
-            // }
-        }*!/
-        }
-
-
-        initProfileContent = () => {
-            initTransitionsStart(this.profileComponent, this.linksComponent);
-            loadProfileMenu();
-        }*/
-
-    /* profileComponent = <TransitionComponent animation='scale' content={<p>jfofsie</p>}
-                                             visibility={this.state.profileDisplay}/>
-
-     linksComponent = <TransitionComponent
-         animation='scale'
-         content={<LinksComponent id='gitHubReposContent'/>} visibility={this.state.linksDisplay}/>*/
-
-    /* profileComponent = new TransitionComponent({visibility:true, animation:'scale', content:<p>jfofsie</p>}, "");
-     linksComponent = new TransitionComponent({visibility:false, animation:'scale', content:<LinksComponent id='gitHubReposContent'/>}, "")*/
 
     render() {
         return (
             <div className='content' id={this.props.id}>
                 <div className='content transition visible flexRow' id='ProfileContents'>
-                    <ProfileComponent id='profileComponent'/>
-                    <LinksComponent id='linksComponent'/>
+                    <ProfileForm style={{display: 'block'}} id='profileComponent'/>
+
+                    <LinksComponent style={{display: 'none'}} id='linksComponent'/>
                 </div>
 
                 <Divider id='divider1'/>
