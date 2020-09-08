@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import ProfileHeader from "../Components/ProfilePageComponents/profileHeader";
+import ProfileHeader from "../Components/ProfilePageComponents/profileHeaderComponent";
 import ProfileContent from "../Components/ProfilePageComponents/profileContent";
 
 class ProfilePage extends Component {

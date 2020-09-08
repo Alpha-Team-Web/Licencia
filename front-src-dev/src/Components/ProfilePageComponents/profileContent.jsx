@@ -10,6 +10,7 @@ import '../../CSS Designs/Header.css';
 import ModalPassword from "./passwordComponent";
 import TransitionComponent from "./transitionComponent";
 import {initTransitionsStart, loadProfileMenu} from "../../Js Functionals/ProfilePage/JS1";
+import ProfileForm from "./profileForm";
 
 class ProfileContent extends Component {
     constructor(props, context) {
@@ -45,7 +46,7 @@ class ProfileContent extends Component {
         loadProfileMenu();
     }
 
-    profileComponent = <TransitionComponent animation='scale' content={<p>jfofsie</p>}
+    profileComponent = <TransitionComponent animation='scale' content={<ProfileForm id='profile'/>}
                                             visibility={this.state.profileDisplay}/>
 
     linksComponent = <TransitionComponent

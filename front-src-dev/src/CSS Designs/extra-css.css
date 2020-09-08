@@ -1,0 +1,14 @@
+.menu-item {
+    margin-left: 50% !important;
+}
+
+.no-space-break{
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.label-size{
+    min-width: 115px;
+    max-width: 115px;
+}
