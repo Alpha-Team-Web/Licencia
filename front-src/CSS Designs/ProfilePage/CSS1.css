@@ -124,11 +124,10 @@
     margin-top: 20px;
 }
 
-#githubReposContent {
+#linksComponent {
     background-image: url("../../Pics/githubImage2.png");
     background-repeat: no-repeat;
     margin-left: 100px;
-    /*display: none;*/
 }
 
 #saveLinksButton {

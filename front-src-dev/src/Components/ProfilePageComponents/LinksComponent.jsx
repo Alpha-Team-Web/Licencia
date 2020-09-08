@@ -7,11 +7,18 @@ import {
     secondRepoDiv, submitGitPart,
     thirdRepoDiv
 } from "../../Js Functionals/ProfilePage/JS1";
+import '../../CSS Designs/ProfilePage/CSS1.css'
+import Background from '../../Pics/githubImage2.png'
 
 class LinksComponent extends Component {
     render() {
         return (
-            <div className="ui form flexColumn formPadding" id={this.props.id} style={this.props.style}>
+            <div className="ui form flexColumn formPadding" style={{
+                backgroundImage: "url(" + Background + ")",
+                backgroundRepeat: 'no-repeat',
+                marginLeft: '100px',
+                display: 'none'
+            }} id={this.props.id}>
                 <div className="two fields">
                     <div className="field">
                         <label className="rightAligned marginBottom10">آدرس سایت</label>
