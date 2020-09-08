@@ -71,7 +71,7 @@ class ProfileContent extends Component {
 
 
     componentDidMount() {
-        super.componentDidMount();
+        // super.componentDidMount();
         loadProfileMenu();
     }
 }

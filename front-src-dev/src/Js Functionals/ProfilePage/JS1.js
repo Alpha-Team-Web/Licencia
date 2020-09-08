@@ -52,6 +52,7 @@ function fillForProfileFields() {
     repeatPasswordField = document.getElementById("repeatPasswordField");
     gitHubAccountField = document.getElementById("githubAccountField");
     descriptionField = document.getElementById("descriptionField");
+    alert('description: ' + descriptionField)
     addressField = document.getElementById("addressField");
 }
 
@@ -63,6 +64,7 @@ function logOut() {
 const gitHubAccountPart = document.getElementById("gitHubAccountPart");
 
 function initGithubRepos() {
+    fill();
     firstRepoDiv.style.display = 'none';
     secondRepoDiv.style.display = 'none';
     thirdRepoDiv.style.display = 'none';

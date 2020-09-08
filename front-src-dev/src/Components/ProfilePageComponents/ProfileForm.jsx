@@ -23,39 +23,39 @@ class ProfileForm extends Component {
                         <div className="ui form ">
                             <div className="two inline fields ">
                                 <div className="six wide field">
-                                    <input className='rightAligned input-size' type="text" placeholder="Username" id="username"></input>
+                                    <input className='rightAligned input-size' type="text" placeholder="Username" id="usernameField"></input>
                                     <label className='rightAligned no-space-break label-size'> نام کاربری</label>
                                 </div>
                                 <div className="six wide field">
-                                    <input className="input-size" type="text" placeholder="Showing Name" id="nickName"></input>
+                                    <input className="input-size" type="text" placeholder="Showing Name" id="showingNameField"></input>
                                     <label className='rightAligned no-space-break label-size'>نام نمایشی</label>
                                 </div>
                             </div>
                             <div className="two inline fields">
                                 <div className="six wide field">
-                                    <input className="input-size" type="text" placeholder="Last Name" id="lastName"></input>
+                                    <input className="input-size" type="text" placeholder="Last Name" id="lastNameField"></input>
                                 </div>
                                 <div className="six wide field">
-                                    <input className="input-size" type="text" placeholder="First Name" id="firstName"></input>
+                                    <input className="input-size" type="text" placeholder="First Name" id="firstNameField"></input>
                                     <label>نام</label>
                                 </div>
                             </div>
                             <div className="twenty wide field inline">
-                                <input className="input-size" type="email" placeholder="Email" id="email"></input>
+                                <input className="input-size" type="email" placeholder="Email" id="emailField"></input>
                                 <label>E-mail</label>
                             </div>
                             <div className="two inline fields">
                                 <div className="six wide field">
-                                    <input className="input-size" type="text" placeholder="Address" id="address"></input>
+                                    <input className="input-size" type="text" placeholder="Address" id="addressField"></input>
                                     <label>آدرس</label>
                                 </div>
                                 <div className="six wide field">
-                                    <input  className="input-size" type="text" placeholder="Phone Number" id="phoneNumber"></input>
+                                    <input  className="input-size" type="text" placeholder="Phone Number" id="telephoneNumberField"></input>
                                     <label className='rightAligned no-space-break label-size'>شماره تلفن</label>
                                 </div>
                             </div>
                             <div className="fields inline">
-                                <textarea rows="3" placeholder="Description" id="description"></textarea>
+                                <textarea rows="3" placeholder="Description" id="descriptionField"></textarea>
                                 <label>توضیحات</label>
                             </div>
                             <button className="ui button" >
