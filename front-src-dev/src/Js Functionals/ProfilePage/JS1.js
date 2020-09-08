@@ -70,7 +70,6 @@ export function loadProfileMenu() {
             'Content-Type': 'application/json',
             'Token': Cookies.get('auth')
         }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
-        gitHubAccountPart.style.display = "none";
     } else {
         httpGet(urlGetFreelancerProfileInfo, {
             'Content-Type': 'application/json',

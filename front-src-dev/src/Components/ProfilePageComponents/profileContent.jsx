@@ -68,6 +68,12 @@ class ProfileContent extends Component {
             </div>
         );
     }
+
+
+    componentDidMount() {
+        super.componentDidMount();
+        loadProfileMenu();
+    }
 }
 
 export default ProfileContent;

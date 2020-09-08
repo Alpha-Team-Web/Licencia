@@ -1,3 +1,2 @@
-export const mainPageName = "MainPage.html";
-export const profilePageName = "ProfilePage.html";
-
+export const mainPageName = "/";
+export const profilePageName = "/ProfilePage";

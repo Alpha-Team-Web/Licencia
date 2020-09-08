@@ -3,6 +3,7 @@ import '../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
 import { Divider, Grid, Image, Segment } from 'semantic-ui-react'
 import profilePic from "../../Pics/codingPerson.jpg"
+import {loadProfileMenu} from "../../Js Functionals/ProfilePage/JS1";
 
 class ProfileForm extends Component {
     state = {  }

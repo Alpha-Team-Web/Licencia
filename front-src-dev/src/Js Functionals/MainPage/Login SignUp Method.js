@@ -19,6 +19,16 @@ function setSignUpFields() {
     signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
     signupKind = document.getElementById("signUpKind")
 }
+function emptySignUpFields() {
+    setSignUpFields();
+    signUpUsername.value = "";
+    signUpFirstName.value = "";
+    signUpLastName.value = "";
+    signUpEmail.value = "";
+    signUpPassword.value = "";
+    signUpRepeatPassword.value = "";
+    signupKind.value = "";
+}
 
 export function signUp() {
     setSignUpFields();
@@ -52,7 +62,8 @@ export function signUp() {
 
 function handleSuccessSignUp(value) {
     alert("SignUp Successful")
-    // shideLoginMenu(false)
+    emptySignUpFields();
+    // closeTheFuckinModal
 }
 
 function handleErrorSignUp(value) {
@@ -81,6 +92,12 @@ function setLoginFields() {
     loginPassword = document.getElementById("login-Password");
     loginKind = document.getElementById("loginKind");
 }
+function emptyLoginFields() {
+    setLoginFields();
+    loginKeypoint.value = "";
+    loginPassword.value = "";
+    loginKind.value = "";
+}
 
 export function login() {
     setLoginFields()
@@ -108,7 +125,10 @@ function handleSuccessLogin(value) {
     value = parseValue(value)
     alert("Login Successful")
     Cookies.set("isfreelancer", loginKind.value === "freelancer");
-    window.location.href = profilePageName;
+    emptyLoginFields();
+    // window.location.href = profilePageName;
+    // eslint-disable-next-line no-restricted-globals
+    location.replace(location.origin + profilePageName)
 }
 
 function handleErrorLogin(value) {
