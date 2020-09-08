@@ -14,7 +14,6 @@ import {initTransitionsStart, loadProfileMenu} from "../../Js Functionals/Profil
 class ProfileContent extends Component {
     constructor(props, context) {
         super(props, context);
-
     }
 
     state = {
@@ -23,15 +22,21 @@ class ProfileContent extends Component {
     }
 
     showProfile = () => {
-        if (!this.state.profileDisplay) {
-            this.setState({profileDisplay: true, linksDisplay: false})
-        }
+        // if (!this.state.profileDisplay) {
+            this.setState((prevState) => {
+                return {profileDisplay: true, linksDisplay: false}
+            });
+            alert('state: ' + JSON.stringify(this.state))
+        // }
     }
 
     showLinks = () => {
-        if (!this.state.linksDisplay) {
-            this.setState({profileDisplay: false, linksDisplay: true})
-        }
+        // if (!this.state.linksDisplay) {
+            this.setState((prevState) => {
+                return {profileDisplay: false, linksDisplay: true}
+            })
+            alert('state: ' + JSON.stringify(this.state))
+        // }
     }
 
 

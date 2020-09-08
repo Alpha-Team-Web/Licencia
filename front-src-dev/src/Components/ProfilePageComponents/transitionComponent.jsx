@@ -2,23 +2,15 @@ import React, { Component } from 'react'
 import { Button, Divider, Image, Transition } from 'semantic-ui-react'
 
 export default class TransitionComponent extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
-    state = { visible: true }
-
-    toggleVisibility() {
-        alert('soefijseofi')
-        this.setState((prevState) => ({ visible: !prevState.visible }))
-    }
+    state = {
+        visible: this.props.visibility
+    };
 
     render() {
-        // this.toggleVisibility.bind(this)
-        const { visible } = this.state
+        alert('visibility: ' + this.state.visible)
 
         return (
-                <Transition id={this.props.id} visible={this.props.visible} animation={this.props.animation} duration={this.props.duration == undefined ? 500 : this.props.duration}>
+                <Transition id={this.props.id} visible={this.state.visible} animation={this.props.animation} duration={this.props.duration == undefined ? 500 : this.props.duration}>
                     {this.props.content}
                 </Transition>
         )
