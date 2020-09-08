@@ -12,18 +12,18 @@ import {
 } from "../urlNames";
 
 
-const usernameField = document.getElementById("usernameField");
-const shownNameField = document.getElementById('showingNameField')
-const firstNameField = document.getElementById("firstNameField");
-const lastNameField = document.getElementById("lastNameField");
-const emailField = document.getElementById("emailField");
-const siteAddressField = document.getElementById("siteAddressField");
-const telephoneNumberField = document.getElementById("telephoneNumberField");
-const passwordField = document.getElementById("passwordField");
-const repeatPasswordField = document.getElementById("repeatPasswordField");
-const gitHubAccountField = document.getElementById("githubAccountField");
-const descriptionField = document.getElementById("descriptionField");
-const addressField = document.getElementById("addressField");
+let usernameField
+let shownNameField
+let firstNameField
+let lastNameField
+let emailField
+let siteAddressField
+let telephoneNumberField
+let passwordField
+let repeatPasswordField
+let gitHubAccountField
+let descriptionField
+let addressField
 
 let username;
 let shownName;
@@ -39,6 +39,21 @@ let description;
 let address;
 let projectsId;
 let requestedProjectsId;
+
+function fillForProfileFields() {
+    usernameField = document.getElementById("usernameField");
+    shownNameField = document.getElementById('showingNameField')
+    firstNameField = document.getElementById("firstNameField");
+    lastNameField = document.getElementById("lastNameField");
+    emailField = document.getElementById("emailField");
+    siteAddressField = document.getElementById("siteAddressField");
+    telephoneNumberField = document.getElementById("telephoneNumberField");
+    passwordField = document.getElementById("passwordField");
+    repeatPasswordField = document.getElementById("repeatPasswordField");
+    gitHubAccountField = document.getElementById("githubAccountField");
+    descriptionField = document.getElementById("descriptionField");
+    addressField = document.getElementById("addressField");
+}
 
 function logOut() {
     // Todo
@@ -62,6 +77,7 @@ export function initTransitionsStart(profileTransition, ...transitions) {
 }
 
 export function loadProfileMenu() {
+    fillForProfileFields()
     // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
     isFreeLancer = Cookies.get('isfreelancer');
     alert('Cookies: "' + isFreeLancer + "'")
