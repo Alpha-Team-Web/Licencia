@@ -56,7 +56,7 @@ func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType strin
 }
 
 func (handler *Handler) DownloadProjectFile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
+	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
 		fileStruct := struct {
 			Id string `json:"id"`
 		}{}
@@ -75,7 +75,7 @@ func (handler *Handler) DownloadProjectFile(ctx *gin.Context) notifications.Noti
 }
 
 func (handler *Handler) UploadProjectFile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
 		form := data.AttachFileForm{}
 		if err := ctx.ShouldBind(&form); err != nil {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
@@ -102,7 +102,7 @@ func (handler *Handler) UploadProjectFile(ctx *gin.Context) notifications.Notifi
 }
 
 func (handler *Handler) UpdateProjectFile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
 		form := data.UpdateFileForm{}
 		if err := ctx.ShouldBind(&form); err != nil {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
@@ -135,7 +135,7 @@ func (handler *Handler) UpdateProjectFile(ctx *gin.Context) notifications.Notifi
 }
 
 func (handler *Handler) RemoveProjectFile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := checkToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
+	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err == nil {
 		fileStruct := struct {
 			Id string `json:"id"`
 		}{}

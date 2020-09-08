@@ -1,6 +1,8 @@
 package data
 
-import "mime/multipart"
+import (
+	"mime/multipart"
+)
 
 type LoginRequest struct {
 	Id           string `json:"id" binding:"min=4,max=100"`

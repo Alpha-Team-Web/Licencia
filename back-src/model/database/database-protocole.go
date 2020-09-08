@@ -4,10 +4,10 @@ import "github.com/go-pg/pg/orm"
 
 var (
 	dbc = dbConnection{
-		//username: "ashka",
-		//password: "a124578",
-		username: "postgres",
-		password: "mbsoli1743399413",
+		username: "ashka",
+		password: "a124578",
+		/*		username: "postgres",
+				password: "mbsoli1743399413",*/
 		/*username: "postgres",
 		password: "s1234567",*/
 	}

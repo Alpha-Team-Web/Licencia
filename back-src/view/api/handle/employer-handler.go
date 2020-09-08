@@ -106,7 +106,7 @@ func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notif
 				attachments = append(attachments, attachment)
 			}
 		}
-		if err := users.AddProjectToEmployer(newToken, project, DB); err != nil {
+		if err := users.AddProjectToEmployer(newToken, project, attachments, DB); err != nil {
 			if err.Error() == "project fields not valid" {
 				return notifications.GetExpectationFailedError(ctx, newToken, nil)
 			} else {
