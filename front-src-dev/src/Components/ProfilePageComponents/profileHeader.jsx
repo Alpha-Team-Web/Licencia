@@ -25,6 +25,6 @@ class Menu extends Component {
             </div>
         );
     }
-}
+}1
 
 export default Menu;
