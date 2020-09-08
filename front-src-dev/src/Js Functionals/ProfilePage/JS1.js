@@ -217,6 +217,7 @@ export const mainProfileContent = document.getElementById('MainProfileContent');
 export const profile = document.getElementById('profile');
 export const gitHubRepoContent = document.getElementById('githubReposContent');
 export const changePasswordContent = document.getElementById('changingPasswordContent');
+
 export function changeMainProfileContent(content) {
     /*let showingDisplay = getShowingDisplay();
     if (showingDisplay != null && content.id !== showingDisplay.id) {
@@ -267,8 +268,8 @@ function saveProfile() {
     description = descriptionField.value;
     httpExcGET('post', isFreeLancer ? saveProfileUrlFreeLancer : saveProfileUrlEmployer,
         data, successSaveProfile, errorSaveProfile, {
-        'auth': Cookies.get('auth')
-    })
+            'auth': Cookies.get('auth')
+        })
 }
 
 function submitGitPart() {
@@ -352,4 +353,25 @@ function openClose() {
     /*$('.ui.sidebar')
         .sidebar('toggle')
     ;*/
+}
+
+
+let profileComponent;
+let linksComponent;
+
+export function switchProfileToLinks() {
+    fillComponents();
+    linksComponent.style.display = "block"
+    profileComponent.style.display = "none";
+}
+
+export function switchLinksToProfile() {
+    fillComponents();
+    linksComponent.style.display = "none"
+    profileComponent.style.display = "block";
+}
+
+function fillComponents() {
+    profileComponent = document.getElementById('profileComponent')
+    linksComponent = document.getElementById('linksComponent')
 }
