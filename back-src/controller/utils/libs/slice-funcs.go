@@ -33,3 +33,12 @@ func GetKeySet(givenMap map[string]string) []string {
 	}
 	return keys
 }
+
+func ContainsKey(givenMap map[string]string, word string) bool {
+	for key, _ := range givenMap {
+		if key == word {
+			return true
+		}
+	}
+	return false
+}

@@ -118,8 +118,9 @@ func (table *FreelancerTable) GetFreelancerRequestedProjectIds(username string) 
 
 func (table *FreelancerTable) AddRequestedProjectToFreelancer(username, projectId string) error {
 	frl := existence.Freelancer{}
-	if projectIds, err := table.GetFreelancerRequestedProjectIds(username); err == nil {
-		frl.ProjectIds = projectIds
+	if requestedProjectIds, err := table.GetFreelancerRequestedProjectIds(username); err == nil {
+		requestedProjectIds = append(requestedProjectIds, projectId)
+		frl.RequestedProjectIds = requestedProjectIds
 		if _, err := table.conn.Model(&frl).Column("requested_project_ids").Where("username = ?", username).Update(); err != nil {
 			return err
 		}

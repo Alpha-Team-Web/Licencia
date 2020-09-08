@@ -109,9 +109,12 @@ func (table *ProjectTable) GetProjectStatus(projectId string) (string, error) {
 }
 
 func (table *ProjectTable) GetProjectRequests(projectId string) (map[string]string, error) {
-	project := existence.Project{}
+	project := existence.Project{FreelancerRequestsWithDescription: map[string]string{}}
 	if err := table.conn.Model(&project).Where("id = ?", projectId).Column("freelancer_requests_with_description").Select(); err != nil {
 		return map[string]string{}, err
+	}
+	if project.FreelancerRequestsWithDescription == nil {
+		return map[string]string{}, nil
 	}
 	return project.FreelancerRequestsWithDescription, nil
 }

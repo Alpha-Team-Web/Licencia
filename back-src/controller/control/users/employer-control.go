@@ -64,7 +64,12 @@ func AddProjectToEmployer(token string, project existence.Project, db *database.
 				project.EmployerUsername = username
 				project.ProjectStatus = existence.Open
 				if project.Id, err = makeNewProjectId(db); err == nil {
+					if project.FieldsWithSkills == nil {
+						project.FieldsWithSkills = map[string][]string{}
+					}
 					if err := checkProjectSkills(project.Id, project.FieldsWithSkills, db); err == nil {
+						project.InitDate = time.Now()
+						project.FreelancerRequestsWithDescription = map[string]string{}
 						db.ProjectTable.AddProject(project)
 						emp.ProjectIds = append(emp.ProjectIds, project.Id)
 						if err := db.EmployerTable.UpdateEmployerProjects(username, emp); err == nil {
@@ -95,7 +100,10 @@ func AddProjectToEmployer(token string, project existence.Project, db *database.
 
 func checkAddProjectFieldsValidity(project existence.Project) error {
 	error := errors.New("project fields not valid")
-	if project.MinBudget < project.MaxBudget {
+	if project.MinBudget > project.MaxBudget {
+		return error
+	}
+	if project.FinishDate.Before(project.StartDate) || project.StartDate.Before(time.Now()) {
 		return error
 	}
 	return nil
@@ -163,20 +171,26 @@ func AssignProjectToFreelancer(token string, freelancer string, projectId string
 		} else if username != realUsername {
 			return errors.New("not valid token for this project")
 		} else {
-			if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
+			if requests, err := db.ProjectTable.GetProjectRequests(projectId); err != nil {
 				return err
+			} else if libs.ContainsKey(requests, freelancer) {
+				if err := db.FreelancerTable.AddFreelancerProjectId(freelancer, projectId); err != nil {
+					return err
+				}
+				if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
+					return err
+				}
+				if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
+					return err
+				}
+				if err := removeProjectRequests(projectId, db); err != nil {
+					return err
+				}
+				media.AddAssignProjectEvent(username, freelancer, projectId, db)
+				return nil
+			} else {
+				return errors.New("not valid freelancer")
 			}
-			if err := db.ProjectTable.SetProjectStatus(projectId, existence.OnGoing); err != nil {
-				return err
-			}
-			if err := db.ProjectTable.AddFreelancerToProject(freelancer, projectId); err != nil {
-				return err
-			}
-			if err := removeProjectRequests(projectId, db); err != nil {
-				return err
-			}
-			media.AddAssignProjectEvent(username, freelancer, projectId, db)
-			return nil
 		}
 
 	} else {

@@ -196,6 +196,6 @@ func (db *Database) initFollowTable() error {
 	return db.db.CreateTable(&existence.Follow{}, options)
 }
 
-func (db *Database) initEventTable() interface{} {
+func (db *Database) initEventTable() error {
 	return db.db.CreateTable(&existence.Event{}, options)
 }
