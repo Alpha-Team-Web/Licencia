@@ -23,15 +23,16 @@ type Initializable interface {
 }
 
 type Database struct {
-	db              *pg.DB
-	meta            *Metadata
-	AuthTokenTable  *tables.AuthTokenTable
-	EmployerTable   *tables.EmployerTable
-	FieldTable      *tables.FieldTable
-	FreelancerTable *tables.FreelancerTable
-	ProjectTable    *tables.ProjectTable
-	ReviewTable     *tables.ReviewTable
-	ProfileTable    *tables.ProfileTable
+	db                     *pg.DB
+	meta                   *Metadata
+	AuthTokenTable         *tables.AuthTokenTable
+	EmployerTable          *tables.EmployerTable
+	FieldTable             *tables.FieldTable
+	FreelancerTable        *tables.FreelancerTable
+	ProjectTable           *tables.ProjectTable
+	ReviewTable            *tables.ReviewTable
+	ProfileTable           *tables.ProfileTable
+	ProjectAttachmentTable *tables.ProjectAttachmentTable
 	MediaTable      *tables.MediaTable
 }
 
@@ -60,6 +61,7 @@ func NewDb() *Database {
 		ProjectTable:    tables.NewProjectTable(db),
 		ReviewTable:     tables.NewReviewTable(db),
 		ProfileTable:    tables.NewProfileTable(db),
+		ProjectAttachmentTable: tables.NewProjectAttachment(db),
 		MediaTable:      tables.NewMediaTable(db),
 	}
 }
@@ -90,6 +92,9 @@ func (db *Database) Initialize() error {
 		return err
 	}
 	if err := db.initProfileTable(); err != nil {
+		return err
+	}
+	if err := db.initProjectAttachmentTable(); err != nil {
 		return err
 	}
 	if err := db.initFollowTable(); err != nil {
@@ -190,6 +195,10 @@ func (db *Database) initReviewTables() error {
 
 func (db *Database) initProfileTable() error {
 	return db.db.CreateTable(&existence.Profile{}, options)
+}
+
+func (db *Database) initProjectAttachmentTable() error {
+	return db.db.CreateTable(&existence.ProjectAttachment{}, options)
 }
 
 func (db *Database) initFollowTable() error {

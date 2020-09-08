@@ -5,8 +5,16 @@ import (
 	"back-src/model/existence"
 	"back-src/view/data"
 	"back-src/view/notifications"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"time"
+)
+
+const (
+	ProjectFilesFormName = "attachments"
+	ProjectImageFormName = "profile"
+	ProjectDataFormName  = "project"
 )
 
 func (handler *Handler) EditEmployerProfile(ctx *gin.Context) notifications.Notification {
@@ -69,13 +77,34 @@ func (handler *Handler) GetEmployerProjects(ctx *gin.Context) ([]existence.Proje
 	return users.GetEmployerProjects(user.username, DB)
 }
 
+//TODO : handle projectImage, handle proper responses
 func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notification {
 	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.EmployerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
-		project := existence.Project{}
-		if err := ctx.ShouldBindJSON(&project); err != nil {
+		form := data.ProjectForm{}
+		if err := ctx.ShouldBind(&form); err != nil {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		}
+		mForm, err := ctx.MultipartForm()
+		if err != nil {
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		}
+		attachmentHeaders := mForm.File[ProjectFilesFormName]
+		var project existence.Project
+		if err := json.Unmarshal([]byte(form.Project), &project); err != nil {
+			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		}
+		attachments := []existence.ProjectAttachment{}
+		for _, header := range attachmentHeaders {
+			if file, err := header.Open(); err == nil {
+				data, _ := ioutil.ReadAll(file)
+				attachment := existence.ProjectAttachment{}
+				attachment.Data = data
+				attachment.Name = header.Filename
+				attachment.Size = header.Size
+				attachments = append(attachments, attachment)
+			}
 		}
 		if err := users.AddProjectToEmployer(newToken, project, DB); err != nil {
 			if err.Error() == "project fields not valid" {
