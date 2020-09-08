@@ -136,7 +136,7 @@ export let thirdRepoLink
 export let githubAccountField
 export let gitHubReposDiv
 
-function fill() {
+export function fill() {
     repoDiv = document.getElementById("addRepoDiv");
     iconDiv = document.getElementById("plusRepoIconDiv");
     repoInput = document.getElementById("addRepoInput");

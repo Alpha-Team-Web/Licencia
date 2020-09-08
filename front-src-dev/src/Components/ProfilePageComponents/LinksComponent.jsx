@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from "semantic-ui-react";
 import {
-    accountGithubChanged, closeAddRepoDiv,
+    accountGithubChanged, closeAddRepoDiv, fill,
     firstRepoDiv, openAddRepoDiv,
     removeRepo,
     secondRepoDiv, submitGitPart,
@@ -11,17 +11,17 @@ import {
 class LinksComponent extends Component {
     render() {
         return (
-            <div className="ui form flexColumn" id={this.props.id} style={this.props.style}>
+            <div className="ui form flexColumn formPadding" id={this.props.id} style={this.props.style}>
                 <div className="two fields">
                     <div className="field">
-                        <label className="rightAligned">آدرس سایت</label>
+                        <label className="rightAligned marginBottom10">آدرس سایت</label>
                         <input maxLength="50" id="siteAddressField" placeholder="Site Address" type="text"/>
                     </div>
                 </div>
 
                 <div className="two fields">
                     <div className="field">
-                        <label className="rightAligned">اکانت گیت هاب</label>
+                        <label className="rightAligned marginBottom10">اکانت گیت هاب</label>
                         <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text"
                                onfocusout={() => {
                                    accountGithubChanged();
@@ -37,6 +37,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
+                               fill();
                                removeRepo(firstRepoDiv);
                            }}/>
                     </div>
@@ -47,6 +48,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
+                               fill()
                                removeRepo(secondRepoDiv);
                            }}/>
                     </div>
@@ -57,6 +59,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
+                               fill()
                                removeRepo(thirdRepoDiv);
                            }}/>
                     </div>
