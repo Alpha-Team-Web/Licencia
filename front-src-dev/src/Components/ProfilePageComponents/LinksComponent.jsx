@@ -1,12 +1,22 @@
 import React, {Component} from 'react';
 import {Button} from "semantic-ui-react";
 import {
-    addedRepoInputFocusOut, clickedPlusIcon, gitHubAccountChanged, submitGitPart,
+    addedRepoInputFocusOut, clickedPlusIcon, gitHubAccount, gitHubAccountChanged, submitGitPart,
 } from "../../Js Functionals/ProfilePage/linksContent";
 import '../../CSS Designs/ProfilePage/CSS1.css'
 import Background from '../../Pics/githubImage2.png'
+import GithubRepoComponent from "./GithubRepoComponent";
+import {gitHubUrl} from "../../Js Functionals/urlNames";
 
 class LinksComponent extends Component {
+    state = {
+        repos : []
+    }
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
             <div className="ui form flexColumn formPadding" style={{
@@ -32,13 +42,16 @@ class LinksComponent extends Component {
 
                 <div className="ui relaxed divided list" id="gitHubRepos">
 
-                    <div className='ui list item' id='gitHubRepositories'/>
+                    <div className='ui list item' id='gitHubRepositories'>
+                        {this.state.repos.map((value,index) => <GithubRepoComponent repoName={value} repoIndex={index}
+                                                                             href={gitHubUrl + '/' + gitHubAccount + '/' + value}/>)}
+                    </div>
 
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
                             <input type="text" placeholder="Search..." id="addRepoInput"
                                    onBlur={() => addedRepoInputFocusOut()}/>
-                            <Button className="ui icon button" onClick={() => addedRepoInputFocusOut()}>
+                            <Button className="ui icon button" onClick={() => addedRepoInputFocusOut(this)}>
                                 <i className="plus circle icon"/>
                             </Button>
                         </div>
@@ -55,6 +68,8 @@ class LinksComponent extends Component {
             </div>
         );
     }
+
 }
+
 
 export default LinksComponent;

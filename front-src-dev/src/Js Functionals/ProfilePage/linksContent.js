@@ -20,13 +20,17 @@ export function fillLinksValuesToInputs() {
     gitHubAccountChanged()
 
     if (gitHubRepos !== null) {
-        gitHubRepos.forEach((value) => addRepoByName(value))
+        // gitHubRepos.forEach((value) => addRepoByName(value))
+        alert("filled successfully!")
+        LinksComponent.setState({
+            repos: gitHubRepos
+        })
     }
     //TODO : remaining;
 }
 
 let siteAddress;
-let gitHubAccount;
+export let gitHubAccount;
 let gitHubRepos;
 export function fillLinksValues(messages) {
     gitHubAccount = messages['github-account']
@@ -76,6 +80,9 @@ let gitHubReposContainer
 let addRepoDiv
 let addedRepoInput
 let addRepoIconDiv
+
+export let LinksComponent
+
 function fillGitHubReposFields() {
     gitHubReposContainer = document.getElementById('gitHubRepositories');
     addRepoDiv = document.getElementById('addRepoDiv')
@@ -100,24 +107,27 @@ export function clickedPlusIcon() {
 }
 
 
-export function addedRepoInputFocusOut() {
+export function addedRepoInputFocusOut(component) {
     fillGitHubReposFields();
     if (addedRepoInput.value === "") {
         addRepoDiv.style.display = 'none';
         addRepoIconDiv.style.display = 'block';
     } else {
-        addRepoByName(addedRepoInput.value)
+        addRepoByName(addedRepoInput.value,component)
     }
 }
 
-function addRepoByName(addRepoName) {
+function addRepoByName(addRepoName,component) {
     fillGitHubReposFields()
     if (githubRepositoriesByFields.length <= REPOS_MAX_SIZE) {
         let addedRepoDiv = <GithubRepoComponent repoName={addRepoName} repoIndex={githubRepositoriesByFields.length}
                                                 href={gitHubUrl + '/' + gitHubAccount + '/' + addRepoName}/>
         githubRepositoriesByFields[githubRepositoriesByFields.length] = addRepoName;
-        gitHubRepoDivs[gitHubRepoDivs.length] = addedRepoDiv
-        ReactDOM.render(addedRepoDiv, gitHubReposContainer);
+        // gitHubRepoDivs[gitHubRepoDivs.length] = addedRepoDiv
+        // ReactDOM.render(addedRepoDiv, gitHubReposContainer);
+        component.setState({
+            repos : githubRepositoriesByFields
+        })
     } else {
         alert('gitHubReposSize More Than Specified')
     }

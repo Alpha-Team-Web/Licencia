@@ -28,12 +28,16 @@ class ProfileContent extends Component {
     }
 
     render() {
+        LinksComponent = new LinksComponent({
+            id:  'linksComponent',
+            style: {display: "none"}
+        },"")
         return (
             <div className='content' id={this.props.id}>
                 <Segment className='content transition visible flexRow' id='ProfileContents' style={{margin: '30px',}}>
                     <ProfileForm style={{display: 'block'}} id='profileComponent'/>
-
-                    <LinksComponent style={{display: 'none'}} id='linksComponent'/>
+                    {LinksComponent.render()}
+                    {/*<LinksComponent style={{display: 'none'}} id='linksComponent'/>*/}
                 </Segment>
 
                 <Divider id='divider1'/>
