@@ -29,10 +29,7 @@ class LinksComponent extends Component {
                 <div className="two fields">
                     <div className="field">
                         <label className="rightAligned marginBottom10">اکانت گیت هاب</label>
-                        <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text"
-                               onfocusout={() => {
-                                   accountGithubChanged();
-                               }}/>
+                        <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text" onBlur={() => accountGithubChanged()}/>
                     </div>
                 </div>
 
@@ -73,10 +70,9 @@ class LinksComponent extends Component {
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
                             <input type="text" placeholder="Search..." id="addRepoInput"
-                                   onfocusout={() => {
+                                   onBlur={() => {
                                        closeAddRepoDiv()
                                    }}/>
-                            }
                             <Button className="ui icon button" onClick={() => {
                                 closeAddRepoDiv();
                             }}>

@@ -3,7 +3,7 @@ import '../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
 import { Divider, Grid, Image, Segment } from 'semantic-ui-react'
 import profilePic from "../../Pics/codingPerson.jpg"
-import {loadProfileMenu} from "../../Js Functionals/ProfilePage/JS1";
+import {loadProfileMenu, saveProfile} from "../../Js Functionals/ProfilePage/JS1";
 
 class ProfileForm extends Component {
     state = {  }
@@ -51,7 +51,7 @@ class ProfileForm extends Component {
                                 <label>توضیحات</label>
                                 <textarea rows="3" placeholder="Description" id="descriptionField"></textarea>
                             </div>
-                            <button className="ui button" >
+                            <button className="ui button" onClick={() => saveProfile()}>
                                 confirm
                             </button>
                         </div>

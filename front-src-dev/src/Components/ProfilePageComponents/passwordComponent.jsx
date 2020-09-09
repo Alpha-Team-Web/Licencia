@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, Header, Image, Modal} from 'semantic-ui-react'
 import '../../CSS Designs/ProfilePage/CSS1.css'
 import ProfileCard from "./profileCard";
+import {changePassword} from "../../Js Functionals/ProfilePage/JS1";
 
 // import {changePassword} from '../../Js Functionals/ProfilePage/JS1';
 
@@ -20,22 +21,22 @@ function ModalPassword() {
                 <div className="three fields" id="passwordFields">
                     <div className="field">
                         <label className="rightAligned">رمز عبور قدیمی</label>
-                        <input id="oldPasswordField" placeholder="Old Password"/>
+                        <input type='password' id="oldPasswordField" placeholder="Old Password"/>
                     </div>
                     <div className="field">
                         <label className="rightAligned">رمز عبور</label>
-                        <input id="passwordField" placeholder="Password"/>
+                        <input type='password' id="passwordField" placeholder="Password"/>
                     </div>
                     <div className="field">
                         <label className="rightAligned">تکرار رمز عبور</label>
-                        <input id="repeatPasswordField" placeholder="Repeat Password"/>
+                        <input type='password' id="repeatPasswordField" placeholder="Repeat Password"/>
                     </div>
                 </div>
 
                 <button className="positive ui button rightAligned" id="changePasswordButton"
                         onClick={() => {
                             setOpen(false);
-                            // changePassword();
+                            changePassword();
                         }}>تغییر رمز عبور
                 </button>
             </Modal.Content>

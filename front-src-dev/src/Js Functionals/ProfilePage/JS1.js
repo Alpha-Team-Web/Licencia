@@ -215,7 +215,7 @@ function showRepo(repoDiv, repoLink, text) {
     let textNode = document.createTextNode(text);
     removeAllChild(repoLink);
     repoLink.appendChild(textNode);
-    repoLink.href = gitHubUrl + text
+    repoLink.href = gitHubUrl + gitHubAccountField.value + '/' + text
     repoDiv.style.display = "block";
 }
 
@@ -279,28 +279,33 @@ function modal(modalId, command) {
 
 function successSaveProfile(value) {
     alert('Profile Saved Successfully')
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
 }
 
 function errorSaveProfile(value) {
     //Error Handling
+    alert('We Have An Error')
+    alert('error: ' + value.message)
 }
 
-function saveProfile() {
+export function saveProfile() {
     let getValue = (firstValue, secondValue) => secondValue == null ? firstValue : secondValue;
     const data = {
         'shown-name': getValue(shownName, shownNameField.value),
-        'firstname': getValue(firstname, firstNameField.value),
-        'lastname': getValue(lastname, lastNameField.value),
-        'phonenumber': telephoneNumberField.value,
-        'addr': addressField.value,
+        'first-name': getValue(firstname, firstNameField.value),
+        'last-name': getValue(lastname, lastNameField.value),
+        'phone-number': telephoneNumberField.value,
+        'address': addressField.value,
         'description': descriptionField.value
     }
+    alert('data: ' + JSON.stringify(data))
     telephoneNumber = telephoneNumberField.value;
     address = addressField.value;
     description = descriptionField.value;
     httpExcGET('post', isFreeLancer ? saveProfileUrlFreeLancer : saveProfileUrlEmployer,
         data, successSaveProfile, errorSaveProfile, {
-            'auth': Cookies.get('auth')
+            'Token': Cookies.get('auth')
         })
 }
 
@@ -347,7 +352,7 @@ function denyGithubPartSubmit(value) {
 const oldPasswordField = document.getElementById("oldPasswordField");
 const newPasswordField = document.getElementById("passwordField");
 const repeatNewPasswordField = document.getElementById("repeatPasswordField");
-function changePassword() {
+export function changePassword() {
     if (oldPasswordField.value === "" || newPasswordField.value === "" || repeatNewPasswordField.value === "") {
         alert("you have empty field")
     } else {

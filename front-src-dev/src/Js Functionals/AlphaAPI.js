@@ -43,9 +43,13 @@ function createQuery(params) {
 function success(response, handleSuccess, handleError) {
     alert("Connected to Server SuccessFully");
     // todo alerting response message
-    Cookies.remove('auth')
     if (!(response.headers.get('Token') === null || response.headers.get('Token') === undefined)) {
+        alert('token Set.')
         Cookies.set('auth', response.headers.get('Token'));
+        alert('auth: ' + Cookies.get('auth'))
+    } else {
+        Cookies.remove('auth')
+        alert('Auth Removed')
     }
     response.json()
         .then(value => {
