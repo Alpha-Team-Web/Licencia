@@ -55,9 +55,7 @@ class ProfileForm extends Component {
                                 <label>توضیحات</label>
                                 <textarea rows="3" placeholder="Description" id="descriptionField"></textarea>
                             </div>
-                            <button className="ui button" onClick={() => saveProfile()}>
-                                confirm
-                            <button className="ui positive button">
+                            <button className="ui positive button" onClick={() => saveProfile()}>
                                 ثبت پروفایل
                             </button>
                         </div>
