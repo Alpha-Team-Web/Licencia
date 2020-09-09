@@ -98,13 +98,13 @@ function handleSuccessGetProfileInfo(value) {
     alert(JSON.stringify(messages));
     username = messages.username;
     shownName = messages['shown-name']
-    firstname = messages.firstname;
-    lastname = messages.lastname;
+    firstname = messages['first-name'];
+    lastname = messages['last-name'];
     email = messages.email;
     description = messages.description;
     alert('description: ' + messages.description)
-    telephoneNumber = messages.phonenumber;
-    address = messages.addr;
+    telephoneNumber = messages['phone-number'];
+    address = messages.address;
     projectsId = messages['project-ids'];
     fillCommonFields();
     if (isFreeLancer) {
@@ -123,6 +123,7 @@ function fillFreelancerSpecialFields() {
 
 function fillCommonFields() {
     usernameField.value = username;
+    shownNameField.value = shownName;
     firstNameField.value = firstname;
     lastNameField.value = lastname;
     emailField.value = email;
