@@ -35,14 +35,13 @@ export function loadProfileMenu() {
 }
 
 function handleSuccessGetProfileInfo(value) {
-    let messages = value;
-    alert(JSON.stringify(messages));
-    fillProfileValues(messages);
-    fillProjectValues(messages);
+    alert(JSON.stringify(value));
+    fillProfileValues(value);
+    fillProjectValues(value);
     fillCommonFields();
     if (isFreeLancer) {
         fillRepoContentFields();
-        fillLinksValues(messages);
+        fillLinksValues(value);
         fillLinksValuesToInputs();
     }
 }

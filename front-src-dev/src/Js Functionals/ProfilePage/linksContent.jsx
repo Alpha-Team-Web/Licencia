@@ -1,6 +1,6 @@
 import {gitHubUrl, saveGithubUrlFreeLancer} from "../urlNames";
 import Cookies from "js-cookie";
-import {httpExcGET} from "../AlphaAPI";
+import {checkURL, httpExcGET, httpGet} from "../AlphaAPI";
 import {isFreeLancer} from "./profilePageContent";
 import GithubRepoComponent from "../../Components/ProfilePageComponents/GithubRepoComponent";
 import ReactDOM from 'react-dom';
@@ -26,7 +26,6 @@ export function fillLinksValuesToInputs() {
 
     if (gitHubRepos !== null) {
         createRepoDivs()
-        alert("filled successfully!")
     }
     //TODO : remaining;
 }
@@ -82,21 +81,20 @@ export function addedRepoInputFocusOut() {
     determineAddRepoDivIcon();
 }
 
-function addRepoByName(addRepoName) {
-    if (githubRepositoriesByFields.length <= REPOS_MAX_SIZE && checkURL(gitHubUrl + '/' + gitHubAccountField.value + "/" + addRepoName)) {
-        githubRepositoriesByFields[githubRepositoriesByFields.length] = addRepoName;
-        createRepoDivs();
+async function addRepoByName(addRepoName) {
+    let fuck = await checkURL(gitHubUrl + '/' + gitHubAccountField.value + "/" + addRepoName);
+    if(!fuck) {
+        alert("You Haven't Claimed a Valid Repo")
+    } else if (githubRepositoriesByFields.length <= REPOS_MAX_SIZE && fuck) {
+        if (githubRepositoriesByFields.includes(addRepoName)) {
+            alert('Please Enter A New Repo')
+        } else {
+            githubRepositoriesByFields[githubRepositoriesByFields.length] = addRepoName;
+            createRepoDivs();
+        }
     }
 }
 
-async function checkURL(url){
-    let result = await httpGet(url, "",()=>{
-        return true
-    } , ()=>{
-        return false
-    })
-    alert(result)
-}
 function createRepoDivs() {
     let repoDivs = githubRepositoriesByFields.map(((value, index) =>
         <GithubRepoComponent repoName={value} id={'Repo' + index}

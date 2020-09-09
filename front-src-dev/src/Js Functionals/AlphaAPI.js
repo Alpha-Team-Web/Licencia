@@ -29,6 +29,18 @@ export function httpGet(url, headers, handleSuccess, handleDeny, ...params){
         .catch(response => deny(response));
 }
 
+export async function checkURL(url) {
+    let responseToURL = await fetch(url, {
+        method: 'get',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer-when-downgrade',
+    })
+    return responseToURL.status !== 404;
+}
+
 function createQuery(params) {
     let query = "";
     let shekCreator = param => param.key + "=" + param.value;
