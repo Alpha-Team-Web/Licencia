@@ -10,7 +10,7 @@
     flex-direction: column;
 }
 
-#projectsContent {
+#profileCards {
     padding-top: 70px;
     margin: 0 auto 35px;
     display: grid;
@@ -124,10 +124,11 @@
     margin-top: 20px;
 }
 
-#linksComponent {
+#githubReposContent {
     background-image: url("../../Pics/githubImage2.png");
     background-repeat: no-repeat;
     margin-left: 100px;
+    /*display: none;*/
 }
 
 #saveLinksButton {

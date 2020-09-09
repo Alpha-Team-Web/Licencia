@@ -1,0 +1,16 @@
+.flexRow{
+    display: flex;
+    flex-direction: row;
+}
+.flexColumn{
+    display: flex;
+    flex-direction: column;
+}
+
+.rightAligned {
+    float: right;
+}
+
+.marginBottom10{
+    margin-bottom: 10px;
+}

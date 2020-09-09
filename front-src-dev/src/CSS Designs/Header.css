@@ -1,0 +1,72 @@
+:root {
+    --Body-Background-Color: blue;
+    --Header-Text-Color: cyan;
+    --Header-Shadow-Color: darkred;
+    --Header-Links: magenta;
+    /*badan*/
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--Body-Background-Color);
+}
+
+#Header {
+    width: 100%;
+    height: fit-content;
+    padding: 40px 40px 10px 40px;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: transparent;
+    color: var(--Header-Text-Color);
+    box-shadow: 0 10px 8px var(--Header-Shadow-Color);
+}
+
+#Header-UnOrderedList {
+    padding-inline-start: 0;
+    margin: 20px 0 0 600px;
+}
+
+@media screen and (max-width: 1200px) and (min-width: 850px){
+    #Header-UnOrderedList {
+        margin: 0 0 0 200px;
+    }
+}
+@media screen and (max-width: 850px){
+    #Header-UnOrderedList {
+        margin: 0 0 0 100px;
+    }
+}
+
+.Header-UnOrderedList-Item {
+    /*badan*/
+    display: inline-flex;
+    flex-direction: row;
+    padding: 0 10px;
+    color: var(--Header-Text-Color);
+    /*margin-top: 4px;*/
+    vertical-align: middle;
+    line-height: 36px;
+}
+
+.Header-Link {
+    color: var(--Header-Links);
+}
+
+#Logo {
+    width: 70px;
+    max-height: 50px;
+}
+
+.loginButton {
+    min-width: 115px;
+    max-width: 115px;
+    min-height: 40px;
+    max-height: 40px;
+}
+
+#mySidebar {
+}
