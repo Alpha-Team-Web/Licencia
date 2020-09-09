@@ -2,7 +2,6 @@ package tables
 
 import (
 	"back-src/model/existence"
-	"errors"
 	"github.com/go-pg/pg"
 	"time"
 )
@@ -49,11 +48,7 @@ func (table *EmployerTable) UpdateEmployerProfile(username string, emp existence
 }
 
 func (table *EmployerTable) UpdateEmployerPassword(username string, oldPass string, newPass string) error {
-	emp, _ := table.GetEmployer(username)
-	if emp.Password != oldPass {
-		return errors.New("password mismatch")
-	}
-
+	emp := existence.Employer{}
 	emp.Password = newPass
 	if _, err := table.conn.Model(&emp).Column("password").Where("username = ?", username).Update(); err != nil {
 		return err

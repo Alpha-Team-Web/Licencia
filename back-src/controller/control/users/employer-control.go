@@ -31,6 +31,10 @@ func EditEmployerProfile(token string, emp existence.Employer, db *database.Data
 
 func EditEmployerPassword(token string, emp data.ChangePassRequest, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		employer, _ := db.EmployerTable.GetEmployer(username)
+		if emp.OldPass != employer.Password {
+			return errors.New("password mismatch")
+		}
 		return db.EmployerTable.UpdateEmployerPassword(username, emp.OldPass, emp.NewPass)
 	} else {
 		return err

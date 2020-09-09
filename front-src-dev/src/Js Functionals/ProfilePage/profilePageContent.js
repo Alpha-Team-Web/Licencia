@@ -14,6 +14,7 @@ export let isFreeLancer = true;
 
 export function logOut() {
     // Todo
+    Cookies.remove('auth')
     goToPage(mainPagePath)
 }
 
@@ -35,6 +36,7 @@ export function loadProfileMenu() {
 }
 
 function handleSuccessGetProfileInfo(value) {
+    value = value.data
     alert(JSON.stringify(value));
     fillProfileValues(value);
     fillProjectValues(value);

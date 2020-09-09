@@ -36,7 +36,12 @@ func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.N
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
 		if err := users.EditFreelancerPassword(newToken, frl, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			switch err.Error() {
+			case "password mismatch":
+				return notifications.GetExpectationFailedError(ctx, newToken, nil)
+			default:
+				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
+			}
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
 		}

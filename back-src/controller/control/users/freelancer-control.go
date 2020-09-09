@@ -42,6 +42,10 @@ func EditFreelancerProfile(token string, frl existence.Freelancer, db *database.
 
 func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		freelancer, _ := db.FreelancerTable.GetFreelancer(username)
+		if frl.OldPass != freelancer.Password {
+			return errors.New("password mismatch")
+		}
 		return db.FreelancerTable.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
 	} else {
 		return err

@@ -47,7 +47,7 @@ func Login(loginReq data.LoginRequest, db *database.Database) (token string, err
 					error = err
 				}
 			} else {
-				error = errors.New("invalid password: " + loginReq.Password)
+				error = errors.New("invalid password")
 			}
 		} else {
 			error = err

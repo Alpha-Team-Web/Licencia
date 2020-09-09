@@ -59,9 +59,6 @@ function success(response, handleSuccess, handleError) {
         alert('token Set.')
         Cookies.set('auth', response.headers.get('Token'));
         alert('auth: ' + Cookies.get('auth'))
-    } else {
-        Cookies.remove('auth')
-        alert('Auth Removed')
     }
     response.json()
         .then(value => {

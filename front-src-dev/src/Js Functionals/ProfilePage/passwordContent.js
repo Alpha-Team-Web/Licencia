@@ -22,8 +22,8 @@ export function changePassword() {
             alert("passwords doesn't match")
         } else {
             let data = {
-                'old-password': oldPasswordField.value,
-                'new-password': newPasswordField.value,
+                'old-pass': oldPasswordField.value,
+                'new-pass': newPasswordField.value,
             }
             let headers = {
                 'Content-Type': 'application/json',

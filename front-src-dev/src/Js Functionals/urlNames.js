@@ -12,3 +12,6 @@ export const changePasswordUrlFreeLancer="http://localhost:8008/freelancer/profi
 
 
 // --disable-web-security --user-data-dir="[some directory here]"
+
+
+//Server Errors: view notifications//notif.go

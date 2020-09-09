@@ -3,7 +3,6 @@ package tables
 import (
 	"back-src/controller/utils/libs"
 	"back-src/model/existence"
-	"errors"
 	"github.com/go-pg/pg"
 )
 
@@ -53,11 +52,7 @@ func (table *FreelancerTable) UpdateFreelancerProfile(username string, frl exist
 }
 
 func (table *FreelancerTable) UpdateFreelancerPassword(username string, oldPass string, newPass string) error {
-	frl, _ := table.GetFreelancer(username)
-	if frl.Password != oldPass {
-		return errors.New("password mismatch")
-	}
-
+	frl := existence.Freelancer{}
 	frl.Password = newPass
 	if _, err := table.conn.Model(&frl).Column("password").Where("username = ?", username).Update(); err != nil {
 		return err

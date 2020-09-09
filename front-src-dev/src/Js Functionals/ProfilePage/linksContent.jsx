@@ -18,7 +18,6 @@ export function fillRepoContentFields() {
 
 
 export function fillLinksValuesToInputs() {
-    alert('fuck')
     siteAddressField.value = siteAddress;
     gitHubAccountField.value = gitHubAccount;
     githubRepositoriesByFields = gitHubRepos;

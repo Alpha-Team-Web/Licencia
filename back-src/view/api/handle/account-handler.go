@@ -48,7 +48,12 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
 		if token, err := users.Login(loginReq, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
+			switch err.Error() {
+			case "invalid password":
+				return notifications.GetExpectationFailedError(ctx, NotAssignedToken, nil)
+			default:
+				return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
+			}
 		} else {
 			AddNewClock(token)
 			return notifications.GetSuccessfulNotif(ctx, token, nil)
