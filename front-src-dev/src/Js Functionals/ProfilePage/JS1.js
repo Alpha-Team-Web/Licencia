@@ -19,26 +19,25 @@ let lastNameField
 let emailField
 let siteAddressField
 let telephoneNumberField
-let passwordField
-let repeatPasswordField
 let gitHubAccountField
 let descriptionField
 let addressField
 
 let username;
+let password;
 let shownName;
 let firstname;
 let lastname;
 let email;
 let siteAddress;
 let telephoneNumber;
-let password;
 let gitHubAccount;
 let gitHubRepo;
 let description;
 let address;
 let projectsId;
 let requestedProjectsId;
+
 
 function fillForProfileFields() {
     usernameField = document.getElementById("usernameField");
@@ -48,11 +47,8 @@ function fillForProfileFields() {
     emailField = document.getElementById("emailField");
     siteAddressField = document.getElementById("siteAddressField");
     telephoneNumberField = document.getElementById("telephoneNumberField");
-    passwordField = document.getElementById("passwordField");
-    repeatPasswordField = document.getElementById("repeatPasswordField");
     gitHubAccountField = document.getElementById("githubAccountField");
     descriptionField = document.getElementById("descriptionField");
-    alert('description: ' + descriptionField)
     addressField = document.getElementById("addressField");
 }
 
@@ -99,16 +95,16 @@ export function loadProfileMenu() {
 
 function handleSuccessGetProfileInfo(value) {
     let messages = value;
-    console.log(JSON.stringify(messages));
+    alert(JSON.stringify(messages));
     username = messages.username;
     shownName = messages['shown-name']
     firstname = messages.firstname;
     lastname = messages.lastname;
     email = messages.email;
     description = messages.description;
+    alert('description: ' + messages.description)
     telephoneNumber = messages.phonenumber;
     address = messages.addr;
-    password = messages.password;
     projectsId = messages['project-ids'];
     fillCommonFields();
     if (isFreeLancer) {
@@ -133,7 +129,6 @@ function fillCommonFields() {
     telephoneNumberField.value = telephoneNumber;
     addressField.value = address;
     descriptionField.value = description;
-    passwordField.value = password;
 }
 
 function handleDenyGetProfileInfo(value) {
@@ -351,7 +346,6 @@ function denyGithubPartSubmit(value) {
 const oldPasswordField = document.getElementById("oldPasswordField");
 const newPasswordField = document.getElementById("passwordField");
 const repeatNewPasswordField = document.getElementById("repeatPasswordField");
-
 function changePassword() {
     if (oldPasswordField.value === "" || newPasswordField.value === "" || repeatNewPasswordField.value === "") {
         alert("you have empty field")
