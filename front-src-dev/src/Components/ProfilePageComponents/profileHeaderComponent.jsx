@@ -7,14 +7,8 @@ class Menu extends Component {
     state = {  }
     render() {
         return (
-            <div className=" header">
-                <div className="ui teal four borderless menu">
-                    <div className="item">
-                        <button className="ui labeled icon negative basic huge button rightAligned">
-                            <i class="arrow alternate circle left icon"></i>
-                            خروج
-                        </button>
-                    </div>
+            <div className="ui grid ui-rtl">
+                <div className="right floated five wide column">
                     <div className="ui borderless menu menu-item">
                         <a className="item ">دنبال کننده ها</a>
                         <a className="item">دنبال شونده ها</a>
@@ -22,6 +16,15 @@ class Menu extends Component {
                         <a className="item">دسته بندی ها</a>
                     </div>
                 </div>
+                <div className="left floated five wide column">
+                    <div className="item">
+                        <button className="ui labeled icon negative basic huge button">
+                            <i className="arrow alternate circle left icon"></i>
+                            خروج
+                        </button>
+                    </div>
+                </div>
+
             </div>
         );
     }

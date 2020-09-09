@@ -1,2 +1,2 @@
-export const mainPageName = "/";
-export const profilePageName = "/ProfilePage";
+export const mainPageName = "/kmk";
+export const profilePageName = "/";
