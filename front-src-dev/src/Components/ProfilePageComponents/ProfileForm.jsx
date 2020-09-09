@@ -4,6 +4,7 @@ import '../../CSS Designs/extra-css.css'
 import {Grid} from 'semantic-ui-react'
 import profilePic from "../../Pics/codingPerson.jpg"
 import {saveProfile} from "../../Js Functionals/ProfilePage/profileContent";
+import ProfilePictureComponent from "./profilePictureComponent";
 
 class ProfileForm extends Component {
     state = {}
@@ -62,8 +63,10 @@ class ProfileForm extends Component {
                 <Grid.Column width={5}>
                     <div className="flexColumn" id="leftDiv">
                         <div className="content" id="ImageTippoContent">
-                            <img className="ui circular bordered image" src={profilePic}
-                                 alt="*User*'s Picture"/>
+                            {/*<img className="ui circular bordered image" src={profilePic}
+                                 alt="*User*'s Picture"/>*/}
+                                 <ProfilePictureComponent className="ui circular bordered image" src={profilePic}
+                                                          alt="*User*'s Picture" imageId='profilePicture'/>
                         </div>
                     </div>
                 </Grid.Column>
