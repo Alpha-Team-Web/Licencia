@@ -1,5 +1,5 @@
 .menu-item {
-    margin-left: 50% !important;
+
 }
 
 .no-space-break{
@@ -9,10 +9,16 @@
 }
 
 .label-size{
-    min-width: 115px;
+    min-width: auto;
     max-width: 115px;
+    margin-left: 5px;
 }
 
-.input-size{
+.ui-rtl {
+    direction: rtl;
+    text-align: right;
+}
 
+.ltr {
+    direction: ltr;
 }
