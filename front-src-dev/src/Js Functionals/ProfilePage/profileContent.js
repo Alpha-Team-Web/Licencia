@@ -1,7 +1,7 @@
 import {httpExcGET} from "../AlphaAPI";
 import {saveProfileUrlEmployer, saveProfileUrlFreeLancer} from "../urlNames";
 import Cookies from "js-cookie";
-import {isFreeLancer} from "./JS1";
+import {isFreeLancer} from "./profilePageContent";
 import {reload} from "../PageRouter";
 
 let usernameField

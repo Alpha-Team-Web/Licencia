@@ -17,15 +17,8 @@ export function logOut() {
     goToPage(mainPagePath)
 }
 
-
-export function initTransitionsStart(profileTransition, ...transitions) {
-    alert('transitions: ' + transitions)
-    // transitions.forEach((value => value.toggleVisibility()))
-}
-
 export function loadProfileMenu() {
     fillForProfileFields()
-    // alert('IsFreeLancer: ' + Cookies.get('isfreelancer'))
     isFreeLancer = Cookies.get('isfreelancer');
     alert('Cookies: "' + isFreeLancer + "'")
     if (!isFreeLancer) {

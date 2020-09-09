@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
 import {Divider, Segment} from "semantic-ui-react";
-import ProfileComponent from "./profileComponent";
-import LinksComponent from "./LinksComponent";
 import ProfileCard from "./profileCard";
 // import {changeMainProfileContent, gitHubRepoContent, profile} from "../../Js Functionals/ProfilePage/JS1";
 import '../../CSS Designs/basic.css';
 import '../../CSS Designs/ProfilePage/CSS1.css';
 import '../../CSS Designs/Header.css';
 import ModalPassword from "./passwordComponent";
-import TransitionComponent from "./transitionComponent";
 import {
-    initTransitionsStart,
     loadProfileMenu,
     switchLinksToProfile,
     switchProfileToLinks
-} from "../../Js Functionals/ProfilePage/JS1";
+} from "../../Js Functionals/ProfilePage/profilePageContent";
 import ProfileForm from "./ProfileForm";
+import LinksComponent from "./LinksComponent";
 
 class ProfileContent extends Component {
     constructor(props, context) {
@@ -28,16 +25,11 @@ class ProfileContent extends Component {
     }
 
     render() {
-        LinksComponent = new LinksComponent({
-            id:  'linksComponent',
-            style: {display: "none"}
-        },"")
         return (
             <div className='content' id={this.props.id}>
                 <Segment className='content transition visible flexRow' id='ProfileContents' style={{margin: '30px',}}>
                     <ProfileForm style={{display: 'block'}} id='profileComponent'/>
-                    {LinksComponent.render()}
-                    {/*<LinksComponent style={{display: 'none'}} id='linksComponent'/>*/}
+                    <LinksComponent style={{display: 'none'}} id='linksComponent'/>
                 </Segment>
 
                 <Divider id='divider1'/>

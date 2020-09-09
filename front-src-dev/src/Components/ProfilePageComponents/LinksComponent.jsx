@@ -9,10 +9,6 @@ import GithubRepoComponent from "./GithubRepoComponent";
 import {gitHubUrl} from "../../Js Functionals/urlNames";
 
 class LinksComponent extends Component {
-    state = {
-        repos : []
-    }
-
     constructor(props, context) {
         super(props, context);
     }
@@ -40,18 +36,15 @@ class LinksComponent extends Component {
                     </div>
                 </div>
 
-                <div className="ui relaxed divided list" id="gitHubRepos">
+                <div className="ui relaxed" id="gitHubRepos">
 
-                    <div className='ui list item' id='gitHubRepositories'>
-                        {this.state.repos.map((value,index) => <GithubRepoComponent repoName={value} repoIndex={index}
-                                                                             href={gitHubUrl + '/' + gitHubAccount + '/' + value}/>)}
-                    </div>
+                    <div className='ui relaxed divided list' id='gitHubRepositories' />
 
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
                             <input type="text" placeholder="Search..." id="addRepoInput"
                                    onBlur={() => addedRepoInputFocusOut()}/>
-                            <Button className="ui icon button" onClick={() => addedRepoInputFocusOut(this)}>
+                            <Button className="ui icon button" onClick={() => addedRepoInputFocusOut()}>
                                 <i className="plus circle icon"/>
                             </Button>
                         </div>

@@ -1,5 +1,5 @@
 import {httpExcGET, parseValue} from "../AlphaAPI";
-import {isFreeLancer} from "./JS1";
+import {isFreeLancer} from "./profilePageContent";
 import {saveProfileUrlEmployer, saveProfileUrlFreeLancer} from "../urlNames";
 
 let username

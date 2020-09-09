@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../../CSS Designs/Header.css';
 import '../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
-import {logOut} from "../../Js Functionals/ProfilePage/JS1";
+import {logOut} from "../../Js Functionals/ProfilePage/profilePageContent";
 
 class Menu extends Component {
     state = {  }

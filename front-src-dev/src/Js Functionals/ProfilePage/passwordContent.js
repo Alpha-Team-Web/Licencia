@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import {httpExcGET} from "../AlphaAPI";
 import {changePasswordUrlEmployer, changePasswordUrlFreeLancer} from "../urlNames";
-import {isFreeLancer} from "./JS1";
+import {isFreeLancer} from "./profilePageContent";
 import {reload} from "../PageRouter";
 
 let oldPasswordField
