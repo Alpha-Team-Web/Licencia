@@ -1,0 +1,28 @@
+.menu-item {
+
+}
+
+.no-space-break{
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.label-size{
+    min-width: auto;
+    max-width: 115px;
+    margin-left: 5px;
+}
+
+.ui-rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+.ltr {
+    direction: ltr;
+}
+
+button {
+    margin: 10px 0 0 0 !important;
+}
