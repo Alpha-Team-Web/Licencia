@@ -83,10 +83,19 @@ export function addedRepoInputFocusOut() {
 }
 
 function addRepoByName(addRepoName) {
-    if (githubRepositoriesByFields.length <= REPOS_MAX_SIZE) {
+    if (githubRepositoriesByFields.length <= REPOS_MAX_SIZE && checkURL(gitHubUrl + '/' + gitHubAccountField.value + "/" + addRepoName)) {
         githubRepositoriesByFields[githubRepositoriesByFields.length] = addRepoName;
         createRepoDivs();
     }
+}
+
+async function checkURL(url){
+    let result = await httpGet(url, "",()=>{
+        return true
+    } , ()=>{
+        return false
+    })
+    alert(result)
 }
 function createRepoDivs() {
     let repoDivs = githubRepositoriesByFields.map(((value, index) =>
