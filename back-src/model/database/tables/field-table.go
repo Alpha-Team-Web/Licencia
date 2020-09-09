@@ -32,3 +32,12 @@ func (table *FieldTable) AddSkillToField(fieldId string, skill string) error {
 	}
 	return nil
 }
+
+func (table *FieldTable) IsThereFieldWithId(id string) (bool, error) {
+	var fields []existence.Field
+	err := table.conn.Model(&fields).Where("id = ?", id).Select()
+	if err != nil {
+		return false, err
+	}
+	return len(fields) != 0, nil
+}

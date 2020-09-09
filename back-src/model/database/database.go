@@ -4,19 +4,13 @@ import (
 	"back-src/model/database/tables"
 	"back-src/model/existence"
 	"encoding/json"
-	"io/ioutil"
-	"os"
-
 	"github.com/go-pg/pg"
+	"io/ioutil"
 )
 
 const (
 	jsonsFolderPath = "model/database/jsons/"
 )
-
-type Metadata struct {
-	IsFirstInit bool `json:"is_first_init"`
-}
 
 type Initializable interface {
 	Initialize() error
@@ -24,7 +18,6 @@ type Initializable interface {
 
 type Database struct {
 	db                     *pg.DB
-	meta                   *Metadata
 	AuthTokenTable         *tables.AuthTokenTable
 	EmployerTable          *tables.EmployerTable
 	FieldTable             *tables.FieldTable
@@ -33,7 +26,7 @@ type Database struct {
 	ReviewTable            *tables.ReviewTable
 	ProfileTable           *tables.ProfileTable
 	ProjectAttachmentTable *tables.ProjectAttachmentTable
-	MediaTable      *tables.MediaTable
+	MediaTable             *tables.MediaTable
 }
 
 func NewDb() *Database {
@@ -44,35 +37,21 @@ func NewDb() *Database {
 		Database: "Licencia-First",
 	})
 
-	bytes, err := ioutil.ReadFile("model/database/jsons/db-metadata.json")
-	if err != nil {
-		//panic(err)
-	}
-	meta := &Metadata{}
-	err = json.Unmarshal(bytes, &meta)
-
 	return &Database{
-		db:              db,
-		meta:            meta,
-		AuthTokenTable:  tables.NewAuthTokenTable(db),
-		EmployerTable:   tables.NewEmployerTable(db),
-		FieldTable:      tables.NewFieldsTable(db),
-		FreelancerTable: tables.NewFreelancerTable(db),
-		ProjectTable:    tables.NewProjectTable(db),
-		ReviewTable:     tables.NewReviewTable(db),
-		ProfileTable:    tables.NewProfileTable(db),
+		db:                     db,
+		AuthTokenTable:         tables.NewAuthTokenTable(db),
+		EmployerTable:          tables.NewEmployerTable(db),
+		FieldTable:             tables.NewFieldsTable(db),
+		FreelancerTable:        tables.NewFreelancerTable(db),
+		ProjectTable:           tables.NewProjectTable(db),
+		ReviewTable:            tables.NewReviewTable(db),
+		ProfileTable:           tables.NewProfileTable(db),
 		ProjectAttachmentTable: tables.NewProjectAttachment(db),
-		MediaTable:      tables.NewMediaTable(db),
+		MediaTable:             tables.NewMediaTable(db),
 	}
 }
 
 func (db *Database) Initialize() error {
-	defer func() {
-		db.meta.IsFirstInit = false
-		if err := db.updateDBMetadata(); err != nil {
-			//panic(err)
-		}
-	}()
 	if err := db.initEmployerTable(); err != nil {
 		return err
 	}
@@ -117,57 +96,33 @@ func (db *Database) initFieldTable() error {
 	if err != nil {
 		return err
 	}
-	if db.meta.IsFirstInit {
-		err = db.addDefaultFields()
-		if err != nil {
-			return err
-		}
+	err = db.addDefaultFields()
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
 func (db *Database) addDefaultFields() error {
-	deafaultFieldsPath := jsonsFolderPath + "default-fields.json"
-	bytes, err := ioutil.ReadFile(deafaultFieldsPath)
+	defaultFieldsPath := jsonsFolderPath + "default-fields.json"
+	bytes, err := ioutil.ReadFile(defaultFieldsPath)
 	if err != nil {
 		return err
 	}
-	fields := []existence.Field{}
-	err = json.Unmarshal(bytes, &fields)
+	var fields []existence.Field
 
-	if err != nil {
+	if err := json.Unmarshal(bytes, &fields); err != nil {
 		return err
 	}
 
-	_, err = db.db.Model(&fields).Insert()
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (db *Database) updateDBMetadata() error {
-	metadataPath := jsonsFolderPath + "db-metadata.json"
-
-	if err := os.Remove(metadataPath); err != nil {
-		return nil
-	}
-	if bytes, err := json.Marshal(db.meta); err == nil {
-		if file, err := os.Create(metadataPath); err == nil {
-			if _, err := file.Write(bytes); err != nil {
+	for _, field := range fields {
+		if isThere, _ := db.FieldTable.IsThereFieldWithId(field.Id); !isThere {
+			if _, err := db.db.Model(&field).Insert(); err != nil {
 				return err
 			}
-			if err := file.Close(); err != nil {
-				return err
-			}
-		} else {
-			return err
 		}
-	} else {
-		return err
 	}
+
 	return nil
 }
 

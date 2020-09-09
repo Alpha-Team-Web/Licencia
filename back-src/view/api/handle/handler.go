@@ -17,8 +17,8 @@ type Handler struct {
 
 const NotAssignedToken = "N/A"
 
-const notUsedExpiry = 1
-const authExpiryMin = 3
+const notUsedExpiry = 10
+const authExpiryMin = 30
 
 var AuthExpiryDur time.Duration
 
