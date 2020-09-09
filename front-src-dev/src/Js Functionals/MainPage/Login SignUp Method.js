@@ -123,7 +123,6 @@ export function login() {
 
 function handleSuccessLogin(value) {
 // todo go to Profile Menu And Save Auth
-    value = parseValue(value)
     alert("Login Successful")
     Cookies.set("isfreelancer", loginKind.value === "freelancer");
     goToPage(profilePagePath);
@@ -132,10 +131,9 @@ function handleSuccessLogin(value) {
 
 function handleErrorLogin(value) {
     // todo error the fields
-    value = parseValue(value)
     alert("Login Failed")
     alert('Server Message: ' + value.message)
-    switch (value.messageError) {
+    switch (value.message) {
         case 'not signed up username':
         case 'not signed up email':
             setFieldError(loginKeypoint);
@@ -145,7 +143,7 @@ function handleErrorLogin(value) {
             break;
         default:
             alert("Haven't Handled That Error Before");
-            console.log("messageError: '" + value.messageError + "'")
+            console.log("messageError: '" + value.message + "'")
     }
 }
 

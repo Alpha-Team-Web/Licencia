@@ -29,6 +29,20 @@ export function httpGet(url, headers, handleSuccess, handleDeny, ...params){
         .catch(response => deny(response));
 }
 
+export function httpExcGetFile(method, url, file, handleSuccess, handleDeny, headers, ...params) {
+    return fetch(url + createQuery(params), {
+        method: method,
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: headers,
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: file
+    }).then(response => success(response, handleSuccess, handleDeny))
+        .catch(deny);
+}
+
 export async function checkURL(url) {
     let responseToURL = await fetch(url, {
         method: 'get',
@@ -69,7 +83,7 @@ function success(response, handleSuccess, handleError) {
                 handleError(value)
                 // todo error the fields
             }
-        })
+        }).catch(reason => handleResponseJsonCatch(reason))
 }
 
 
@@ -82,15 +96,5 @@ function deny(response) {
 function handleResponseJsonCatch(reason) {
     alert("Raft To Catche Response.json()")
     alert("Reason: " + JSON.stringify(reason))
-}
-
-export function parseValue(value) {
-    let splitter = value.message.indexOf(':');
-    return splitter===-1?value:{
-        message: value.message,
-        messageError: value.message.substring(0, splitter),
-        messageField: value.message.substring(splitter + 1),
-        // Type
-    }
 }
 
