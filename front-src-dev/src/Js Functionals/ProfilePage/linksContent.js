@@ -3,175 +3,47 @@ import Cookies from "js-cookie";
 import {httpExcGET} from "../AlphaAPI";
 import {isFreeLancer} from "./JS1";
 import GithubRepoComponent from "../../Components/ProfilePageComponents/GithubRepoComponent";
+import ReactDOM from 'react-dom';
+import React from "react";
 
-export let repoDiv
-export let iconDiv
-export let repoInput
-export let firstRepoDiv
-export let secondRepoDiv
-export let thirdRepoDiv
-export let firstRepoLink
-export let secondRepoLink
-export let thirdRepoLink
-export let gitHubReposDiv
-export function fillRepoContentDivs() {
-    repoDiv = document.getElementById("addRepoDiv");
-    iconDiv = document.getElementById("plusRepoIconDiv");
-    repoInput = document.getElementById("addRepoInput");
-    firstRepoDiv = document.getElementById("firstRepo");
-    secondRepoDiv = document.getElementById("secondRepo");
-    thirdRepoDiv = document.getElementById("thirdRepo");
-    firstRepoLink = document.getElementById("linkRepo1");
-    secondRepoLink = document.getElementById("linkRepo2");
-    thirdRepoLink = document.getElementById("linkRepo3");
-    gitHubReposDiv = document.getElementById("gitHubRepos");
-}
-
-export let siteAddressField
-export let githubAccountField
+let siteAddressField
+let gitHubAccountField
 export function fillRepoContentFields() {
-    githubAccountField = document.getElementById("githubAccountField");
+    gitHubAccountField = document.getElementById("githubAccountField");
     siteAddressField = document.getElementById("siteAddressField");
 }
 
-export function initGithubRepos() {
-    fillRepoContentDivs();
-    firstRepoDiv.style.display = 'none';
-    secondRepoDiv.style.display = 'none';
-    thirdRepoDiv.style.display = 'none';
-    iconDiv.style.display = 'none';
-}
 
 export function fillLinksValuesToInputs() {
     siteAddressField.value = siteAddress;
+    gitHubAccountField.value = gitHubAccount;
+    gitHubAccountChanged()
+
+    if (gitHubRepos !== null) {
+        gitHubRepos.forEach((value) => addRepoByName(value))
+    }
     //TODO : remaining;
 }
-
 
 let siteAddress;
 let gitHubAccount;
 let gitHubRepos;
-
 export function fillLinksValues(messages) {
-    gitHubAccount = messages.github;
+    gitHubAccount = messages['github-account']
     gitHubRepos = messages['github-repos'];
     siteAddress = messages.website;
 }
 
-export function openAddRepoDiv() {
-    fillRepoContentDivs()
-    let counter = 0;
-    if (firstRepoDiv.style.display !== "none") counter += 1;
-    if (secondRepoDiv.style.display !== "none") counter += 1;
-    if (thirdRepoDiv.style.display !== "none") counter += 1;
-    if (counter === 3) {
-        alert("you can have only 3 repository")
-        return;
-    }
-    repoDiv.style.display = "block";
-    iconDiv.style.display = "none";
-    repoInput.value = "";
-    repoInput.focus();
-}
-
-
-export function closeAddRepoDiv() {
-    fillRepoContentDivs()
-    if (repoInput.value === "") {
-        // $ep
-        repoDiv.style.display = "none";
-        iconDiv.style.display = "block";
-        return;
-    }
-
-
-    //Add Repo
-    /*if (firstRepoDiv.style.display === "none") {
-        showRepo(firstRepoDiv, firstRepoLink, repoInput.value)
-    } else if (secondRepoDiv.style.display === "none") {
-        showRepo(secondRepoDiv, secondRepoLink, repoInput.value)
-    } else if (thirdRepoDiv.style.display === "none") {
-        showRepo(thirdRepoDiv, thirdRepoLink, repoInput.value)
-    } else {
-        alert("you can have only 3 repository")
-        return;
-    }*/
-
-    repoDiv.style.display = "none";
-    iconDiv.style.display = "block";
-    repoInput.value = "";
-
-    //Hiding Plus Button
-    /*let counter = 0;
-    if (firstRepoDiv.style.display !== "none") counter += 1;
-    if (secondRepoDiv.style.display !== "none") counter += 1;
-    if (thirdRepoDiv.style.display !== "none") counter += 1;
-    if (counter === 3) {
-        iconDiv.style.display = "none";
-    }*/
-}
-
-function showRepo(repoDiv, repoLink, text) {
-    fillRepoContentFields()
-    let textNode = document.createTextNode(text);
-    removeAllChild(repoLink);
-    repoLink.appendChild(textNode);
-    repoLink.href = gitHubUrl + githubAccountField.value + '/' + text
-    repoDiv.style.display = "block";
-}
-
-export function removeRepo(element) {
-    fillRepoContentDivs()
-    alert('this, removeRepo: ' + element)
-    element.style.display = "none";
-    iconDiv.style.display = "block";
-}
-
-function removeAllChild(element) {
-    while (element.firstChild) {
-        element.removeChild(element.firstChild);
-    }
-}
-
-export function accountGithubChanged() {
-    fillRepoContentDivs()
-    fillRepoContentFields()
-    if (githubAccountField.value === "") {
-        firstRepoDiv.style.display = "none";
-        secondRepoDiv.style.display = "none";
-        thirdRepoDiv.style.display = "none";
-        repoDiv.style.display = "none";
-        iconDiv.style.display = "none";
-    } else {
-        iconDiv.style.display = "block";
-    }
-}
-
 export function submitGitPart() {
-    fillRepoContentDivs()
     fillRepoContentFields()
     if (isFreeLancer) {
-        let gitLinks = [];
-        let size = 0;
-        if (firstRepoDiv.style.display !== "none") {
-            gitLinks[size] = document.getElementById('linkRepo1').text();
-            size += 1;
-        }
-        if (secondRepoDiv.style.display !== "none") {
-            gitLinks[size] = document.getElementById('linkRepo2').text();
-            size += 1;
-        }
-        if (thirdRepoDiv.style.display !== "none") {
-            gitLinks[size] = document.getElementById('linkRepo3').text();
-            size += 1;
-        }
         let data = {
             'website': siteAddressField.value,
-            'github-repos': gitLinks,
-            'github': githubAccountField.value
+            'github-repos': githubRepositoriesByFields,
+            'github': gitHubAccountField.value
         }
         siteAddress = siteAddressField.value;
-        gitHubAccount = githubAccountField.value;
+        gitHubAccount = gitHubAccountField.value;
         let headers = {
             'Content-Type': 'application/json',
             'token': Cookies.get('auth')
@@ -192,47 +64,75 @@ function denyGithubPartSubmit(value) {
 }
 
 
-let githubRepositories = [];
-let gitHubRepoDivs = [];
-function addRepo() {
-    fillRepoContentDivs()
-    if (repoInput.value === "") {
-        // $ep
-        repoDiv.style.display = "none";
-        iconDiv.style.display = "block";
-        return;
-    }
-}
+// -----------------------------------------------------------------------------------
 
-let gitHubReposContainer = document.getElementById('gitHubRepositories');
-let addRepoDiv = document.getElementById('addGitHubRepoInput')
-let addedRepoInput = document.getElementById('addRepoInput')
-let addRepoIconDiv = document.getElementById('plusRepoIconDiv')
 
 const REPOS_MAX_SIZE = 3;
 
-function clickedPlusIcon() {
-    addRepoDiv.style.display = 'block';
+let githubRepositoriesByFields = [];
+let gitHubRepoDivs = [];
+
+let gitHubReposContainer
+let addRepoDiv
+let addedRepoInput
+let addRepoIconDiv
+function fillGitHubReposFields() {
+    gitHubReposContainer = document.getElementById('gitHubRepositories');
+    addRepoDiv = document.getElementById('addRepoDiv')
+    addedRepoInput = document.getElementById('addRepoInput')
+    addRepoIconDiv = document.getElementById('plusRepoIconDiv')
 }
 
-
-function addedRepoInputFocusOut() {
-    if (addedRepoInput.value === "") {
-        addRepoDiv.style.display = 'none';
+export function gitHubAccountChanged() {
+    fillGitHubReposFields()
+    if (gitHubAccountField.value !== "") {
+        addRepoIconDiv.style.display = 'block';
     } else {
-        let addRepoName = addedRepoInput.value;
-        githubRepositories[githubRepositories.length] = addRepoName;
-        let addedRepoDiv = GithubRepoComponent.createRepoComponent(addRepoName);
-        gitHubRepoDivs[gitHubRepoDivs.length] = addedRepoDiv;
-        gitHubReposContainer.appendChild(addedRepoDiv);
+        addRepoIconDiv.style.display = 'none';
     }
 }
 
-function removeRepository(repoIndex) {
+export function clickedPlusIcon() {
+    fillGitHubReposFields();
+    addRepoDiv.style.display = 'block';
+    addedRepoInput.focus();
+    addRepoIconDiv.style.display = 'none';
+}
+
+
+export function addedRepoInputFocusOut() {
+    fillGitHubReposFields();
+    if (addedRepoInput.value === "") {
+        addRepoDiv.style.display = 'none';
+        addRepoIconDiv.style.display = 'block';
+    } else {
+        addRepoByName(addedRepoInput.value)
+    }
+}
+
+function addRepoByName(addRepoName) {
+    fillGitHubReposFields()
+    if (githubRepositoriesByFields.length <= REPOS_MAX_SIZE) {
+        let addedRepoDiv = <GithubRepoComponent repoName={addRepoName} repoIndex={githubRepositoriesByFields.length}
+                                                href={gitHubUrl + '/' + gitHubAccount + '/' + addRepoName}/>
+        githubRepositoriesByFields[githubRepositoriesByFields.length] = addRepoName;
+        gitHubRepoDivs[gitHubRepoDivs.length] = addedRepoDiv
+        ReactDOM.render(addedRepoDiv, gitHubReposContainer);
+    } else {
+        alert('gitHubReposSize More Than Specified')
+    }
+
+    if (githubRepositoriesByFields.length === REPOS_MAX_SIZE) {
+        addRepoIconDiv.style.display = 'none';
+    }
+}
+
+export function removeRepository(repoIndex) {
+    fillGitHubReposFields()
     if (repoIndex < gitHubRepoDivs.length) {
         let removingRepo = gitHubRepoDivs[repoIndex]
         gitHubRepoDivs = gitHubRepoDivs.filter(((value, index) => index !== repoIndex))
-        githubRepositories = githubRepositories.filter(((value, index) => index !== repoIndex))
+        githubRepositoriesByFields = githubRepositoriesByFields.filter(((value, index) => index !== repoIndex))
         gitHubReposContainer.removeChild(removingRepo)
     }
 }

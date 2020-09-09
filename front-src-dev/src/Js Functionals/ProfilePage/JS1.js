@@ -2,15 +2,10 @@ import {httpExcGET, httpGet} from "../AlphaAPI";
 import {mainPagePath} from "../PagePaths";
 import Cookies from 'js-cookie';
 import {
-    changePasswordUrlEmployer,
-    changePasswordUrlFreeLancer,
-    gitHubUrl, saveGithubUrlFreeLancer,
-    saveProfileUrlEmployer,
-    saveProfileUrlFreeLancer,
     urlGetEmployerProfileInfo,
     urlGetFreelancerProfileInfo
 } from "../urlNames";
-import {fillLinksValues, fillLinksValuesToInputs, initGithubRepos} from "./linksContent";
+import {fillLinksValues, fillLinksValuesToInputs, fillRepoContentFields} from "./linksContent";
 import {fillProjectValues} from "./projectsContent";
 import {fillCommonFields, fillForProfileFields, fillProfileValues} from "./profileContent";
 import {goToPage} from "../PageRouter";
@@ -44,7 +39,6 @@ export function loadProfileMenu() {
             'Token': Cookies.get('auth')
         }, handleSuccessGetProfileInfo, handleDenyGetProfileInfo);
     }
-    initGithubRepos();
 }
 
 function handleSuccessGetProfileInfo(value) {
@@ -54,6 +48,7 @@ function handleSuccessGetProfileInfo(value) {
     fillProjectValues(messages);
     fillCommonFields();
     if (isFreeLancer) {
+        fillRepoContentFields();
         fillLinksValues(messages);
         fillLinksValuesToInputs();
     }

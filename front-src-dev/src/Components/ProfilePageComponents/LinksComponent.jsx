@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from "semantic-ui-react";
 import {
-    accountGithubChanged, closeAddRepoDiv, fillRepoContentFields,
-    firstRepoDiv, openAddRepoDiv,
-    removeRepo,
-    secondRepoDiv, submitGitPart,
-    thirdRepoDiv
+    addedRepoInputFocusOut, clickedPlusIcon, gitHubAccountChanged, submitGitPart,
 } from "../../Js Functionals/ProfilePage/linksContent";
 import '../../CSS Designs/ProfilePage/CSS1.css'
 import Background from '../../Pics/githubImage2.png'
@@ -30,47 +26,29 @@ class LinksComponent extends Component {
                     <div className="field">
                         <label className="rightAligned marginBottom10">اکانت گیت هاب</label>
                         <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text"
-                               onBlur={() => accountGithubChanged()}/>
+                               onBlur={() => gitHubAccountChanged()/*accountGithubChanged()*/}/>
                     </div>
                 </div>
 
                 <div className="ui relaxed divided list" id="gitHubRepos">
-                    <div className='ui list item' id='gitHubRepositories'>
-                        <div className="item" id="firstRepo">
-                            <i className="large github middle aligned icon"/>
-                            <div className="content">
-                                <a className="header" id="linkRepo1">Semantic-Org/Semantic-UI</a>
-                            </div>
-                            <i className="large window minimize middle aligned link icon"
-                               onClick={() => {
-                                   fillRepoContentFields();
-                                   removeRepo(firstRepoDiv);
-                               }}/>
-                        </div>
-                    </div>
+
+                    <div className='ui list item' id='gitHubRepositories'/>
+
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
                             <input type="text" placeholder="Search..." id="addRepoInput"
-                                   onBlur={() => {
-                                       closeAddRepoDiv()
-                                   }}/>
-                            <Button className="ui icon button" onClick={() => {
-                                closeAddRepoDiv();
-                            }}>
+                                   onBlur={() => addedRepoInputFocusOut()}/>
+                            <Button className="ui icon button" onClick={() => addedRepoInputFocusOut()}>
                                 <i className="plus circle icon"/>
                             </Button>
                         </div>
                     </div>
-                    <div className="item" id="plusRepoIconDiv" onClick={() => {
-                        openAddRepoDiv();
-                    }}>
+                    <div className="item" id="plusRepoIconDiv" onClick={() => clickedPlusIcon()}>
                         <i className="large plus circle middle aligned link icon central"/>
                     </div>
                 </div>
 
-                <button className="positive ui button rightAligned" id="saveLinksButton" onClick={() => {
-                    submitGitPart();
-                }}>ثبت
+                <button className="positive ui button rightAligned" id="saveLinksButton" onClick={() => submitGitPart()}>ثبت
                     پیوند
                     ها
                 </button>

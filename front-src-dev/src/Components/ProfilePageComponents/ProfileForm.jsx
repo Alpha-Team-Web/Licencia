@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import '../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
-import {Divider, Grid, Image, Segment} from 'semantic-ui-react'
+import {Grid} from 'semantic-ui-react'
 import profilePic from "../../Pics/codingPerson.jpg"
-import {loadProfileMenu, saveProfile} from "../../Js Functionals/ProfilePage/JS1";
+import {saveProfile} from "../../Js Functionals/ProfilePage/profileContent";
 
 class ProfileForm extends Component {
     state = {}
