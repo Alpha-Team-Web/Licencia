@@ -2,6 +2,7 @@ import {gitHubUrl, saveGithubUrlFreeLancer} from "../urlNames";
 import Cookies from "js-cookie";
 import {httpExcGET} from "../AlphaAPI";
 import {isFreeLancer} from "./JS1";
+import GithubRepoComponent from "../../Components/ProfilePageComponents/GithubRepoComponent";
 
 export let repoDiv
 export let iconDiv
@@ -82,7 +83,10 @@ export function closeAddRepoDiv() {
         iconDiv.style.display = "block";
         return;
     }
-    if (firstRepoDiv.style.display === "none") {
+
+
+    //Add Repo
+    /*if (firstRepoDiv.style.display === "none") {
         showRepo(firstRepoDiv, firstRepoLink, repoInput.value)
     } else if (secondRepoDiv.style.display === "none") {
         showRepo(secondRepoDiv, secondRepoLink, repoInput.value)
@@ -91,17 +95,20 @@ export function closeAddRepoDiv() {
     } else {
         alert("you can have only 3 repository")
         return;
-    }
+    }*/
+
     repoDiv.style.display = "none";
     iconDiv.style.display = "block";
     repoInput.value = "";
-    let counter = 0;
+
+    //Hiding Plus Button
+    /*let counter = 0;
     if (firstRepoDiv.style.display !== "none") counter += 1;
     if (secondRepoDiv.style.display !== "none") counter += 1;
     if (thirdRepoDiv.style.display !== "none") counter += 1;
     if (counter === 3) {
         iconDiv.style.display = "none";
-    }
+    }*/
 }
 
 function showRepo(repoDiv, repoLink, text) {
@@ -115,6 +122,7 @@ function showRepo(repoDiv, repoLink, text) {
 
 export function removeRepo(element) {
     fillRepoContentDivs()
+    alert('this, removeRepo: ' + element)
     element.style.display = "none";
     iconDiv.style.display = "block";
 }
@@ -181,4 +189,50 @@ function successGithubPartSubmit(value) {
 function denyGithubPartSubmit(value) {
     alert("post deny" + " value : " + JSON.stringify(value));
     // handleErrors
+}
+
+
+let githubRepositories = [];
+let gitHubRepoDivs = [];
+function addRepo() {
+    fillRepoContentDivs()
+    if (repoInput.value === "") {
+        // $ep
+        repoDiv.style.display = "none";
+        iconDiv.style.display = "block";
+        return;
+    }
+}
+
+let gitHubReposContainer = document.getElementById('gitHubRepositories');
+let addRepoDiv = document.getElementById('addGitHubRepoInput')
+let addedRepoInput = document.getElementById('addRepoInput')
+let addRepoIconDiv = document.getElementById('plusRepoIconDiv')
+
+const REPOS_MAX_SIZE = 3;
+
+function clickedPlusIcon() {
+    addRepoDiv.style.display = 'block';
+}
+
+
+function addedRepoInputFocusOut() {
+    if (addedRepoInput.value === "") {
+        addRepoDiv.style.display = 'none';
+    } else {
+        let addRepoName = addedRepoInput.value;
+        githubRepositories[githubRepositories.length] = addRepoName;
+        let addedRepoDiv = GithubRepoComponent.createRepoComponent(addRepoName);
+        gitHubRepoDivs[gitHubRepoDivs.length] = addedRepoDiv;
+        gitHubReposContainer.appendChild(addedRepoDiv);
+    }
+}
+
+function removeRepository(repoIndex) {
+    if (repoIndex < gitHubRepoDivs.length) {
+        let removingRepo = gitHubRepoDivs[repoIndex]
+        gitHubRepoDivs = gitHubRepoDivs.filter(((value, index) => index !== repoIndex))
+        githubRepositories = githubRepositories.filter(((value, index) => index !== repoIndex))
+        gitHubReposContainer.removeChild(removingRepo)
+    }
 }

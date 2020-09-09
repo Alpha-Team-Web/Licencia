@@ -29,43 +29,24 @@ class LinksComponent extends Component {
                 <div className="two fields">
                     <div className="field">
                         <label className="rightAligned marginBottom10">اکانت گیت هاب</label>
-                        <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text" onBlur={() => accountGithubChanged()}/>
+                        <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text"
+                               onBlur={() => accountGithubChanged()}/>
                     </div>
                 </div>
 
                 <div className="ui relaxed divided list" id="gitHubRepos">
-                    <div className="item" id="firstRepo">
-                        <i className="large github middle aligned icon"/>
-                        <div className="content">
-                            <a className="header" id="linkRepo1">Semantic-Org/Semantic-UI</a>
+                    <div className='ui list item' id='gitHubRepositories'>
+                        <div className="item" id="firstRepo">
+                            <i className="large github middle aligned icon"/>
+                            <div className="content">
+                                <a className="header" id="linkRepo1">Semantic-Org/Semantic-UI</a>
+                            </div>
+                            <i className="large window minimize middle aligned link icon"
+                               onClick={() => {
+                                   fillRepoContentFields();
+                                   removeRepo(firstRepoDiv);
+                               }}/>
                         </div>
-                        <i className="large window minimize middle aligned link icon"
-                           onClick={() => {
-                               fillRepoContentFields();
-                               removeRepo(firstRepoDiv);
-                           }}/>
-                    </div>
-                    <div className="item" id="secondRepo">
-                        <i className="large github middle aligned icon"/>
-                        <div className="content">
-                            <a className="header" id="linkRepo2">Semantic-Org/Semantic-UI-Docs</a>
-                        </div>
-                        <i className="large window minimize middle aligned link icon"
-                           onClick={() => {
-                               fillRepoContentFields()
-                               removeRepo(secondRepoDiv);
-                           }}/>
-                    </div>
-                    <div className="item" id="thirdRepo">
-                        <i className="large github middle aligned icon"/>
-                        <div className="content">
-                            <a className="header" id="linkRepo3">Semantic-Org/Semantic-UI-Meteor</a>
-                        </div>
-                        <i className="large window minimize middle aligned link icon"
-                           onClick={() => {
-                               fillRepoContentFields()
-                               removeRepo(thirdRepoDiv);
-                           }}/>
                     </div>
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
