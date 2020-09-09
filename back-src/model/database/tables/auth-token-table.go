@@ -15,7 +15,7 @@ func NewAuthTokenTable(db *pg.DB) *AuthTokenTable {
 }
 
 func (table *AuthTokenTable) MakeNewAuth(username, token string, isFreelancer bool) (string, error) {
-	auth := existence.AuthToken{token, username, time.Now(), isFreelancer, false}
+	auth := existence.AuthToken{token, username, time.Now(), isFreelancer}
 	if _, err := table.conn.Model(&auth).Insert(); err != nil {
 		return "", err
 	}
@@ -26,22 +26,6 @@ func (table *AuthTokenTable) IsThereAuthWithToken(token string) (bool, error) {
 	var resultSet []existence.AuthToken
 	error := table.conn.Model(&resultSet).Where("token = ?", token).Select()
 	return len(resultSet) != 0, error
-}
-
-func (table *AuthTokenTable) IsAuthUsed(token string) (bool, error) {
-	var auth = existence.AuthToken{}
-	if err := table.conn.Model(&auth).Where("token = ?", token).Column("is_used").Select(); err != nil {
-		return false, err
-	}
-	return auth.IsUsed, nil
-}
-
-func (table *AuthTokenTable) ChangeAuthUsage(token string, isUsed bool) error {
-	var auth = existence.AuthToken{Token: token, IsUsed: isUsed}
-	if _, err := table.conn.Model(&auth).Column("is_used").Where("token = ?", token).Update(); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (table *AuthTokenTable) ExpireAuth(token string) error {

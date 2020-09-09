@@ -8,5 +8,4 @@ type AuthToken struct {
 	Username     string    `json:"username" sql:",notnull"`
 	InitialTime  time.Time `json:"initial-time" sql:"init_time,notnull"`
 	IsFreelancer bool      `json:"is-freelancer" sql:",notnull"`
-	IsUsed       bool      `json:"is-used" sql:",notnull"`
 }

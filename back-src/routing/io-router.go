@@ -13,9 +13,6 @@ func (router *router) addIOEndpoints() {
 	})
 	router.addHandlerToPath("/login", "io", Post, func(context *gin.Context) {
 		notification := router.handler.Login(context)
-		if notification.StatusCode == 200 {
-			router.handler.AddNewClock(notification.Token)
-		}
 		respond.Respond(notification)
 	})
 }

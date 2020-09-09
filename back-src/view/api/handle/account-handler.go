@@ -8,9 +8,7 @@ import (
 	"back-src/model/existence"
 	"back-src/view/data"
 	"back-src/view/notifications"
-	"errors"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
@@ -52,69 +50,11 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 		if token, err := users.Login(loginReq, DB); err != nil {
 			return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
 		} else {
+			AddNewClock(token)
 			return notifications.GetSuccessfulNotif(ctx, token, nil)
 		}
 	default:
 		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
-	}
-}
-
-func CheckToken(token, userType string) (string, error) {
-	if auth, err := formalCheckToken(token); err == nil {
-		if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
-			return reInitToken(auth)
-		} else {
-			return "", errors.New("wrong user type token: " + token)
-		}
-	} else {
-		return "", err
-	}
-}
-
-func CheckTokenIgnoreType(token string) (string, error) {
-	if auth, err := formalCheckToken(token); err == nil {
-		return reInitToken(auth)
-	} else {
-		return "", err
-	}
-}
-
-func formalCheckToken(token string) (existence.AuthToken, error) {
-	if isThereAuth, err := DB.AuthTokenTable.IsThereAuthWithToken(token); err != nil {
-		return existence.AuthToken{}, err
-	} else if isThereAuth {
-		if auth, err := DB.AuthTokenTable.GetAuthByToken(token); err != nil {
-			return existence.AuthToken{}, err
-		} else {
-			return auth, err
-		}
-	} else {
-		return existence.AuthToken{}, errors.New("not authorized token: " + token)
-	}
-}
-
-func reInitToken(auth existence.AuthToken) (string, error) {
-	currentTime := time.Now()
-	if currentTime.Sub(auth.InitialTime) > AuthExpiryDur {
-
-		if err := DB.AuthTokenTable.ExpireAuth(auth.Token); err != nil {
-			return "", err
-		} else {
-			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, DB)
-			if err != nil {
-				return "", err
-			}
-			if err := DB.AuthTokenTable.ChangeAuthUsage(newToken, true); err != nil {
-				return "", err
-			}
-			return newToken, nil
-		}
-	} else {
-		if err := DB.AuthTokenTable.ChangeAuthUsage(auth.Token, true); err != nil {
-			return "", err
-		} else {
-			return auth.Token, nil
-		}
 	}
 }
 
