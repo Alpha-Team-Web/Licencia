@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Button} from "semantic-ui-react";
 import {
-    accountGithubChanged, closeAddRepoDiv, fill,
+    accountGithubChanged, closeAddRepoDiv, fillRepoContentFields,
     firstRepoDiv, openAddRepoDiv,
     removeRepo,
     secondRepoDiv, submitGitPart,
     thirdRepoDiv
-} from "../../Js Functionals/ProfilePage/JS1";
+} from "../../Js Functionals/ProfilePage/linksContent";
 import '../../CSS Designs/ProfilePage/CSS1.css'
 import Background from '../../Pics/githubImage2.png'
 
@@ -41,7 +41,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
-                               fill();
+                               fillRepoContentFields();
                                removeRepo(firstRepoDiv);
                            }}/>
                     </div>
@@ -52,7 +52,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
-                               fill()
+                               fillRepoContentFields()
                                removeRepo(secondRepoDiv);
                            }}/>
                     </div>
@@ -63,7 +63,7 @@ class LinksComponent extends Component {
                         </div>
                         <i className="large window minimize middle aligned link icon"
                            onClick={() => {
-                               fill()
+                               fillRepoContentFields()
                                removeRepo(thirdRepoDiv);
                            }}/>
                     </div>

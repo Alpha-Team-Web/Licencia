@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../../CSS Designs/Header.css';
 import '../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
+import {logOut} from "../../Js Functionals/ProfilePage/JS1";
 
 class Menu extends Component {
     state = {  }
@@ -18,7 +19,7 @@ class Menu extends Component {
                 </div>
                 <div className="left floated five wide column">
                     <div className="item">
-                        <button className="ui labeled icon negative basic huge button">
+                        <button className="ui labeled icon negative basic huge button" onClick={() => logOut()}>
                             <i className="arrow alternate circle left icon"></i>
                             خروج
                         </button>

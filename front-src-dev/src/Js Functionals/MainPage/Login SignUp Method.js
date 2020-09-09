@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie';
 import {httpExcGET, parseValue} from "../AlphaAPI";
 import {urlSignUp, urlLogin} from "../urlNames";
-import {profilePageName} from "../FileNames";
+import {profilePagePath} from "../PagePaths";
+import {goToPage} from "../PageRouter";
 
 let signUpUsername
 let signUpFirstName
@@ -125,10 +126,8 @@ function handleSuccessLogin(value) {
     value = parseValue(value)
     alert("Login Successful")
     Cookies.set("isfreelancer", loginKind.value === "freelancer");
+    goToPage(profilePagePath);
     emptyLoginFields();
-    // window.location.href = profilePageName;
-    // eslint-disable-next-line no-restricted-globals
-    location.replace(location.origin + profilePageName)
 }
 
 function handleErrorLogin(value) {

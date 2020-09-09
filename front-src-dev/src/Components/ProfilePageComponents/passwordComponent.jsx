@@ -2,7 +2,7 @@ import React from 'react'
 import {Button, Header, Image, Modal} from 'semantic-ui-react'
 import '../../CSS Designs/ProfilePage/CSS1.css'
 import ProfileCard from "./profileCard";
-import {changePassword} from "../../Js Functionals/ProfilePage/JS1";
+import {changePassword} from "../../Js Functionals/ProfilePage/passwordContent";
 
 // import {changePassword} from '../../Js Functionals/ProfilePage/JS1';
 

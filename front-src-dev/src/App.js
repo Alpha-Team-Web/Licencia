@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import MainPage from "./Pages/mainPage";
 import ProfilePage from "./Pages/profilePage";
-import {mainPageName, profilePageName} from "./Js Functionals/FileNames";
+import {mainPagePath, profilePagePath} from "./Js Functionals/PagePaths";
 
 class App extends Component {
     constructor(props) {
@@ -14,10 +14,10 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <Route exact path={mainPageName}>
+                <Route exact path={mainPagePath}>
                     <MainPage/>
                 </Route>
-                <Route path={profilePageName}>
+                <Route path={profilePagePath}>
                     <ProfilePage/>
                 </Route>
             </Router>
