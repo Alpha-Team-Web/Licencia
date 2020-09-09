@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Divider} from "semantic-ui-react";
+import {Divider, Segment} from "semantic-ui-react";
 import ProfileComponent from "./profileComponent";
 import LinksComponent from "./LinksComponent";
 import ProfileCard from "./profileCard";
@@ -30,11 +30,11 @@ class ProfileContent extends Component {
     render() {
         return (
             <div className='content' id={this.props.id}>
-                <div className='content transition visible flexRow' id='ProfileContents'>
+                <Segment className='content transition visible flexRow' id='ProfileContents' style={{margin: '30px',}}>
                     <ProfileForm style={{display: 'block'}} id='profileComponent'/>
 
                     <LinksComponent style={{display: 'none'}} id='linksComponent'/>
-                </div>
+                </Segment>
 
                 <Divider id='divider1'/>
 

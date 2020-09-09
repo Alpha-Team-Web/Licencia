@@ -7,7 +7,7 @@ class Menu extends Component {
     state = {  }
     render() {
         return (
-            <div className="ui grid ui-rtl">
+            <div className="ui grid ui-rtl" style={{margin: '10px',}}>
                 <div className="right floated five wide column">
                     <div className="ui borderless menu menu-item">
                         <a className="item ">دنبال کننده ها</a>
