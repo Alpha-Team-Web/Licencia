@@ -1,6 +1,9 @@
 import {httpExcGetFile} from "../AlphaAPI";
 import {isFreeLancer} from "./profilePageContent";
 import {uploadProfilePicUrlEmployer, uploadProfilePicUrlFreelancer} from "../urlNames";
+import Cookies from 'js-cookie';
+import {reload} from "../PageRouter";
+
 export const acceptedImageExtensions = '.png, .jpg, .jpeg, .bmp';
 export const maximumImageSize = 5;    //Mb
 export const imageSizeUnit = 1024 * 1024;
@@ -60,16 +63,23 @@ function getExtension(formData) {
     return splitFile[splitFile.length - 1];
 }
 
-export function saveProfilePicture(){
-    if(originImageValue!==profileImage){
-        let url = isFreeLancer?uploadProfilePicUrlFreelancer:uploadProfilePicUrlEmployer;
-        let header={
-            token:Cookies.get('auth'),
+export function saveProfilePicture() {
+    if (originImageValue !== profileImage) {
+        let url = isFreeLancer ? uploadProfilePicUrlFreelancer : uploadProfilePicUrlEmployer;
+        let header = {
+            'Token': Cookies.get('auth'),
         }
-        httpExcGetFile('POST', url, profileImage, ()=>{
-            alert('successSendPic')
-        }, ()=>{
-            alert('failSendPic')
-        }, )
+        httpExcGetFile('POST', url, profileImage, successPictureUpload, denyPictureUpload, header)
     }
+}
+
+function successPictureUpload(value) {
+    alert('successSendPic')
+    alert('message: ' + value.message)
+    reload()
+}
+
+function denyPictureUpload(value) {
+    alert('failSendPic')
+    alert('message: ' + value.message)
 }
