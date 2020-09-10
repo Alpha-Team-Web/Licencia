@@ -11,7 +11,7 @@ let signUpEmail
 let signUpPassword
 let signUpRepeatPassword
 let signupKind
-let closeModalFunc;
+let signUpCloseModalFunc;
 
 function setSignUpFields() {
     signUpUsername = document.getElementById("SignUp-UserName")
@@ -22,7 +22,7 @@ function setSignUpFields() {
     signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
     signupKind = document.getElementById("signUpKind")
 }
-function emptySignUpFields() {
+export function emptySignUpFields() {
     setSignUpFields();
     signUpUsername.value = "";
     signUpFirstName.value = "";
@@ -34,7 +34,7 @@ function emptySignUpFields() {
 }
 
 export function signUp(func) {
-    closeModalFunc = func
+    signUpCloseModalFunc = func
     setSignUpFields();
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
@@ -67,7 +67,7 @@ export function signUp(func) {
 function handleSuccessSignUp(value) {
     alert("SignUp Successful")
     emptySignUpFields();
-    closeModalFunc()
+    signUpCloseModalFunc()
     // closeTheFuckinModal
 }
 
@@ -75,7 +75,7 @@ function handleErrorSignUp(value) {
     // todo error the fields
     alert("SignUp Failed")
     alert('Server Message: ' + value.message)
-    switch (value.messageError) {
+    switch (value.message) {
         case 'duplicate email':
             setFieldError(signUpEmail, true);
             break;
@@ -92,12 +92,13 @@ function handleErrorSignUp(value) {
 let loginKeypoint;
 let loginPassword;
 let loginKind;
+let loginCloseModalFunc;
 function setLoginFields() {
     loginKeypoint = document.getElementById("login-KeyPoint");
     loginPassword = document.getElementById("login-Password");
     loginKind = document.getElementById("loginKind");
 }
-function emptyLoginFields() {
+export function emptyLoginFields() {
     setLoginFields();
     loginKeypoint.value = "";
     loginPassword.value = "";
@@ -105,6 +106,7 @@ function emptyLoginFields() {
 }
 
 export function login(func) {
+    loginCloseModalFunc = func;
     setLoginFields()
     let doc = hasEmpty(loginKeypoint, loginPassword);
     if (doc != null) {

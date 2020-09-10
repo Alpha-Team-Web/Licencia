@@ -1,3 +1,5 @@
+import {emptyLoginFields, emptySignUpFields} from "./Login SignUp Method";
+
 export const greenColor = "green"
 export const whiteColor = "white"
 let onLoginPage = true;
@@ -5,10 +7,6 @@ let loginButton = document.getElementById("LoginMenuButton")
 let signupButton = document.getElementById("SignUpMenuButton")
 let signupMenu = document.getElementById("SignUp-Menu")
 let LoginMenu = document.getElementById("Login-Menu")
-
-function emptyLoginFields() {
-
-}
 
 export function loginMenu() {
     if (onLoginPage) return;
@@ -22,6 +20,7 @@ export function signUpMenu() {
         return
     }
     onLoginPage = false;
+    emptySignUpFields()
     change(whiteColor, greenColor, "block", "none");
 }
 
