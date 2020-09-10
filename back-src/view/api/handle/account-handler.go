@@ -1,6 +1,7 @@
 package handle
 
 import (
+	licnecia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/media"
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
@@ -21,7 +22,11 @@ func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
 		}
 		if err := users.RegisterEmployer(employer, DB); err != nil {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			if licnecia_errors.IsLicenciaError(err) {
+				return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+			} else {
+				return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			}
 		}
 
 	case existence.FreelancerType:
@@ -30,7 +35,11 @@ func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
 		}
 		if err := users.RegisterFreelancer(freelancer, DB); err != nil {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			if licnecia_errors.IsLicenciaError(err) {
+				return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+			} else {
+				return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			}
 		}
 
 	default:
@@ -48,12 +57,7 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
 		if token, err := users.Login(loginReq, DB); err != nil {
-			switch err.Error() {
-			case "invalid password":
-				return notifications.GetExpectationFailedError(ctx, NotAssignedToken, nil)
-			default:
-				return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
-			}
+			return makeOperationErrorNotification(ctx, err)
 		} else {
 			AddNewClock(token)
 			return notifications.GetSuccessfulNotif(ctx, token, nil)

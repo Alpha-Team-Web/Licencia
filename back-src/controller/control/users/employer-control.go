@@ -1,6 +1,7 @@
 package users
 
 import (
+	licencia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/media"
 	"back-src/controller/control/projects/filters"
 	"back-src/controller/utils/libs"
@@ -33,7 +34,7 @@ func EditEmployerPassword(token string, emp data.ChangePassRequest, db *database
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		employer, _ := db.EmployerTable.GetEmployer(username)
 		if emp.OldPass != employer.Password {
-			return errors.New("password mismatch")
+			return licencia_errors.NewLicenciaError("password mismatch")
 		}
 		return db.EmployerTable.UpdateEmployerPassword(username, emp.OldPass, emp.NewPass)
 	} else {
@@ -41,16 +42,20 @@ func EditEmployerPassword(token string, emp data.ChangePassRequest, db *database
 	}
 }
 
-func GetEmployer(token string, db *database.Database) (existence.Employer, error) {
+func GetEmployer(token string, db *database.Database) (existence.Employer, existence.File, error) {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if emp, err := db.EmployerTable.GetEmployer(username); err != nil {
-			return existence.Employer{}, err
+			return existence.Employer{}, existence.File{}, err
 		} else {
 			emp.Password = "N/A"
-			return emp, nil
+			if profile, err := db.ProfileTable.GetProfileImage(existence.EmployerProfile, username); err == nil {
+				return emp, profile.File, nil
+			} else {
+				return existence.Employer{}, existence.File{}, err
+			}
 		}
 	} else {
-		return existence.Employer{}, err
+		return existence.Employer{}, existence.File{}, err
 	}
 }
 
@@ -63,11 +68,11 @@ func GetEmployerProjects(username string, db *database.Database) ([]existence.Pr
 
 //func AddProjectWithFilesToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *database.Database) error {
 //	project.FileIds = []string{}
-//	if err := AddProjectToEmployer(token, project, db); err != nil {
-//		return err
+//	if licencia-errors := AddProjectToEmployer(token, project, db); licencia-errors != nil {
+//		return licencia-errors
 //	}
-//	if err := checkProjectFiles(project, attachments); err != nil {
-//		return err
+//	if licencia-errors := checkProjectFiles(project, attachments); licencia-errors != nil {
+//		return licencia-errors
 //	}
 //	return nil
 //}
