@@ -1,13 +1,16 @@
 package handle
 
 import (
+	licnecia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/projects/filters"
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"back-src/view/api/handle/utils"
+	"back-src/view/notifications"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"strconv"
 	"time"
 )
@@ -113,5 +116,13 @@ func reInitToken(auth existence.AuthToken) (string, error) {
 		KillClockIfExists(auth.Token)
 		AddNewClock(auth.Token)
 		return auth.Token, nil
+	}
+}
+
+func makeOperationErrorNotification(ctx *gin.Context, err error) notifications.Notification {
+	if licnecia_errors.IsLicenciaError(err) {
+		return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+	} else {
+		return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
 	}
 }

@@ -1,11 +1,11 @@
-package licnecia_errors
+package licencia_errors
 
 import (
 	"errors"
 	"strings"
 )
 
-func MakeLicenciaError(errorStr string) error {
+func NewLicenciaError(errorStr string) error {
 	return errors.New("Licencia: " + errorStr)
 }
 

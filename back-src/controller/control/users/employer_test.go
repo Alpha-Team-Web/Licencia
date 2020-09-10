@@ -111,7 +111,7 @@ func TestMakeNewProjectId(t *testing.T) {
 			t.Error(err)
 		}
 		if id, err := makeNewProjectId(db); err != nil {
-			t.Errorf("licnecia-errors :%v\n", err)
+			t.Errorf("licencia-errors :%v\n", err)
 		} else {
 			fmt.Println("id: " + id)
 		}

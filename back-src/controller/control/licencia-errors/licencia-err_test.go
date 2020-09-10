@@ -1,4 +1,4 @@
-package licnecia_errors
+package licencia_errors
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 
 func TestSubstring(t *testing.T) {
 	testStr := "This Is A Test"
-	err := MakeLicenciaError(testStr)
+	err := NewLicenciaError(testStr)
 	if IsLicenciaError(err) {
 		if GetErrorStrForRespond(err) == testStr {
 			fmt.Println("Pass")
