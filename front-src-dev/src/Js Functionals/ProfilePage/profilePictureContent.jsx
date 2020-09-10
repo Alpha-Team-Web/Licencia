@@ -26,6 +26,9 @@ function emptyAddedValues() {
 let originImageValue;
 
 export function fillProfileImage(data) {
+    fillPictureFields()
+    originImageValue = data;
+    profileImage.src = getImageSrc(data);
     //todo
 }
 
@@ -50,9 +53,9 @@ export function addPictureInputChanged() {
             let reader = new FileReader();
             reader.onload = function (e) {
                 profileImage.src = e.target.result;
-                addedImageValue = e.target.result;
             }
             reader.readAsDataURL(imageFile);
+            addedImageValue = imageFile;
         }
     }
 
@@ -63,13 +66,16 @@ function getExtension(formData) {
     return splitFile[splitFile.length - 1];
 }
 
+let getImageSrc = (data) => 'data:image/' + getExtension(data.name) + ';base64,' + data.data;
+
 export function saveProfilePicture() {
-    if (originImageValue !== profileImage) {
+    if (addedImageValue && addedImageValue !== originImageValue) {
+        let imageData = new FormData();
+        imageData.append('profileImage', addedImageValue)
         let url = isFreeLancer ? uploadProfilePicUrlFreelancer : uploadProfilePicUrlEmployer;
-        let header = {
+        httpExcGetFile('POST', url, imageData, successPictureUpload, denyPictureUpload, {
             'Token': Cookies.get('auth'),
-        }
-        httpExcGetFile('POST', url, profileImage, successPictureUpload, denyPictureUpload, header)
+        })
     }
 }
 

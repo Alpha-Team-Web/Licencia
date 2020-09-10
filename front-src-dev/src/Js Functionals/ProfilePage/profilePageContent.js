@@ -9,6 +9,7 @@ import {fillLinksValues, fillLinksValuesToInputs, fillRepoContentFields} from ".
 import {fillProjectValues} from "./projectsContent";
 import {fillCommonFields, fillForProfileFields, fillProfileValues} from "./profileContent";
 import {goToPage} from "../PageRouter";
+import {fillProfileImage} from "./profilePictureContent";
 
 export let isFreeLancer = true;
 
@@ -38,12 +39,13 @@ export function loadProfileMenu() {
 function handleSuccessGetProfileInfo(value) {
     value = value.data
     alert(JSON.stringify(value));
-    fillProfileValues(value);
-    fillProjectValues(value);
+    fillProfileValues(value[0]);
+    fillProfileImage(value[1])
+    fillProjectValues(value[0]);
     fillCommonFields();
     if (isFreeLancer) {
         fillRepoContentFields();
-        fillLinksValues(value);
+        fillLinksValues(value[0]);
         fillLinksValuesToInputs();
     }
 }
