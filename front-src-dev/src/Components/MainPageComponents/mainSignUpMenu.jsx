@@ -9,7 +9,7 @@ class MainSignUpMenu extends Component {
 
     render() {
         return (
-            <div id={this.props.id} style = {this.props.style} className="content Login-SignUp-Menu" >
+            <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu">
                 <div className="ui form formPadding">
                     {/*<div className="ui form formPadding">
                         <div className="ui field">
@@ -18,16 +18,16 @@ class MainSignUpMenu extends Component {
                                    placeholder="username" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id='SignUp-UserName' maxLength='30' textName='نام کاربری' placeHolder='Username' />
+                    <MainTextField id='SignUp-UserName' maxLength='30' textName='نام کاربری' placeHolder='Username'/>
 
-                   {/* <div className="ui form formPadding">
+                    {/* <div className="ui form formPadding">
                         <div className="ui field">
                             <p className="paragraphInput">نام</p>
                             <input maxLength="30" type="text" className="div-div-div-input" id="SignUp-FirstName"
                                    placeholder="FirstName" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-FirstName" maxLength='30' textName='نام' placeHolder='FirstName' />
+                    <MainTextField id="SignUp-FirstName" maxLength='30' textName='نام' placeHolder='FirstName'/>
 
                     {/*<div className="ui form formPadding">
                         <div className="ui field">
@@ -36,7 +36,7 @@ class MainSignUpMenu extends Component {
                                    placeholder="LastName" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-LastName" maxLength='30' textName='نام خانوادگی' placeHolder='LastName' />
+                    <MainTextField id="SignUp-LastName" maxLength='30' textName='نام خانوادگی' placeHolder='LastName'/>
 
                     {/*<div className="ui form formPadding">
                         <div className="ui field">
@@ -45,7 +45,7 @@ class MainSignUpMenu extends Component {
                                    placeholder="Email Address" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-Email" maxLength='50' textName='ایمیل' placeHolder='Email address' />
+                    <MainTextField id="SignUp-Email" maxLength='50' textName='ایمیل' placeHolder='Email address'/>
 
                     {/*<div className="ui form formPadding">
                         <div className="ui field">
@@ -54,7 +54,8 @@ class MainSignUpMenu extends Component {
                                    placeholder="Password" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-Password" maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} />
+                    <MainTextField id="SignUp-Password" maxLength='30' textName='رمز عبور' placeHolder='Password'
+                                   isPassword={true}/>
 
                     {/*<div className="ui form formPadding">
                         <div className="ui field">
@@ -64,7 +65,8 @@ class MainSignUpMenu extends Component {
                                    placeholder="Repeat Password" onFocus="setFieldError(this, false)"/>
                         </div>
                     </div>*/}
-                    <MainTextField id="SignUp-RepeatPassword" maxLength='30' textName='تکرار رمز عبور' placeHolder='Repeat Password' isPassword={true} />
+                    <MainTextField id="SignUp-RepeatPassword" maxLength='30' textName='تکرار رمز عبور'
+                                   placeHolder='Repeat Password' isPassword={true}/>
 
 
                     <div className="ui form formPadding">
@@ -80,7 +82,10 @@ class MainSignUpMenu extends Component {
 
                     <div className="ui form formPadding">
                         <label>
-                            <input onClick={() => signUp()} type="submit" id="signUpButton" className="ui green button"
+                            <input onClick={() => {
+                                this.props.onClose()
+                                signUp()
+                            }} type="submit" id="signUpButton" className="ui green button"
                                    value="ثبت نام"/>
                         </label>
                     </div>
