@@ -1,11 +1,11 @@
 package users
 
 import (
+	"back-src/controller/control/licencia-errors"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"back-src/view/data"
-	"errors"
 )
 
 const (
@@ -18,9 +18,9 @@ func RegisterEmployer(emp existence.Employer, db *database.Database) error {
 			emp.ShownName = emp.Username
 			return db.EmployerTable.InsertEmployer(emp)
 		}
-		return errors.New("duplicate email: " + emp.Email)
+		return licencia_errors.NewLicenciaError("duplicate email")
 	}
-	return errors.New("duplicate username: " + emp.Username)
+	return licencia_errors.NewLicenciaError("duplicate username")
 }
 
 func RegisterFreelancer(frl existence.Freelancer, db *database.Database) error {
@@ -30,9 +30,9 @@ func RegisterFreelancer(frl existence.Freelancer, db *database.Database) error {
 			frl.AccountType = existence.FreelancerBronze
 			return db.FreelancerTable.InsertFreelancer(frl)
 		}
-		return errors.New("duplicate email: " + frl.Email)
+		return licencia_errors.NewLicenciaError("duplicate email")
 	}
-	return errors.New("duplicate username: " + frl.Username)
+	return licencia_errors.NewLicenciaError("duplicate username")
 }
 
 func Login(loginReq data.LoginRequest, db *database.Database) (token string, error error) {
@@ -47,7 +47,7 @@ func Login(loginReq data.LoginRequest, db *database.Database) (token string, err
 					error = err
 				}
 			} else {
-				error = errors.New("invalid password")
+				error = licencia_errors.NewLicenciaError("invalid password")
 			}
 		} else {
 			error = err
@@ -80,13 +80,13 @@ func getUsernameById(Id string, doesUserExistWithEmail doesExist, doesUserExistW
 				e = err
 			}
 		} else {
-			e = errors.New("not signed up email: " + Id)
+			e = licencia_errors.NewLicenciaError("not signed up email")
 		}
 	} else {
 		if doesUserExistWithUsername(Id) {
 			username = Id
 		} else {
-			e = errors.New("not signed up username: " + Id)
+			e = licencia_errors.NewLicenciaError("not signed up username")
 		}
 	}
 	return func() (string, error) {

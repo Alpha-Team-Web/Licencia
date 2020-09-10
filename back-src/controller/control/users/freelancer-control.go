@@ -1,12 +1,12 @@
 package users
 
 import (
+	licencia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/media"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"back-src/view/data"
-	"errors"
 )
 
 func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *database.Database) error {
@@ -44,7 +44,7 @@ func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *databa
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		freelancer, _ := db.FreelancerTable.GetFreelancer(username)
 		if frl.OldPass != freelancer.Password {
-			return errors.New("password mismatch")
+			return licencia_errors.NewLicenciaError("password mismatch")
 		}
 		return db.FreelancerTable.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
 	} else {
@@ -65,16 +65,20 @@ func EditFreelancerLinks(token string, frl existence.Freelancer, db *database.Da
 	}
 }
 
-func GetFreelancer(token string, db *database.Database) (existence.Freelancer, error) {
+func GetFreelancer(token string, db *database.Database) (existence.Freelancer, existence.File, error) {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if frl, err := db.FreelancerTable.GetFreelancer(username); err != nil {
-			return existence.Freelancer{}, err
+			return existence.Freelancer{}, existence.File{}, err
 		} else {
 			frl.Password = "N/A"
-			return frl, nil
+			if profile, err := db.ProfileTable.GetProfileImage(existence.FreelancerType, username); err == nil {
+				return frl, profile.File, nil
+			} else {
+				return existence.Freelancer{}, existence.File{}, err
+			}
 		}
 	} else {
-		return existence.Freelancer{}, err
+		return existence.Freelancer{}, existence.File{}, err
 	}
 }
 
@@ -106,13 +110,13 @@ func checkProjectStatus(projectId, status string, db *database.Database) error {
 				if projectStatus == status {
 					return nil
 				} else {
-					return errors.New("project status not suitable")
+					return licencia_errors.NewLicenciaError("project status not suitable")
 				}
 			} else {
 				return err
 			}
 		} else {
-			return errors.New("invalid project id")
+			return licencia_errors.NewLicenciaError("invalid project id")
 		}
 	} else {
 		return err
@@ -120,7 +124,7 @@ func checkProjectStatus(projectId, status string, db *database.Database) error {
 }
 
 func checkAbilityToRequestNewProject(username string, db *database.Database) error {
-	e := errors.New("cant request more")
+	e := licencia_errors.NewLicenciaError("cant request more")
 	if accountType, err := db.FreelancerTable.GetFreelancerTypeByUsername(username); err == nil {
 		if requestedProjectIds, err := db.FreelancerTable.GetFreelancerRequestedProjectIds(username); err == nil {
 			if projectIds, err := db.FreelancerTable.GetFreelancerProjectIds(username); err == nil {

@@ -13,7 +13,7 @@ type Notification struct {
 	Data       interface{}
 }
 
-func GetShouldBindJsonErrorNotif(ctx *gin.Context, token string, data interface{}) Notification {
+func GetShouldBindJsonErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
@@ -24,7 +24,7 @@ func GetShouldBindJsonErrorNotif(ctx *gin.Context, token string, data interface{
 	return notif
 }
 
-func GetDatabaseErrorNotif(ctx *gin.Context, token string, data interface{}) Notification {
+func GetDatabaseErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
@@ -35,7 +35,7 @@ func GetDatabaseErrorNotif(ctx *gin.Context, token string, data interface{}) Not
 	return notif
 }
 
-func GetInvalidQueryErrorNotif(ctx *gin.Context, token string, data interface{}) Notification {
+func GetInvalidQueryErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
@@ -46,7 +46,7 @@ func GetInvalidQueryErrorNotif(ctx *gin.Context, token string, data interface{})
 	return notif
 }
 
-func GetSuccessfulNotif(ctx *gin.Context, token string, data interface{}) Notification {
+func GetSuccessfulNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
@@ -57,7 +57,7 @@ func GetSuccessfulNotif(ctx *gin.Context, token string, data interface{}) Notifi
 	return notif
 }
 
-func GetInternalServerErrorNotif(ctx *gin.Context, token string, data interface{}) Notification {
+func GetInternalServerErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
@@ -68,7 +68,7 @@ func GetInternalServerErrorNotif(ctx *gin.Context, token string, data interface{
 	return notif
 }
 
-func GetTokenNotAuthorizedErrorNotif(ctx *gin.Context, data interface{}) Notification {
+func GetTokenNotAuthorizedErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      "N/A",
@@ -79,11 +79,11 @@ func GetTokenNotAuthorizedErrorNotif(ctx *gin.Context, data interface{}) Notific
 	return notif
 }
 
-func GetExpectationFailedError(ctx *gin.Context, token string, data interface{}) Notification {
+func GetExpectationFailedError(ctx *gin.Context, token, errStr string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
-		Message:    "some data not as expected",
+		Message:    errStr,
 		StatusCode: http.StatusExpectationFailed, //417
 		Data:       data,
 	}

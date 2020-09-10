@@ -36,12 +36,7 @@ func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.N
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		}
 		if err := users.EditFreelancerPassword(newToken, frl, DB); err != nil {
-			switch err.Error() {
-			case "password mismatch":
-				return notifications.GetExpectationFailedError(ctx, newToken, nil)
-			default:
-				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-			}
+			return makeOperationErrorNotification(ctx, err)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
 		}
@@ -71,10 +66,10 @@ func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) notifications.Not
 	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
 		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
 	} else {
-		if frl, err := users.GetFreelancer(newToken, DB); err != nil {
+		if frl, file, err := users.GetFreelancer(newToken, DB); err != nil {
 			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
 		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, frl)
+			return notifications.GetSuccessfulNotif(ctx, newToken, frl, file)
 		}
 	}
 }
@@ -88,13 +83,7 @@ func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) notificatio
 			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
 		} else {
 			if err := users.FreelancerRequestsForProject(newToken, request, DB); err != nil {
-				switch err.Error() {
-				case "project status not suitable", "cant request more", "invalid project id":
-					return notifications.GetExpectationFailedError(ctx, newToken, nil)
-				default:
-					panic(err)
-					return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-				}
+				return makeOperationErrorNotification(ctx, err)
 			} else {
 				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
 			}
