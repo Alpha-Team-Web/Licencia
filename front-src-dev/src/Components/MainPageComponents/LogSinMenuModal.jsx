@@ -52,8 +52,6 @@ import MainLoginMenu from "./mainLoginMenu";
 import MainSignUpMenu from "./mainSignUpMenu";
 
 class ModalLogSin extends Component{
-
-    // const [open, setOpen] = React.useState(false)
     constructor(props, context) {
         super(props, context);
         this.setOpen = this.setOpen.bind(this)

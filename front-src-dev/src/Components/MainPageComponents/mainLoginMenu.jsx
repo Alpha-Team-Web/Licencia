@@ -43,8 +43,7 @@ class MainLoginMenu extends Component {
                     <div className="ui form formPadding" id="Login-Footer-Form">
                         <label>
                             <input onClick={() => {
-                                this.props.onClose()
-                                // login()
+                                login(this.props.onClose)
                             }} type="submit" id="loginButton" className="ui green button"
                                    value="login" />
                         </label>
