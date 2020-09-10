@@ -41,12 +41,10 @@ export function addPictureInputChanged() {
     if (imageInput.value !== '') {
         fillPictureFields();
         let imageFile = imageInput.files.item(0);
-        let fileSize = imageInput.files.item(0).size;
-        let extension = getExtension(imageInput.value)
-        if (!acceptedImageExtensions.includes(extension.toLowerCase())) {
+        if (!acceptedImageExtensions.includes(getExtension(imageFile.name).toLowerCase())) {
             alert('Ridi. Dorost Entekhab Kon')
             emptyAddedValues()
-        } else if (fileSize / imageSizeUnit > maximumImageSize) {
+        } else if (imageFile.size / imageSizeUnit > maximumImageSize) {
             alert('Sizesh Ziade')
             emptyAddedValues()
         } else {
@@ -58,7 +56,6 @@ export function addPictureInputChanged() {
             addedImageValue = imageFile;
         }
     }
-
 }
 
 function getExtension(formData) {
