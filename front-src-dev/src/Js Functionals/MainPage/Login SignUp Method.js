@@ -11,6 +11,8 @@ let signUpEmail
 let signUpPassword
 let signUpRepeatPassword
 let signupKind
+let closeModalFunc;
+
 function setSignUpFields() {
     signUpUsername = document.getElementById("SignUp-UserName")
     signUpFirstName = document.getElementById("SignUp-FirstName")
@@ -31,7 +33,8 @@ function emptySignUpFields() {
     signupKind.value = "";
 }
 
-export function signUp() {
+export function signUp(func) {
+    closeModalFunc = func
     setSignUpFields();
     var doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     if (doc != null) {
@@ -64,6 +67,7 @@ export function signUp() {
 function handleSuccessSignUp(value) {
     alert("SignUp Successful")
     emptySignUpFields();
+    closeModalFunc()
     // closeTheFuckinModal
 }
 
@@ -100,7 +104,7 @@ function emptyLoginFields() {
     loginKind.value = "";
 }
 
-export function login() {
+export function login(func) {
     setLoginFields()
     let doc = hasEmpty(loginKeypoint, loginPassword);
     if (doc != null) {
@@ -118,6 +122,7 @@ export function login() {
             key: 'account-type',
             value: loginKind.value
         });
+
     }
 }
 
