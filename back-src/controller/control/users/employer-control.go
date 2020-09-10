@@ -63,11 +63,11 @@ func GetEmployerProjects(username string, db *database.Database) ([]existence.Pr
 
 //func AddProjectWithFilesToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *database.Database) error {
 //	project.FileIds = []string{}
-//	if err := AddProjectToEmployer(token, project, db); err != nil {
-//		return err
+//	if licnecia-errors := AddProjectToEmployer(token, project, db); licnecia-errors != nil {
+//		return licnecia-errors
 //	}
-//	if err := checkProjectFiles(project, attachments); err != nil {
-//		return err
+//	if licnecia-errors := checkProjectFiles(project, attachments); licnecia-errors != nil {
+//		return licnecia-errors
 //	}
 //	return nil
 //}

@@ -1,6 +1,7 @@
 package handle
 
 import (
+	licnecia_errors "back-src/controller/control/licnecia-errors"
 	"back-src/controller/control/media"
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
@@ -21,7 +22,11 @@ func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
 		}
 		if err := users.RegisterEmployer(employer, DB); err != nil {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			if licnecia_errors.IsLicenciaError(err) {
+				return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+			} else {
+				return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			}
 		}
 
 	case existence.FreelancerType:
