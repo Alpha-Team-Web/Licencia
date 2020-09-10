@@ -66,7 +66,8 @@ class ProfileForm extends Component {
                             {/*<img className="ui circular bordered image" src={profilePic}
                                  alt="*User*'s Picture"/>*/}
                                  <ProfilePictureComponent className="ui circular bordered image" src={profilePic}
-                                                          alt="*User*'s Picture" imageId='profilePicture'/>
+                                                          alt="*User*'s Picture" imageId='profilePicture'
+                                                          addImageInputId='addPictureInput'/>
                         </div>
                     </div>
                 </Grid.Column>
