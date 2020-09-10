@@ -3,6 +3,7 @@ import {saveProfileUrlEmployer, saveProfileUrlFreeLancer} from "../urlNames";
 import Cookies from "js-cookie";
 import {isFreeLancer} from "./profilePageContent";
 import {reload} from "../PageRouter";
+import {saveProfilePicture} from "./profilePictureContent";
 
 let usernameField
 let shownNameField
@@ -71,6 +72,7 @@ export function saveProfile() {
         data, successSaveProfile, errorSaveProfile, {
             'Token': Cookies.get('auth')
         })
+    saveProfilePicture();
 }
 function successSaveProfile(value) {
     alert('Profile Saved Successfully')
