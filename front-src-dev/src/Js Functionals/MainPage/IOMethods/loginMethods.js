@@ -1,11 +1,11 @@
-import MainTextField from "../../../Components/MainPageComponents/mainTextField";
 import {httpExcGET} from "../../AlphaAPI";
 import {urlLogin} from "../../urlNames";
 import Cookies from "js-cookie";
 import {goToPage} from "../../PageRouter";
 import {profilePagePath} from "../../PagePaths";
 import {loginInvalidPasswordLabel, loginNotSignedUpKeypointLabel} from "../ioErrors";
-import {emptyFieldsFromErrors, hasEmpty} from "./Utils";
+import {emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
+import {setFieldError, showErrorLabel} from "./Utils/handleErrors";
 
 let loginKeypoint;
 let loginPassword;
@@ -31,8 +31,8 @@ export function login(func) {
     let doc = hasEmpty(loginKeypoint, loginPassword);
     emptyFieldsFromErrors(loginKeypoint, loginPassword)
     if (doc != null) {
-        MainTextField.setFieldError(doc, true)
-        MainTextField.showErrorLabel(doc, 'fill It, Dude')
+        setFieldError(doc, true)
+        showErrorLabel(doc, 'fill It, Dude')
         // setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         const data = {
@@ -66,13 +66,13 @@ function handleErrorLogin(value) {
     switch (value.message) {
         case 'not signed up username':
         case 'not signed up email':
-            MainTextField.setFieldError(loginKeypoint)
-            MainTextField.setFieldError(loginPassword)
-            MainTextField.showErrorLabel(loginKeypoint, loginNotSignedUpKeypointLabel)
+            setFieldError(loginKeypoint)
+            setFieldError(loginPassword)
+            showErrorLabel(loginKeypoint, loginNotSignedUpKeypointLabel)
             break;
         case 'invalid password':
-            MainTextField.setFieldError(loginPassword)
-            MainTextField.showErrorLabel(loginPassword, loginInvalidPasswordLabel)
+            setFieldError(loginPassword)
+            showErrorLabel(loginPassword, loginInvalidPasswordLabel)
             break;
         default:
             alert("Haven't Handled That Error Before");

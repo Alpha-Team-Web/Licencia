@@ -1,4 +1,4 @@
-import MainTextField from "../../../Components/MainPageComponents/mainTextField";
+import {setFieldError, showErrorLabel} from "./handleErrors";
 
 export function hasEmpty(...args) {
     for (let doc of args) {
@@ -12,8 +12,8 @@ export function hasEmpty(...args) {
 export function emptyFieldsFromErrors(...fields) {
     fields.forEach((value => {
         if (value) {
-            MainTextField.setFieldError(value, false)
-            MainTextField.showErrorLabel(value, false)
+            setFieldError(value, false)
+            showErrorLabel(value, false)
         }
     }))
 }

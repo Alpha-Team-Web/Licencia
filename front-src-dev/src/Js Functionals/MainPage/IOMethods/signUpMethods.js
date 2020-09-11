@@ -2,7 +2,8 @@ import MainTextField from "../../../Components/MainPageComponents/mainTextField"
 import {httpExcGET} from "../../AlphaAPI";
 import {urlSignUp} from "../../urlNames";
 import {signUpDuplicateEmailLabel, signUpDuplicateUsernameLabel, signUpInvalidEmailLabel} from "../ioErrors";
-import {emptyFieldsFromErrors, hasEmpty} from "./Utils";
+import {emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
+import {setFieldError, showErrorLabel} from "./Utils/handleErrors";
 
 let signUpUsername
 let signUpFirstName
@@ -40,13 +41,13 @@ export function signUp(func) {
     let doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
     emptySignUpFieldsFromErrors()
     if (doc != null) {
-        MainTextField.setFieldError(doc, true)
+        setFieldError(doc, true)
         setTimeout(() => alert("fill the red box!!"), 1000);
     } else {
         if (signUpPassword.value !== signUpRepeatPassword.value) {
             alert("Your Passwords Doesn't Match")
-            MainTextField.setFieldError(signUpPassword)
-            MainTextField.setFieldError(signUpRepeatPassword)
+            setFieldError(signUpPassword)
+            setFieldError(signUpRepeatPassword)
             return;
         }
         const data = {
@@ -79,16 +80,16 @@ function handleErrorSignUp(value) {
     alert('Server Message: ' + value.message)
     switch (value.message) {
         case 'duplicate email':
-            MainTextField.setFieldError(signUpEmail);
-            MainTextField.showErrorLabel(signUpEmail, signUpDuplicateEmailLabel);
+            setFieldError(signUpEmail);
+            showErrorLabel(signUpEmail, signUpDuplicateEmailLabel);
             break;
         case 'invalid email':
-            MainTextField.setFieldError(signUpEmail);
-            MainTextField.showErrorLabel(signUpEmail, signUpInvalidEmailLabel)
+            setFieldError(signUpEmail);
+            showErrorLabel(signUpEmail, signUpInvalidEmailLabel)
             break;
         case 'duplicate username':
-            MainTextField.setFieldError(signUpUsername)
-            MainTextField.showErrorLabel(signUpUsername, signUpDuplicateUsernameLabel)
+            setFieldError(signUpUsername)
+            showErrorLabel(signUpUsername, signUpDuplicateUsernameLabel)
             break;
         default:
             alert("Haven't Handled That Error Before");
