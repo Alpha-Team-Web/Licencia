@@ -15,8 +15,6 @@ import (
 type Handler struct {
 }
 
-const NotAssignedToken = "N/A"
-
 const notUsedExpiry = 10
 const authExpiryMin = 30
 
@@ -73,9 +71,9 @@ func KillClockIfExists(token string) bool {
 
 func makeOperationErrorNotification(ctx *gin.Context, err error) notifications.Notification {
 	if licnecia_errors.IsLicenciaError(err) {
-		return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+		return notifications.GetExpectationFailedError(ctx, licnecia_errors.GetErrorStrForRespond(err), nil)
 	} else {
-		return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
+		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	}
 }
 

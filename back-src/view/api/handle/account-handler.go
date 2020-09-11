@@ -23,7 +23,7 @@ func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 		return handler.registerFreelancer(ctx)
 
 	default:
-		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
+		return notifications.GetInvalidQueryErrorNotif(ctx, nil)
 	}
 }
 
@@ -31,44 +31,44 @@ func (*Handler) registerEmployer(ctx *gin.Context) notifications.Notification {
 	employer := existence.Employer{}
 	if err := ctx.ShouldBindJSON(&employer); err != nil {
 		if strings.Contains(err.Error(), "the 'email' tag") {
-			return notifications.GetExpectationFailedError(ctx, NotAssignedToken, "invalid email", nil)
+			return notifications.GetExpectationFailedError(ctx, "invalid email", nil)
 		} else {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
+			return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 		}
 	}
 	if err := users.RegisterEmployer(employer, DB); err != nil {
 		if licnecia_errors.IsLicenciaError(err) {
-			return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+			return notifications.GetExpectationFailedError(ctx, licnecia_errors.GetErrorStrForRespond(err), nil)
 		} else {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			return notifications.GetDatabaseErrorNotif(ctx, nil)
 		}
 	}
-	return notifications.GetSuccessfulNotif(ctx, NotAssignedToken, nil)
+	return notifications.GetSuccessfulNotif(ctx, nil)
 }
 
 func (*Handler) registerFreelancer(ctx *gin.Context) notifications.Notification {
 	freelancer := existence.Freelancer{}
 	if err := ctx.ShouldBindJSON(&freelancer); err != nil {
 		if strings.Contains(err.Error(), "the 'email' tag") {
-			return notifications.GetExpectationFailedError(ctx, NotAssignedToken, "invalid email", nil)
+			return notifications.GetExpectationFailedError(ctx, "invalid email", nil)
 		} else {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
+			return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 		}
 	}
 	if err := users.RegisterFreelancer(freelancer, DB); err != nil {
 		if licnecia_errors.IsLicenciaError(err) {
-			return notifications.GetExpectationFailedError(ctx, NotAssignedToken, licnecia_errors.GetErrorStrForRespond(err), nil)
+			return notifications.GetExpectationFailedError(ctx, licnecia_errors.GetErrorStrForRespond(err), nil)
 		} else {
-			return notifications.GetDatabaseErrorNotif(ctx, NotAssignedToken, nil)
+			return notifications.GetDatabaseErrorNotif(ctx, nil)
 		}
 	}
-	return notifications.GetSuccessfulNotif(ctx, NotAssignedToken, nil)
+	return notifications.GetSuccessfulNotif(ctx, nil)
 }
 
 func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	loginReq := data.LoginRequest{}
 	if err := ctx.ShouldBindJSON(&loginReq); err != nil {
-		return notifications.GetShouldBindJsonErrorNotif(ctx, NotAssignedToken, nil)
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
@@ -81,7 +81,7 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 			return notifications.GetSuccessfulNotif(ctx, nil)
 		}
 	default:
-		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
+		return notifications.GetInvalidQueryErrorNotif(ctx, nil)
 	}
 }
 
