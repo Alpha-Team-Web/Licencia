@@ -8,6 +8,7 @@ import {Label} from "semantic-ui-react";
 import {login} from "../../Js Functionals/MainPage/IOMethods/loginMethods";
 import '../../CSS Designs/extra-css.css'
 import {emailMaxLengthInput, passwordMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
+import MainSelect from "./mainFormElements/mainSelect";
 
 class MainLoginMenu extends Component {
     render() {
@@ -16,20 +17,12 @@ class MainLoginMenu extends Component {
                 <div className="ui form formPadding ui-rtl">
 
                     <MainTextField id='login-KeyPoint' maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
-                    <MainInput id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
+                    <MainInput id='login-KeyPoint' maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
 
-                    <MainInput id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
+                    <MainInput id='login-Password' maxLength={passwordMaxLengthInput} textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
                     <MainTextField id='login-Password' maxLength={passwordMaxLengthInput} textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
 
-                    <div className="ui form formPadding">
-                        <div className="ui field">
-                            <p className="paragraphInput">نوع</p>
-                            <select className="ui dropdown" id="loginKind">
-                                <option value="employer">کارفرما</option>
-                                <option value="freelancer">فریلنسر</option>
-                            </select>
-                        </div>
-                    </div>
+                    <MainSelect id='loginKind' value1 = 'employer' textValue1'کارفرما' value2 = 'freelancer' textValue2'فریلنسر' textName='نوع'/>
 
                     <div className="ui form formPadding" id="Login-Footer-Form">
                         <label>
