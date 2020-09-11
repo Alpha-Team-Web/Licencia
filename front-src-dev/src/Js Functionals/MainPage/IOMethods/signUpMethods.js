@@ -2,7 +2,7 @@ import MainTextField from "../../../Components/MainPageComponents/mainTextField"
 import {httpExcGET} from "../../AlphaAPI";
 import {urlSignUp} from "../../urlNames";
 import {signUpDuplicateEmailLabel, signUpDuplicateUsernameLabel, signUpInvalidEmailLabel} from "../ioErrors";
-import {emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
+import {emptyFields, emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
 import {setFieldError, showErrorLabel} from "./Utils/handleErrors";
 
 let signUpUsername
@@ -23,15 +23,10 @@ function setSignUpFields() {
     signUpKind = document.getElementById("signUpKind")
 }
 
-export function emptySignUpFields() {
+export let emptySignUpFields = () => {
     setSignUpFields();
-    signUpUsername.value = "";
-    signUpFirstName.value = "";
-    signUpLastName.value = "";
-    signUpEmail.value = "";
-    signUpPassword.value = "";
-    signUpRepeatPassword.value = "";
-    signUpKind.value = "";
+    emptyFields(signUpUsername, signUpFirstName, signUpLastName,
+        signUpEmail, signUpPassword, signUpRepeatPassword, signUpKind)
 }
 
 export let isSignUpInputsEmpty = () => hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail,

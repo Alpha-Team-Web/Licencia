@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import {goToPage} from "../../PageRouter";
 import {profilePagePath} from "../../PagePaths";
 import {loginInvalidPasswordLabel, loginNotSignedUpKeypointLabel} from "../ioErrors";
-import {emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
+import {emptyFields, emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
 import {setFieldError, showErrorLabel} from "./Utils/handleErrors";
 
 let loginKeypoint;
@@ -17,11 +17,9 @@ function setLoginFields() {
     loginKind = document.getElementById("loginKind");
 }
 
-export function emptyLoginFields() {
+export let emptyLoginFields = () => {
     setLoginFields()
-    loginKeypoint.value = "";
-    loginPassword.value = "";
-    loginKind.value = "";
+    emptyFields(loginKeypoint, loginPassword, loginKind)
 }
 
 export let isLoginFieldsEmpty = () => hasEmpty(loginKeypoint, loginPassword);

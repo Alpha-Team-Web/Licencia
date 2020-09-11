@@ -9,6 +9,14 @@ export function hasEmpty(...fields) {
     return null;
 }
 
+export function emptyFields(...fields) {
+    fields.forEach(value => {
+        if (value) {
+            value.value = '';
+        }
+    })
+}
+
 export function emptyFieldsFromErrors(...fields) {
     fields.forEach((value => {
         if (value) {
