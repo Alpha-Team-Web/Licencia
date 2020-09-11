@@ -14,7 +14,7 @@ class MainTextField extends Component {
                 <div className="ui field">
                     <p className="paragraphInput">{this.props.textName}</p>
                     <input maxLength={this.props.maxLength} type={this.props.isPassword ? 'password' : "text"} placeholder={this.props.placeHolder}
-                           id={this.props.id} onFocus={MainTextField.setFieldError(this.props.id, false)} />
+                           id={this.props.id} onFocus={MainTextField.setFieldError(document.getElementById(this.props.id), false)} />
                     <div className="ui pointing label red" id={this.props.errorId} style={{display:'none'}}>
                         {this.props.errorText}
                     </div>
@@ -23,10 +23,8 @@ class MainTextField extends Component {
         );
     }
 
-    static setFieldError(id, isError) {
-        let field = document.getElementById(id)
-
-        if (field != null) {
+    static setFieldError(field, isError) {
+        if (field) {
             if ((isError === undefined || isError) && !field.parentElement.classList.contains("error")) {
                 // field.style.border = "1px solid red";
                 field.parentElement.classList.add("error");

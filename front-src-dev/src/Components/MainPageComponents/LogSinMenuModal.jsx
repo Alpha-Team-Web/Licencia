@@ -50,6 +50,7 @@ import {greenColor, loginMenu, signUpMenu} from "../../Js Functionals/MainPage/L
 import licenciaImg from "../../Pics/Licencia-Logo.png";
 import MainLoginMenu from "./mainLoginMenu";
 import MainSignUpMenu from "./mainSignUpMenu";
+import {emptyLoginFields, emptySignUpFields} from "../../Js Functionals/MainPage/Login SignUp Method";
 
 class ModalLogSin extends Component{
     constructor(props, context) {
@@ -76,6 +77,8 @@ class ModalLogSin extends Component{
             <Modal
                 onClose={()=>{
                     this.setOpen(false)
+                    emptyLoginFields()
+                    emptySignUpFields()
                 }}
                 onOpen={()=>{
                     this.setOpen(true)
