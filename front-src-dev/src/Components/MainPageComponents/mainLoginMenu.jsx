@@ -7,7 +7,6 @@ import {login} from "../../Js Functionals/MainPage/IOMethods/loginMethods";
 import '../../CSS Designs/extra-css.css'
 import {emailMaxLengthInput, passwordMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
 import MainSelect from "./mainFormElements/mainSelect";
-import MainInput2 from "./mainFormElements/mainInput2";
 import {
     loginButtonId,
     loginKeyPointId,
@@ -20,14 +19,14 @@ class MainLoginMenu extends Component {
     render() {
 
         return (
-            <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu">
-                <div className="ui form formPadding ui-rtl">
+            <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu ui-rtl">
+                <div className="ui form formPadding">
 
-                    <MainInput2 id={loginKeyPointId} maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل'
+                    <MainInput id={loginKeyPointId} maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل'
                                placeHolder='Username Or Email' errorId="loginKeyPointError"/>
 
-                    <MainInput2 id={loginPasswordId} maxLength={passwordMaxLengthInput} textName='رمز عبور'
-                               placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
+                    <MainInput id={loginPasswordId} maxLength={passwordMaxLengthInput} textName='رمز عبور'
+                               placeHolder='Password' type='password' errorID="loginPasswordError"/>
 
                     <MainSelect id={loginKindId} options={options} textName='نوع'/>
 

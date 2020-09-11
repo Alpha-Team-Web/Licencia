@@ -8,6 +8,7 @@ import Background from '../../Pics/githubImage2.png'
 import GithubRepoComponent from "./GithubRepoComponent";
 import {gitHubUrl} from "../../Js Functionals/urlNames";
 import {githubAccountMaxLengthInput, siteAddressMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
+import MainInput from "../MainPageComponents/mainFormElements/mainInput";
 
 class LinksComponent extends Component {
     constructor(props, context) {
@@ -23,18 +24,22 @@ class LinksComponent extends Component {
                 display: 'none'
             }} id={this.props.id}>
                 <div className="two fields">
-                    <div className="field">
+                    {/*<div className="field">
                         <label className="rightAligned marginBottom10">آدرس سایت</label>
                         <input maxLength={siteAddressMaxLengthInput} id="siteAddressField" placeholder="Site Address" type="text"/>
-                    </div>
+                    </div>*/}
+                    <MainInput maxLength={siteAddressMaxLengthInput} id="siteAddressField" placeHolder="Site Address"
+                               textName='آدرس سایت'/>
                 </div>
 
                 <div className="two fields">
-                    <div className="field">
+                    {/*<div className="field">
                         <label className="rightAligned marginBottom10">اکانت گیت هاب</label>
                         <input maxLength={githubAccountMaxLengthInput} id="githubAccountField" placeholder="Github-Account" type="text"
-                               onBlur={() => gitHubAccountChanged()/*accountGithubChanged()*/}/>
-                    </div>
+                               onBlur={() => gitHubAccountChanged()}/>
+                    </div>*/}
+                    <MainInput maxLength={githubAccountMaxLengthInput} id="githubAccountField" placeHolder="Github-Account"
+                               onBlur={() => gitHubAccountChanged()} textName='اکانت گیت هاب' />
                 </div>
 
                 <div className="ui relaxed" id="gitHubRepos">

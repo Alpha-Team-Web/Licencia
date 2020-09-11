@@ -1,43 +1,17 @@
-import React, {Component} from 'react';
-import '../../../CSS Designs/MainPage/loginSignupInput.css';
-import '../../../CSS Designs/MainPage/LoginMenu.css';
-import {setFieldError} from "../../../Js Functionals/MainPage/IOMethods/Utils/handleErrors";
+import React from 'react';
+import MainFormComponent from "./mainFormComponent";
 
-class MainInput extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
+class MainInput extends MainFormComponent {
 
-    errorLabelStyle = {
-        display: 'none',
-        maxWidth: '150px',
-        textAlign: 'center'
-    }
-
-    render() {
+    createMainFormElement() {
         return (
-            <div className="ui form formPadding">
-                <div className="ui field">
-                    <p className="paragraphInput">{this.props.textName}</p>
-                    <input maxLength={this.props.maxLength} type={this.props.type ? this.props.type : "text"}
-                           placeholder={this.props.placeHolder}
-                           id={this.props.id}/>
-                    <div className="ui pointing label red" id={this.props.errorId} style={this.errorLabelStyle}>
-                        {this.props.errorText}
-                    </div>
-                </div>
-            </div>
-        );
+            <input maxLength={this.props.maxLength} type={this.props.type ? this.props.type : "text"}
+                   placeholder={this.props.placeHolder} onBlur={this.props.onBlur}
+                   readOnly={this.props.readOnly} id={this.props.id}>
+                {this.props.children}
+            </input>
+        )
     }
-
-
-    componentDidMount() {
-        let field = document.getElementById(this.props.id)
-        field.addEventListener('focus', () => {
-            setFieldError(field, false)
-        })
-    }
-
 
 }
 

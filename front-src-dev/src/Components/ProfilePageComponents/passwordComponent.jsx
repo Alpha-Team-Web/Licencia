@@ -3,6 +3,7 @@ import {Button, Header, Image, Modal} from 'semantic-ui-react'
 import '../../CSS Designs/ProfilePage/CSS1.css'
 import ProfileCard from "./profileCard";
 import {changePassword} from "../../Js Functionals/ProfilePage/passwordContent";
+import MainInput from "../MainPageComponents/mainFormElements/mainInput";
 
 // import {changePassword} from '../../Js Functionals/ProfilePage/JS1';
 
@@ -19,18 +20,28 @@ function ModalPassword() {
 
             <Modal.Content className="ui form flexColumn modal" id="changingPasswordContent">
                 <div className="three fields" id="passwordFields">
-                    <div className="field">
+
+                    {/*<div className="field">
                         <label className="rightAligned">رمز عبور قدیمی</label>
                         <input type='password' id="oldPasswordField" placeholder="Old Password"/>
-                    </div>
-                    <div className="field">
+                    </div>*/}
+                    <MainInput type='password' id="oldPasswordField" placeHolder="Old Password"
+                               textName='رمز عبور قدیمی' />
+
+                    {/*<div className="field">
                         <label className="rightAligned">رمز عبور</label>
                         <input type='password' id="passwordField" placeholder="Password"/>
-                    </div>
-                    <div className="field">
+                    </div>*/}
+                    <MainInput type='password' id="passwordField" placeHolder="Password"
+                               textName='رمز عبور' />
+
+                    {/*<div className="field">
                         <label className="rightAligned">تکرار رمز عبور</label>
                         <input type='password' id="repeatPasswordField" placeholder="Repeat Password"/>
-                    </div>
+                    </div>*/}
+                    <MainInput type='password' id="repeatPasswordField" placeHolder="Repeat Password"
+                               textName='تکرار رمز عبور' />
+
                 </div>
 
                 <button className="positive ui button rightAligned" id="changePasswordButton"
