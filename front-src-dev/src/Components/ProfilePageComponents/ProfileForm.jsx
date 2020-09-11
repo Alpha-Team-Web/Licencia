@@ -5,6 +5,12 @@ import {Grid} from 'semantic-ui-react'
 import profilePic from "../../Pics/codingPerson.jpg"
 import {saveProfile} from "../../Js Functionals/ProfilePage/profileContent";
 import ProfilePictureComponent from "./profilePictureComponent";
+import {
+    addressMaxLengthInput, descriptionMaxLengthInput,
+    firstnameMaxLengthInput,
+    lastnameMaxLengthInput, phoneNumberMaxLengthInput,
+    shownNameMaxLengthInput
+} from "../../Js Functionals/MainPage/ioInputLengths";
 
 class ProfileForm extends Component {
     state = {}
@@ -27,34 +33,34 @@ class ProfileForm extends Component {
                             </div>
                             <div className="six wide field ui-rtl">
                                 <label className='rightAligned no-space-break label-size'>نام نمایشی</label>
-                                <input className="" type="text" placeholder="Showing Name"
+                                <input maxLength={shownNameMaxLengthInput} className="" type="text" placeholder="Showing Name"
                                        id="showingNameField"></input>
                             </div>
                             <div className="two fields ui-rtl">
                                 <div className="six wide field ui-rtl">
                                     <label>نام</label>
-                                    <input type="text" placeholder="First Name" id="firstNameField"></input>
+                                    <input maxLength={firstnameMaxLengthInput} type="text" placeholder="First Name" id="firstNameField"></input>
                                 </div>
                                 <div className="six wide field ui-rtl">
                                     <label>نام خانوادگی</label>
-                                    <input type="text" placeholder="Last Name" id="lastNameField"></input>
+                                    <input maxLength={lastnameMaxLengthInput} type="text" placeholder="Last Name" id="lastNameField"></input>
                                 </div>
                             </div>
                             <div className="two fields ui-rtl">
                                 <div className="six wide field">
                                     <label>آدرس</label>
-                                    <input className="input-size" type="text" placeholder="Address"
+                                    <input maxLength={addressMaxLengthInput} className="input-size" type="text" placeholder="Address"
                                            id="addressField"></input>
                                 </div>
                                 <div className="six wide field">
                                     <label className='rightAligned no-space-break label-size'>شماره تلفن</label>
-                                    <input className="input-size" type="text" placeholder="Phone Number"
+                                    <input maxLength={phoneNumberMaxLengthInput} className="input-size" type="text" placeholder="Phone Number"
                                            id="telephoneNumberField"></input>
                                 </div>
                             </div>
                             <div className=" ui-rtl">
                                 <label>توضیحات</label>
-                                <textarea rows="3" placeholder="Description" id="descriptionField"></textarea>
+                                <textarea maxLength={descriptionMaxLengthInput} rows="3" placeholder="Description" id="descriptionField"></textarea>
                             </div>
                             <button className="ui positive button" onClick={() => saveProfile()}>
                                 ثبت پروفایل

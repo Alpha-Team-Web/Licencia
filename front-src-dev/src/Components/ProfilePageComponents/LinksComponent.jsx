@@ -7,6 +7,7 @@ import '../../CSS Designs/ProfilePage/CSS1.css'
 import Background from '../../Pics/githubImage2.png'
 import GithubRepoComponent from "./GithubRepoComponent";
 import {gitHubUrl} from "../../Js Functionals/urlNames";
+import {githubAccountMaxLengthInput, siteAddressMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
 
 class LinksComponent extends Component {
     constructor(props, context) {
@@ -24,14 +25,14 @@ class LinksComponent extends Component {
                 <div className="two fields">
                     <div className="field">
                         <label className="rightAligned marginBottom10">آدرس سایت</label>
-                        <input maxLength="50" id="siteAddressField" placeholder="Site Address" type="text"/>
+                        <input maxLength={siteAddressMaxLengthInput} id="siteAddressField" placeholder="Site Address" type="text"/>
                     </div>
                 </div>
 
                 <div className="two fields">
                     <div className="field">
                         <label className="rightAligned marginBottom10">اکانت گیت هاب</label>
-                        <input maxLength="40" id="githubAccountField" placeholder="Github-Account" type="text"
+                        <input maxLength={githubAccountMaxLengthInput} id="githubAccountField" placeholder="Github-Account" type="text"
                                onBlur={() => gitHubAccountChanged()/*accountGithubChanged()*/}/>
                     </div>
                 </div>
