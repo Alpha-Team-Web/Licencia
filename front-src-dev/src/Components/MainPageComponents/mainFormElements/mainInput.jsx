@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../../../CSS Designs/MainPage/loginSignupInput.css';
-import '../../CSS Designs/MainPage/LoginMenu.css';
-import {setFieldError} from "../../Js Functionals/MainPage/IOMethods/Utils/handleErrors";
+import '../../../CSS Designs/MainPage/LoginMenu.css';
+import {setFieldError} from "../../../Js Functionals/MainPage/IOMethods/Utils/handleErrors";
 
 class MainInput extends Component {
     constructor(props, context) {
