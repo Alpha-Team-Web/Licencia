@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import {reload} from "../PageRouter";
 
 export const acceptedImageExtensions = '.png, .jpg, .jpeg, .bmp';
-export const maximumImageSize = 5;    //Mb
+export const maximumImageSize = 8;    //Mb
 export const imageSizeUnit = 1024 * 1024;
 
 let imageInput

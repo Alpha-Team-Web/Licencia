@@ -42,7 +42,7 @@ function checkSignUpFields() {
     emptySignUpFieldsFromErrors()
     if (doc != null) {
         setFieldError(doc, true)
-        setTimeout(() => alert("fill the red box!!"), 1000);
+        showErrorLabel(doc, 'fill It, Dude')
         return false;
     }
     return true;
