@@ -2,7 +2,7 @@ import {gitHubUrl, saveGithubUrlFreeLancer} from "../urlNames";
 import Cookies from "js-cookie";
 import {checkURL, httpExcGET, httpGet} from "../AlphaAPI";
 import {isFreeLancer} from "./profilePageContent";
-import GithubRepoComponent from "../../Components/ProfilePageComponents/GithubRepoComponent";
+import GithubRepoComponent from "../../Components/ProfilePageComponents/Utils/GithubRepoComponent";
 import ReactDOM from 'react-dom';
 import React from "react";
 

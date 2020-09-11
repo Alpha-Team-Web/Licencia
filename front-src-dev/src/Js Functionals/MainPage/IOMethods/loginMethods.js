@@ -4,8 +4,8 @@ import Cookies from "js-cookie";
 import {goToPage} from "../../PageRouter";
 import {profilePagePath} from "../../PagePaths";
 import {loginInvalidPasswordLabel, loginNotSignedUpKeypointLabel} from "../ioErrors";
-import {emptyFields, emptyFieldsFromErrors, hasEmpty} from "./Utils/handleInputs";
-import {setFieldError, showErrorLabel} from "./Utils/handleErrors";
+import {emptyFields, emptyFieldsFromErrors, hasEmpty} from "../../Utils/handleInputs";
+import {setFieldError, showErrorLabel} from "../../Utils/handleErrors";
 
 let loginKeypoint;
 let loginPassword;

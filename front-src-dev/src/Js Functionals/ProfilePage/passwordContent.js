@@ -3,6 +3,9 @@ import {httpExcGET} from "../AlphaAPI";
 import {changePasswordUrlEmployer, changePasswordUrlFreeLancer} from "../urlNames";
 import {isFreeLancer} from "./profilePageContent";
 import {reload} from "../PageRouter";
+import {setFieldError, showErrorLabel} from "../Utils/handleErrors";
+import {incorrectOldPasswordLabel, newPasswordMisMatch} from "./Utils/registerErrors";
+import {emptyFieldsFromErrors, hasEmpty} from "../Utils/handleInputs";
 
 let oldPasswordField
 let newPasswordField
@@ -15,11 +18,18 @@ function fillPasswordFields() {
 
 export function changePassword() {
     fillPasswordFields();
-    if (oldPasswordField.value === "" || newPasswordField.value === "" || repeatNewPasswordField.value === "") {
-        alert("you have empty field")
+
+    emptyFieldsFromErrors(oldPasswordField, newPasswordField, repeatNewPasswordField)
+    let emptyField = hasEmpty(oldPasswordField, newPasswordField, repeatNewPasswordField)
+    if (emptyField !== null) {
+        setFieldError(emptyField)
+        showErrorLabel(emptyField, 'fill This Dude')
     } else {
         if (newPasswordField.value !== repeatNewPasswordField.value) {
-            alert("passwords doesn't match")
+            setFieldError(newPasswordField)
+            showErrorLabel(newPasswordField, newPasswordMisMatch)
+            setFieldError(repeatNewPasswordField)
+            showErrorLabel(repeatNewPasswordField, newPasswordMisMatch)
         } else {
             let data = {
                 'old-pass': oldPasswordField.value,
@@ -43,4 +53,13 @@ function successChangePassword(value) {
 function denyChangePassword(value) {
     alert("password doesn't change" + "  value : " + JSON.stringify(value))
     // handleError
+    switch (value.message) {
+        case 'password mismatch':
+            setFieldError(oldPasswordField)
+            showErrorLabel(oldPasswordField, incorrectOldPasswordLabel)
+            break;
+        default:
+            alert("haven't Handled This Error Before.")
+            break;
+    }
 }

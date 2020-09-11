@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {Divider, Segment} from "semantic-ui-react";
-import ProfileCard from "./profileCard";
+import ProfileCard from "./Utils/profileCard";
 // import {changeMainProfileContent, gitHubRepoContent, profile} from "../../Js Functionals/ProfilePage/JS1";
 import '../../CSS Designs/basic.css';
 import '../../CSS Designs/ProfilePage/CSS1.css';
 import '../../CSS Designs/Header.css';
-import ModalPassword from "./passwordComponent";
+import ModalPassword from "./ProfileSectionComponents/passwordComponent";
 import {
     loadProfileMenu,
     switchLinksToProfile,
     switchProfileToLinks
 } from "../../Js Functionals/ProfilePage/profilePageContent";
-import ProfileForm from "./ProfileForm";
-import LinksComponent from "./LinksComponent";
+import ProfileForm from "./ProfileSectionComponents/ProfileForm";
+import LinksComponent from "./ProfileSectionComponents/LinksComponent";
 
 class ProfileContent extends Component {
     constructor(props, context) {

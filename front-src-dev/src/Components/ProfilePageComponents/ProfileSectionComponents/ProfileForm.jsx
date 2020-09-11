@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../../CSS Designs/basic.css';
+import '../../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
 import {Grid} from 'semantic-ui-react'
 import profilePic from "../../Pics/codingPerson.jpg"

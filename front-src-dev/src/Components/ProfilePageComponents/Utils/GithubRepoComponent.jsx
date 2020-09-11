@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {removeRepository} from "../../Js Functionals/ProfilePage/linksContent";
-import '../../CSS Designs/ProfilePage/CSS1.css'
+import {removeRepository} from "../../../Js Functionals/ProfilePage/linksContent";
+import '../../../CSS Designs/ProfilePage/CSS1.css'
 import '../../CSS Designs/Header.css';
 import '../../CSS Designs/basic.css';
 

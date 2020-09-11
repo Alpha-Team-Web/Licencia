@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {setFieldError} from "../../../Js Functionals/MainPage/IOMethods/Utils/handleErrors";
+import {setFieldError} from "../../../Js Functionals/Utils/handleErrors";
 
 class MainFormComponent extends Component {
 

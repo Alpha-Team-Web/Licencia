@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Reveal, Image} from "semantic-ui-react";
-import addPictureJPG from '../../Pics/addPictureJPG.jpg';
-import addPicturePng from '../../Pics/addPicturePng.png';
-import '../../CSS Designs/extra-css.css'
+import addPictureJPG from '../../../Pics/addPictureJPG.jpg';
+import addPicturePng from '../../../Pics/addPicturePng.png';
+import '../../../CSS Designs/extra-css.css'
 
 import {
     acceptedImageExtensions,
