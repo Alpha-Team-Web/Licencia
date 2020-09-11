@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import '../../CSS Designs/MainPage/LoginMenu.css';
 import MainTextField from "./mainTextField";
-import {signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
+import {emailMaxLength, passwordMaxLength, signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
 import {Label} from "semantic-ui-react";
 import {login} from "../../Js Functionals/MainPage/IOMethods/loginMethods";
 import '../../CSS Designs/extra-css.css'
+import {emailMaxLengthInput, passwordMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
 
 class MainLoginMenu extends Component {
     render() {
@@ -12,9 +13,9 @@ class MainLoginMenu extends Component {
             <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu" >
                 <div className="ui form formPadding ui-rtl">
 
-                    <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
+                    <MainTextField id='login-KeyPoint' maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
 
-                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
+                    <MainTextField id='login-Password' maxLength={passwordMaxLengthInput} textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
 
                     <div className="ui form formPadding">
                         <div className="ui field">
