@@ -8,33 +8,25 @@ import (
 )
 
 func (handler *Handler) AddFreelancerReview(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	frlReview := existence.FreelancerEmployerReview{}
+	if err := ctx.ShouldBindJSON(frlReview); err != nil {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
+	}
+	if err := projects.AddFreelancerReview(getTokenByContext(ctx), frlReview, DB); err != nil {
+		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
-		frlReview := existence.FreelancerEmployerReview{}
-		if err := ctx.ShouldBindJSON(frlReview); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
-		}
-		if err := projects.AddFreelancerReview(newToken, frlReview, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-		}
+		return notifications.GetSuccessfulNotif(ctx, nil)
 	}
 }
 
 func (handler *Handler) AddEmployerReview(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	empReview := existence.EmployerFreelancerReview{}
+	if err := ctx.ShouldBindJSON(empReview); err != nil {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
+	}
+	if err := projects.AddEmployerReview(getTokenByContext(ctx), empReview, DB); err != nil {
+		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
-		empReview := existence.EmployerFreelancerReview{}
-		if err := ctx.ShouldBindJSON(empReview); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
-		}
-		if err := projects.AddEmployerReview(newToken, empReview, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-		}
+		return notifications.GetSuccessfulNotif(ctx, nil)
 	}
 }

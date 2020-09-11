@@ -77,7 +77,8 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			AddNewClock(token)
-			return notifications.GetSuccessfulNotif(ctx, token, nil)
+			ctx.Header("Token", token)
+			return notifications.GetSuccessfulNotif(ctx, nil)
 		}
 	default:
 		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
@@ -85,19 +86,15 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 }
 
 func (handler *Handler) ModifyFollow(ctx *gin.Context, isFollow bool) notifications.Notification {
-	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
-	} else {
-		follow := existence.Follow{}
-		if err := ctx.ShouldBindJSON(&follow); err == nil {
-			job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(string, existence.Follow, *database.Database) error)
-			if err := job(newToken, follow, DB); err == nil {
-				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-			} else {
-				return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-			}
+	follow := existence.Follow{}
+	if err := ctx.ShouldBindJSON(&follow); err == nil {
+		job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(string, existence.Follow, *database.Database) error)
+		if err := job(getTokenByContext(ctx), follow, DB); err == nil {
+			return notifications.GetSuccessfulNotif(ctx, nil)
 		} else {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+			return notifications.GetInternalServerErrorNotif(ctx, nil)
 		}
+	} else {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
 }

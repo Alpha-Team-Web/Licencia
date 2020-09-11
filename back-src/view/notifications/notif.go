@@ -7,16 +7,14 @@ import (
 
 type Notification struct {
 	Context    *gin.Context
-	Token      string
 	Message    string
 	StatusCode int
 	Data       interface{}
 }
 
-func GetShouldBindJsonErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
+func GetShouldBindJsonErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      token,
 		Message:    "data invalid",
 		StatusCode: http.StatusBadRequest, //400
 		Data:       data,
@@ -24,10 +22,9 @@ func GetShouldBindJsonErrorNotif(ctx *gin.Context, token string, data ...interfa
 	return notif
 }
 
-func GetDatabaseErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
+func GetDatabaseErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      token,
 		Message:    "database down",
 		StatusCode: http.StatusServiceUnavailable, //503
 		Data:       data,
@@ -35,10 +32,9 @@ func GetDatabaseErrorNotif(ctx *gin.Context, token string, data ...interface{}) 
 	return notif
 }
 
-func GetInvalidQueryErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
+func GetInvalidQueryErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      token,
 		Message:    "Invalid Query",
 		StatusCode: http.StatusNotAcceptable, //406
 		Data:       data,
@@ -46,10 +42,9 @@ func GetInvalidQueryErrorNotif(ctx *gin.Context, token string, data ...interface
 	return notif
 }
 
-func GetSuccessfulNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
+func GetSuccessfulNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      token,
 		Message:    "successful",
 		StatusCode: http.StatusOK, //200
 		Data:       data,
@@ -57,10 +52,9 @@ func GetSuccessfulNotif(ctx *gin.Context, token string, data ...interface{}) Not
 	return notif
 }
 
-func GetInternalServerErrorNotif(ctx *gin.Context, token string, data ...interface{}) Notification {
+func GetInternalServerErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      token,
 		Message:    "server down",
 		StatusCode: http.StatusInternalServerError, //500
 		Data:       data,
@@ -71,7 +65,6 @@ func GetInternalServerErrorNotif(ctx *gin.Context, token string, data ...interfa
 func GetTokenNotAuthorizedErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      "N/A",
 		Message:    "not authorized token",
 		StatusCode: http.StatusForbidden, //403
 		Data:       data,
@@ -79,10 +72,9 @@ func GetTokenNotAuthorizedErrorNotif(ctx *gin.Context, data ...interface{}) Noti
 	return notif
 }
 
-func GetExpectationFailedError(ctx *gin.Context, token, errStr string, data ...interface{}) Notification {
+func GetExpectationFailedError(ctx *gin.Context, errStr string, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Token:      token,
 		Message:    errStr,
 		StatusCode: http.StatusExpectationFailed, //417
 		Data:       data,
