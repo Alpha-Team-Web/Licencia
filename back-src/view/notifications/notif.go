@@ -39,7 +39,7 @@ func GetInvalidQueryErrorNotif(ctx *gin.Context, token string, data ...interface
 	notif := Notification{
 		Context:    ctx,
 		Token:      token,
-		Message:    "database down",
+		Message:    "Invalid Query",
 		StatusCode: http.StatusNotAcceptable, //406
 		Data:       data,
 	}
