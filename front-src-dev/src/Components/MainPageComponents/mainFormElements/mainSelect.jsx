@@ -6,7 +6,7 @@ class MainSelect extends MainFormComponent {
     createMainFormElement() {
         return(
             <select id={this.props.id}>
-                {this.createElements(this.props.options)}
+                {this.createElements()}
                 {this.props.children}
             </select>
         )
