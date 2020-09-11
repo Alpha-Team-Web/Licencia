@@ -13,9 +13,9 @@ import (
 
 const ProfileImageUploaderForName = "profileImage"
 const ProjectFileFormName = "attachment"
+const MaxProfileImageSizeInBytes = (6 * 1000000) //6 MegaBytes
 
 func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string) notifications.Notification {
-
 	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
 		if profileType == existence.ProjectProfile {
 			//TODO
