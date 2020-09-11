@@ -54,10 +54,7 @@ export function login(func) {
     loginCloseModalFunc = func;
 
     if (checkLoginFields()) {
-        const data = getLoginDataFromFields();
-        alert('data: ' + JSON.stringify(data))
-
-        const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
+        const promise = httpExcGET('post', urlLogin, getLoginDataFromFields(), handleSuccessLogin, handleErrorLogin, {
             'Content-Type': 'application/json'
         }, {
             key: 'account-type',

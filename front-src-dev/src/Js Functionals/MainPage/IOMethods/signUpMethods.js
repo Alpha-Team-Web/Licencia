@@ -42,33 +42,46 @@ export let emptySignUpFieldsFromErrors = () => emptyFieldsFromErrors(signUpUsern
 
 
 function checkSignUpFields() {
-
-}
-
-export function signUp(func) {
-    signUpCloseModalFunc = func
     setSignUpFields();
     let doc = isSignUpInputsEmpty();
     emptySignUpFieldsFromErrors()
     if (doc != null) {
         setFieldError(doc, true)
         setTimeout(() => alert("fill the red box!!"), 1000);
-    } else {
-        if (signUpPassword.value !== signUpRepeatPassword.value) {
-            alert("Your Passwords Doesn't Match")
-            setFieldError(signUpPassword)
-            setFieldError(signUpRepeatPassword)
-            return;
-        }
-        const data = {
-            username: signUpUsername.value,
-            'firstname': signUpFirstName.value,
-            'lastname': signUpLastName.value,
-            email: signUpEmail.value,
-            password: signUpPassword.value
-        }
-        alert('data: ' + JSON.stringify(data))
-        const promise = httpExcGET('post', urlSignUp, data, handleSuccessSignUp, handleErrorSignUp, {
+        return false;
+    }
+    return true;
+}
+
+let getSignUpDataFromFields = () => {
+    setSignUpFields()
+    return {
+        username: signUpUsername.value,
+        'firstname': signUpFirstName.value,
+        'lastname': signUpLastName.value,
+        email: signUpEmail.value,
+        password: signUpPassword.value
+    }
+}
+
+function checkPasswordSimilarity() {
+    if (signUpPassword.value !== signUpRepeatPassword.value) {
+        let error = "Your Passwords Doesn't Match";
+        setFieldError(signUpPassword)
+        setFieldError(signUpRepeatPassword)
+        showErrorLabel(signUpPassword, error)
+        showErrorLabel(signUpRepeatPassword, error)
+        return false;
+    }
+    return true;
+}
+
+export function signUp(func) {
+    signUpCloseModalFunc = func
+
+     if(checkSignUpFields() && checkPasswordSimilarity()) {
+        const promise = httpExcGET('post', urlSignUp, getSignUpDataFromFields(),
+            handleSuccessSignUp, handleErrorSignUp, {
             'Content-Type': 'application/json'
         }, {
             key: 'account-type',
@@ -81,7 +94,6 @@ function handleSuccessSignUp(value) {
     alert("SignUp Successful")
     emptySignUpFields();
     signUpCloseModalFunc()
-    // closeTheFuckinModal
 }
 
 function handleErrorSignUp(value) {

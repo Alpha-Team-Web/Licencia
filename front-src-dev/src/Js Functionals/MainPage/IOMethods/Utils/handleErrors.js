@@ -12,7 +12,7 @@ export function setFieldError(field, isError) {
 
 export function showErrorLabel(field, errorLabel) {
     if (field) {
-        if (/*isError === undefined || isError*/errorLabel || errorLabel === '') {
+        if (errorLabel || errorLabel === '') {
             if (errorLabel) {
                 getLabel(field).innerHTML = errorLabel;
             }
