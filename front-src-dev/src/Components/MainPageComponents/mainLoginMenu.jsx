@@ -8,34 +8,34 @@ import '../../CSS Designs/extra-css.css'
 import {emailMaxLengthInput, passwordMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
 import MainSelect from "./mainFormElements/mainSelect";
 import MainInput2 from "./mainFormElements/mainInput2";
+import {
+    loginButtonId,
+    loginKeyPointId,
+    loginKindId,
+    loginPasswordId,
+    options
+} from "../../Js Functionals/MainPage/loginSignupIds";
 
 class MainLoginMenu extends Component {
     render() {
-        let options = [{
-            value: 'employer',
-            child: 'کارفرما'
-        }, {
-            value: 'freelancer',
-            child: 'فریلنسر'
-        }]
 
         return (
             <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu">
                 <div className="ui form formPadding ui-rtl">
 
-                    <MainInput2 id='login-KeyPoint' maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل'
+                    <MainInput2 id={loginKeyPointId} maxLength={emailMaxLengthInput} textName='نام کاربری یا ایمیل'
                                placeHolder='Username Or Email' errorId="loginKeyPointError"/>
 
-                    <MainInput2 id='login-Password' maxLength={passwordMaxLengthInput} textName='رمز عبور'
+                    <MainInput2 id={loginPasswordId} maxLength={passwordMaxLengthInput} textName='رمز عبور'
                                placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
 
-                    <MainSelect id='loginKind' options={options} textName='نوع'/>
+                    <MainSelect id={loginKindId} options={options} textName='نوع'/>
 
                     <div className="ui form formPadding" id="Login-Footer-Form">
                         <label>
                             <input onClick={() => {
                                 login(this.props.onClose)
-                            }} type="submit" id="loginButton" className="ui green button"
+                            }} type="submit" id={loginButtonId} className="ui green button"
                                    value="login"/>
                         </label>
                         <footer className="loginFooter">

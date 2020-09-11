@@ -30,10 +30,10 @@ export let emptySignUpFields = () => {
 }
 
 export let isSignUpInputsEmpty = () => hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail,
-    signUpPassword, signUpRepeatPassword)
+    signUpPassword, signUpRepeatPassword, signUpKind)
 
 export let emptySignUpFieldsFromErrors = () => emptyFieldsFromErrors(signUpUsername, signUpFirstName, signUpLastName,
-        signUpEmail, signUpPassword, signUpRepeatPassword);
+        signUpEmail, signUpPassword, signUpRepeatPassword, signUpKind);
 
 
 function checkSignUpFields() {

@@ -22,8 +22,8 @@ export let emptyLoginFields = () => {
     emptyFields(loginKeypoint, loginPassword, loginKind)
 }
 
-export let isLoginFieldsEmpty = () => hasEmpty(loginKeypoint, loginPassword);
-export let emptyLoginFieldsFromErrors = () => emptyFieldsFromErrors(loginKeypoint, loginPassword)
+export let isLoginFieldsEmpty = () => hasEmpty(loginKeypoint, loginPassword, loginKind);
+export let emptyLoginFieldsFromErrors = () => emptyFieldsFromErrors(loginKeypoint, loginPassword, loginKind)
 
 
 function checkLoginFields() {
