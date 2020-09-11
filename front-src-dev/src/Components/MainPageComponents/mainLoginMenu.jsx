@@ -26,9 +26,9 @@ class MainLoginMenu extends Component {
                         </div>
                     </div>*/}
 
-                    <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' />
+                    <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorText="ایمیل یا نام کاربری اشتباه است" errorId="loginKeyPointError"/>
 
-                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} />
+                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorText="رمزعبور اشتباه است" errorID="loginPasswordError"/>
 
                     <div className="ui form formPadding">
                         <div className="ui field">

@@ -22,6 +22,7 @@ function setSignUpFields() {
     signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
     signupKind = document.getElementById("signUpKind")
 }
+
 export function emptySignUpFields() {
     setSignUpFields();
     signUpUsername.value = "";
@@ -93,11 +94,13 @@ let loginKeypoint;
 let loginPassword;
 let loginKind;
 let loginCloseModalFunc;
+
 function setLoginFields() {
     loginKeypoint = document.getElementById("login-KeyPoint");
     loginPassword = document.getElementById("login-Password");
     loginKind = document.getElementById("loginKind");
 }
+
 export function emptyLoginFields() {
     setLoginFields();
     loginKeypoint.value = "";
@@ -138,20 +141,43 @@ function handleSuccessLogin(value) {
 
 function handleErrorLogin(value) {
     // todo error the fields
+    fillLoginErrorFields()
     alert("Login Failed")
     alert('Server Message: ' + value.message)
+    setFieldError(loginPassword, true);
+    setFieldError(loginKeypoint, true);
+
     switch (value.message) {
         case 'not signed up username':
         case 'not signed up email':
-            setFieldError(loginKeypoint);
+            wrongLoginKeyPoint()
             break;
         case 'invalid password':
-            setFieldError(loginPassword)
+            wrongLoginPassword()
             break;
         default:
             alert("Haven't Handled That Error Before");
             console.log("messageError: '" + value.message + "'")
     }
+}
+
+let loginKeyPointError;
+let loginPasswordError;
+
+function fillLoginErrorFields() {
+    loginKeyPointError = document.getElementById('loginKeyPointError')
+    loginPasswordError = document.getElementById('loginPasswordError')
+}
+
+function wrongLoginKeyPoint() {
+    loginKeypoint.value = ""
+    loginKeyPointError.style.display = 'block'
+}
+
+function wrongLoginPassword() {
+    loginPassword.value = "";
+    loginPasswordError.style.display = 'block'
+
 }
 
 function hasEmpty(...args) {

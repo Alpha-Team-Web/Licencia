@@ -15,6 +15,9 @@ class MainTextField extends Component {
                     <p className="paragraphInput">{this.props.textName}</p>
                     <input maxLength={this.props.maxLength} type={this.props.isPassword ? 'password' : "text"} placeholder={this.props.placeHolder}
                            id={this.props.id} onFocus={MainTextField.setFieldError(this.props.id, false)} />
+                    <div className="ui pointing label red" id={this.props.errorId} style={{display:'none'}}>
+                        {this.props.errorText}
+                    </div>
                 </div>
             </div>
         );
