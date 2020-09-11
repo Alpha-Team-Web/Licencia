@@ -2,13 +2,18 @@ package routing
 
 import (
 	"back-src/model/existence"
+	"back-src/view/api/handle"
 	"back-src/view/api/respond"
+	limits "github.com/gin-contrib/size"
 	"github.com/gin-gonic/gin"
 )
 
 func (router *router) addFileEndpoints() {
 	router.addNewEndpointGroup("/files", "files", "")
-	router.addNewEndpointGroup("/profile-pic", "profile-pic", "files")
+	router.addNewEndpointGroup("/profile-pic", "profile-pic", "files").group.Use(
+		limits.RequestSizeLimiter(handle.MaxProfileImageSizeInBytes),
+		limits.AbortIfTooLarge(handle.ProfileImageUploaderForName, limits.FileFormType),
+	)
 	router.addNewEndpointGroup("/project", "project-files", "files")
 	router.addNewEndpointGroup("/freelancer", "freelancer-profile-pic", "profile-pic")
 	router.addNewEndpointGroup("/employer", "employer-profile-pic", "profile-pic")
