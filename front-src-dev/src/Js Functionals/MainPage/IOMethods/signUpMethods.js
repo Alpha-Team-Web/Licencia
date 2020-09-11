@@ -11,7 +11,7 @@ let signUpLastName
 let signUpEmail
 let signUpPassword
 let signUpRepeatPassword
-let signupKind
+let signUpKind
 let signUpCloseModalFunc;
 function setSignUpFields() {
     signUpUsername = document.getElementById("SignUp-UserName")
@@ -20,7 +20,7 @@ function setSignUpFields() {
     signUpEmail = document.getElementById("SignUp-Email")
     signUpPassword = document.getElementById("SignUp-Password")
     signUpRepeatPassword = document.getElementById("SignUp-RepeatPassword")
-    signupKind = document.getElementById("signUpKind")
+    signUpKind = document.getElementById("signUpKind")
 }
 
 export function emptySignUpFields() {
@@ -31,14 +31,24 @@ export function emptySignUpFields() {
     signUpEmail.value = "";
     signUpPassword.value = "";
     signUpRepeatPassword.value = "";
-    signupKind.value = "";
+    signUpKind.value = "";
 }
-export let emptySignUpFieldsFromErrors = () => emptyFieldsFromErrors(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword);
+
+export let isSignUpInputsEmpty = () => hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail,
+    signUpPassword, signUpRepeatPassword)
+
+export let emptySignUpFieldsFromErrors = () => emptyFieldsFromErrors(signUpUsername, signUpFirstName, signUpLastName,
+        signUpEmail, signUpPassword, signUpRepeatPassword);
+
+
+function checkSignUpFields() {
+
+}
 
 export function signUp(func) {
     signUpCloseModalFunc = func
     setSignUpFields();
-    let doc = hasEmpty(signUpUsername, signUpFirstName, signUpLastName, signUpEmail, signUpPassword, signUpRepeatPassword)
+    let doc = isSignUpInputsEmpty();
     emptySignUpFieldsFromErrors()
     if (doc != null) {
         setFieldError(doc, true)
@@ -62,7 +72,7 @@ export function signUp(func) {
             'Content-Type': 'application/json'
         }, {
             key: 'account-type',
-            value: signupKind.value
+            value: signUpKind.value
         });
     }
 }

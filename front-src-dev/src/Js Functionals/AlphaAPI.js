@@ -95,6 +95,6 @@ function deny(response) {
 
 function handleResponseJsonCatch(reason) {
     alert("Raft To Catche Response.json()")
-    alert("Reason: " + JSON.stringify(reason))
+    alert("Reason: " + reason)
 }
 

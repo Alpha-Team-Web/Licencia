@@ -23,30 +23,46 @@ export function emptyLoginFields() {
     loginPassword.value = "";
     loginKind.value = "";
 }
+
+export let isLoginFieldsEmpty = () => hasEmpty(loginKeypoint, loginPassword);
 export let emptyLoginFieldsFromErrors = () => emptyFieldsFromErrors(loginKeypoint, loginPassword)
 
-export function login(func) {
-    loginCloseModalFunc = func;
+
+function checkLoginFields() {
     setLoginFields()
-    let doc = hasEmpty(loginKeypoint, loginPassword);
-    emptyFieldsFromErrors(loginKeypoint, loginPassword)
+    emptyLoginFieldsFromErrors();
+
+    let doc = isLoginFieldsEmpty();
     if (doc != null) {
         setFieldError(doc, true)
         showErrorLabel(doc, 'fill It, Dude')
-        // setTimeout(() => alert("fill the red box!!"), 1000);
-    } else {
-        const data = {
-            id: loginKeypoint.value,
-            password: loginPassword.value
-        }
+        return false;
+    }
+
+    return true;
+}
+
+let getLoginDataFromFields = () => {
+    setLoginFields();
+    return {
+        id: loginKeypoint.value,
+        password: loginPassword.value
+    }
+}
+
+export function login(func) {
+    loginCloseModalFunc = func;
+
+    if (checkLoginFields()) {
+        const data = getLoginDataFromFields();
         alert('data: ' + JSON.stringify(data))
+
         const promise = httpExcGET('post', urlLogin, data, handleSuccessLogin, handleErrorLogin, {
             'Content-Type': 'application/json'
         }, {
             key: 'account-type',
             value: loginKind.value
         });
-
     }
 }
 
@@ -60,10 +76,11 @@ function handleSuccessLogin(value) {
 
 function handleErrorLogin(value) {
     // todo error the fields
+    let message = value.message
     alert("Login Failed")
-    alert('Server Message: ' + value.message)
+    alert('Server Message: ' + message)
 
-    switch (value.message) {
+    switch (message) {
         case 'not signed up username':
         case 'not signed up email':
             setFieldError(loginKeypoint)

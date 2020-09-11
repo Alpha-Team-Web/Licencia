@@ -1,7 +1,7 @@
 import {setFieldError, showErrorLabel} from "./handleErrors";
 
-export function hasEmpty(...args) {
-    for (let doc of args) {
+export function hasEmpty(...fields) {
+    for (let doc of fields) {
         if (doc.value === "") {
             return doc;
         }
