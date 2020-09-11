@@ -19,7 +19,7 @@ class ProfilePictureComponent extends Component {
                         <Image id={this.props.imageId} src={this.props.src} size='huge' alt={this.props.alt} fluid/>
                     </Reveal.Content>
                     <Reveal.Content hidden >
-                            <Image src={addPicturePng} size='medium' fluid/>
+                            <Image src={addPicturePng} size='huge' fluid/>
                             <input type='file' style={{display: 'none'}} id={this.props.addImageInputId}
                                    accept={acceptedImageExtensions} onChange={() => addPictureInputChanged()}/>
                     </Reveal.Content>

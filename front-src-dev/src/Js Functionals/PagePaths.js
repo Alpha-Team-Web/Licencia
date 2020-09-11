@@ -1,2 +1,2 @@
-export const mainPagePath = "/kkk";
+export const mainPagePath = "/kk";
 export const profilePagePath = "/";

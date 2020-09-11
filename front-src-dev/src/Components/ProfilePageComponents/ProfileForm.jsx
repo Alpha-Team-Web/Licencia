@@ -65,7 +65,7 @@ class ProfileForm extends Component {
                         <div className="picture-align" id="leftDiv">
                             {/*<img className="ui circular bordered image" src={profilePic}
                                  alt="*User*'s Picture"/>*/}
-                            <ProfilePictureComponent className="ui rounded bordered image" contentStyle="picture-align" src={profilePic}
+                            <ProfilePictureComponent className="ui circular bordered image" contentStyle="picture-align" src={profilePic}
                                                      alt="*User*'s Picture" imageId='profilePicture'
                                                      addImageInputId='addPictureInput' id="ImageTippoContent"/>
                         </div>

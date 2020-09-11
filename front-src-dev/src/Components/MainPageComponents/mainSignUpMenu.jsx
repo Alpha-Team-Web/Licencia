@@ -1,6 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import MainTextField from "./mainTextField";
 import {signUp} from "../../Js Functionals/MainPage/IOMethods/signUpMethods";
+import '../../CSS Designs/extra-css.css'
 
 class MainSignUpMenu extends Component {
     constructor(props, context) {
@@ -10,7 +11,7 @@ class MainSignUpMenu extends Component {
     render() {
         return (
             <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu">
-                <div className="ui form formPadding">
+                <div className="ui form formPadding ui-rtl">
 
                     <MainTextField id='SignUp-UserName' maxLength='30' textName='نام کاربری' placeHolder='Username'/>
 
