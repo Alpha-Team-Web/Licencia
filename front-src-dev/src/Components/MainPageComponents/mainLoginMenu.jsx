@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../../CSS Designs/MainPage/LoginMenu.css';
-import MainTextField from "./mainTextField";
+import MainInput from "./mainFormElements/mainInput";
 import {signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
 import {Label} from "semantic-ui-react";
 import {login} from "../../Js Functionals/MainPage/IOMethods/loginMethods";
@@ -12,9 +12,9 @@ class MainLoginMenu extends Component {
             <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu" >
                 <div className="ui form formPadding ui-rtl">
 
-                    <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
+                    <MainInput id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
 
-                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
+                    <MainInput id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
 
                     <div className="ui form formPadding">
                         <div className="ui field">

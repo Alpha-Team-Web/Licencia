@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import '../../CSS Designs/MainPage/loginSignupInput.css';
-import '../../CSS Designs/MainPage/LoginMenu.css';
-import {setFieldError} from "../../Js Functionals/MainPage/IOMethods/Utils/handleErrors";
+import {setFieldError} from "../../../Js Functionals/MainPage/IOMethods/Utils/handleErrors";
 
-class MainTextField extends Component {
+class MainFormComponent extends Component {
     constructor(props, context) {
         super(props, context);
     }
@@ -19,9 +17,10 @@ class MainTextField extends Component {
             <div className="ui form formPadding">
                 <div className="ui field">
                     <p className="paragraphInput">{this.props.textName}</p>
-                    <input maxLength={this.props.maxLength} type={this.props.isPassword ? 'password' : "text"}
+                    {/*<input maxLength={this.props.maxLength} type={this.props.type ? this.props.type : "text"}
                            placeholder={this.props.placeHolder}
-                           id={this.props.id}/>
+                           id={this.props.id}/>*/}
+                    {this.createMainFormElement()}
                     <div className="ui pointing label red" id={this.props.errorId} style={this.errorLabelStyle}>
                         {this.props.errorText}
                     </div>
@@ -30,6 +29,13 @@ class MainTextField extends Component {
         );
     }
 
+    createMainFormElement() {
+        return (
+            <div id={this.props.id}>
+                {this.props.children}
+            </div>
+        )
+    }
 
     componentDidMount() {
         let field = document.getElementById(this.props.id)
@@ -38,7 +44,6 @@ class MainTextField extends Component {
         })
     }
 
-
 }
 
-export default MainTextField;
+export default MainFormComponent;

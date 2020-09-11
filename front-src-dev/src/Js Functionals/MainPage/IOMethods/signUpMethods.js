@@ -1,4 +1,4 @@
-import MainTextField from "../../../Components/MainPageComponents/mainTextField";
+import MainInput from "../../../Components/MainPageComponents/mainFormElements/mainInput";
 import {httpExcGET} from "../../AlphaAPI";
 import {urlSignUp} from "../../urlNames";
 import {signUpDuplicateEmailLabel, signUpDuplicateUsernameLabel, signUpInvalidEmailLabel} from "../ioErrors";
