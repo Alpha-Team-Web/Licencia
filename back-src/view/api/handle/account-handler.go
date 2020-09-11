@@ -17,15 +17,14 @@ func (handler *Handler) Register(ctx *gin.Context) notifications.Notification {
 	switch accountType := ctx.Query("account-type"); accountType {
 
 	case existence.EmployerType:
-		handler.registerEmployer(ctx)
+		return handler.registerEmployer(ctx)
 
 	case existence.FreelancerType:
-		handler.registerFreelancer(ctx)
+		return handler.registerFreelancer(ctx)
 
 	default:
 		return notifications.GetInvalidQueryErrorNotif(ctx, NotAssignedToken, nil)
 	}
-	return notifications.GetSuccessfulNotif(ctx, NotAssignedToken, nil)
 }
 
 func (*Handler) registerEmployer(ctx *gin.Context) notifications.Notification {
