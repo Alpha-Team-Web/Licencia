@@ -44,3 +44,9 @@ func (table *AuthTokenTable) GetUsernameByToken(token string) (username string, 
 	username = auth.Username
 	return
 }
+
+func (table *AuthTokenTable) GetAllTokens() ([]existence.AuthToken, error) {
+	var auths []existence.AuthToken
+	err := table.conn.Model(&auths).Column("token").Select()
+	return auths, err
+}

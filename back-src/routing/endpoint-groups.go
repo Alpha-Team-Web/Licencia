@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"back-src/view/api/handle/utils/authentications"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,6 +22,14 @@ func (router *router) addNewEndpointGroup(endpointAddr string, name, fatherName 
 		router.endpointGroups = append(router.endpointGroups, endpointGroup)
 		return endpointGroup
 	}
+}
+
+func (endpointGroup *endpointGroup) addCheckToken(userType string) {
+	endpointGroup.group.Use(authentications.GetCheckTokenHandlerFunc(userType))
+}
+
+func (endpointGroup *endpointGroup) addCheckTokenIgnoreType() {
+	endpointGroup.group.Use(authentications.GetCheckTokenIgnoreTypeHandlerFunc())
 }
 
 func (router *router) getEndpointGroupByName(name string) *endpointGroup {

@@ -3,13 +3,10 @@ package handle
 import (
 	licnecia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/projects/filters"
-	"back-src/controller/control/users"
-	"back-src/controller/utils/libs"
 	"back-src/model/database"
-	"back-src/model/existence"
 	"back-src/view/api/handle/utils"
 	"back-src/view/notifications"
-	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"time"
@@ -26,7 +23,7 @@ const authExpiryMin = 30
 var AuthExpiryDur time.Duration
 
 var DB *database.Database
-var tokensWithClocks map[string]*utils.Clock
+var TokensWithClocks map[string]*utils.Clock
 
 func NewControl() *Handler {
 	var error error
@@ -34,14 +31,25 @@ func NewControl() *Handler {
 	if error != nil {
 		panic(error)
 	}
-	tokensWithClocks = map[string]*utils.Clock{}
 	DB = database.NewDb()
 	err := DB.Initialize()
 	if err != nil {
 		panic(err)
 	}
 	filters.Inv = filters.NewEngine(DB)
+	initTokensWithClocks()
 	return &Handler{}
+}
+
+func initTokensWithClocks() {
+	TokensWithClocks = map[string]*utils.Clock{}
+	if auths, err := DB.AuthTokenTable.GetAllTokens(); err == nil {
+		for _, auth := range auths {
+			AddNewClock(auth.Token)
+		}
+	} else {
+		fmt.Println("ERROR:", "Server Could Not Init Previous Auth Tokens")
+	}
 }
 
 func AddNewClock(token string) {
@@ -51,72 +59,16 @@ func AddNewClock(token string) {
 		}
 	})
 	clk.Start()
-	tokensWithClocks[token] = clk
+	TokensWithClocks[token] = clk
 }
 
 func KillClockIfExists(token string) bool {
-	clock, ok := tokensWithClocks[token]
+	clock, ok := TokensWithClocks[token]
 	if ok {
 		clock.Stop()
 	}
-	delete(tokensWithClocks, token)
+	delete(TokensWithClocks, token)
 	return ok
-}
-
-func CheckToken(token, userType string) (string, error) {
-	if auth, err := formalCheckToken(token); err == nil {
-		if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
-			return reInitToken(auth)
-		} else {
-			return "", errors.New("wrong user type token: " + token)
-		}
-	} else {
-		return "", err
-	}
-}
-
-func CheckTokenIgnoreType(token string) (string, error) {
-	if auth, err := formalCheckToken(token); err == nil {
-		return reInitToken(auth)
-	} else {
-		return "", err
-	}
-}
-
-func formalCheckToken(token string) (existence.AuthToken, error) {
-	if isThereAuth, err := DB.AuthTokenTable.IsThereAuthWithToken(token); err != nil {
-		return existence.AuthToken{}, err
-	} else if isThereAuth {
-		if auth, err := DB.AuthTokenTable.GetAuthByToken(token); err != nil {
-			return existence.AuthToken{}, err
-		} else {
-			return auth, err
-		}
-	} else {
-		return existence.AuthToken{}, errors.New("not authorized token: " + token)
-	}
-}
-
-func reInitToken(auth existence.AuthToken) (string, error) {
-	currentTime := time.Now()
-	if currentTime.Sub(auth.InitialTime) > AuthExpiryDur {
-
-		if err := DB.AuthTokenTable.ExpireAuth(auth.Token); err != nil {
-			return "", err
-		} else {
-			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, DB)
-			if err != nil {
-				return "", err
-			}
-			KillClockIfExists(auth.Token)
-			AddNewClock(newToken)
-			return newToken, nil
-		}
-	} else {
-		KillClockIfExists(auth.Token)
-		AddNewClock(auth.Token)
-		return auth.Token, nil
-	}
 }
 
 func makeOperationErrorNotification(ctx *gin.Context, err error) notifications.Notification {
@@ -125,4 +77,8 @@ func makeOperationErrorNotification(ctx *gin.Context, err error) notifications.N
 	} else {
 		return notifications.GetInternalServerErrorNotif(ctx, NotAssignedToken, nil)
 	}
+}
+
+func getTokenByContext(ctx *gin.Context) string {
+	return ctx.Writer.Header().Get("Token")
 }

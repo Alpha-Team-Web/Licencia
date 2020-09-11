@@ -4,9 +4,9 @@ import "time"
 
 type Follow struct {
 	FollowerUsername    string `json:"follower-username" binding:"min=0,max=25" sql:",notnull"`
-	FollowerFreelancer  bool   `json:"follower-freelancer"`
+	FollowerFreelancer  bool   `json:"follower-freelancer" sql:",notnull"`
 	FollowingUsername   string `json:"following-username" binding:"min=0,max=25" sql:",notnull"`
-	FollowingFreelancer bool   `json:"following-freelancer"`
+	FollowingFreelancer bool   `json:"following-freelancer" sql:",notnull"`
 }
 
 //Freelancer events

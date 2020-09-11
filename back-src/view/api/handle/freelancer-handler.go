@@ -9,84 +9,64 @@ import (
 )
 
 func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	frl := existence.Freelancer{}
+	frl.Username = "NNNNNN"
+	frl.Password = "NNNNNN"
+	frl.Email = "N@N.N"
+	if err := ctx.ShouldBindJSON(&frl); err != nil {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
+	}
+	if err := users.EditFreelancerProfile(getTokenByContext(ctx), frl, DB); err != nil {
+		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
-		frl := existence.Freelancer{}
-		frl.Username = "NNNNNN"
-		frl.Password = "NNNNNN"
-		frl.Email = "N@N.N"
-		if err := ctx.ShouldBindJSON(&frl); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
-		}
-		if err := users.EditFreelancerProfile(newToken, frl, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-		}
+		return notifications.GetSuccessfulNotif(ctx, nil)
 	}
 }
 
 func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	frl := data.ChangePassRequest{}
+	if err := ctx.ShouldBindJSON(&frl); err != nil {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
+	}
+	if err := users.EditFreelancerPassword(getTokenByContext(ctx), frl, DB); err != nil {
+		return makeOperationErrorNotification(ctx, err)
 	} else {
-		frl := data.ChangePassRequest{}
-		if err := ctx.ShouldBindJSON(&frl); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
-		}
-		if err := users.EditFreelancerPassword(newToken, frl, DB); err != nil {
-			return makeOperationErrorNotification(ctx, err)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-		}
+		return notifications.GetSuccessfulNotif(ctx, nil)
 	}
 }
 
 func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	frl := existence.Freelancer{}
+	frl.Username = "NNNNNN"
+	frl.Password = "NNNNNN"
+	frl.Email = "N@N.N"
+	if err := ctx.ShouldBindJSON(&frl); err != nil {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
+	}
+	if err := users.EditFreelancerLinks(getTokenByContext(ctx), frl, DB); err != nil {
+		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
-		frl := existence.Freelancer{}
-		frl.Username = "NNNNNN"
-		frl.Password = "NNNNNN"
-		frl.Email = "N@N.N"
-		if err := ctx.ShouldBindJSON(&frl); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
-		}
-		if err := users.EditFreelancerLinks(newToken, frl, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-		}
+		return notifications.GetSuccessfulNotif(ctx, nil)
 	}
 }
 
 func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	if frl, file, err := users.GetFreelancer(getTokenByContext(ctx), DB); err != nil {
+		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
-		if frl, file, err := users.GetFreelancer(newToken, DB); err != nil {
-			return notifications.GetInternalServerErrorNotif(ctx, newToken, nil)
-		} else {
-			return notifications.GetSuccessfulNotif(ctx, newToken, frl, file)
-		}
+		return notifications.GetSuccessfulNotif(ctx, frl, file)
 	}
 }
 
 func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) notifications.Notification {
-	if newToken, err := CheckToken(ctx.GetHeader("Token"), existence.FreelancerType); err != nil {
-		return notifications.GetTokenNotAuthorizedErrorNotif(ctx, nil)
+	request := data.FreelancerRequestForProject{}
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	} else {
-		request := data.FreelancerRequestForProject{}
-		if err := ctx.ShouldBindJSON(&request); err != nil {
-			return notifications.GetShouldBindJsonErrorNotif(ctx, newToken, nil)
+		if err := users.FreelancerRequestsForProject(getTokenByContext(ctx), request, DB); err != nil {
+			return makeOperationErrorNotification(ctx, err)
 		} else {
-			if err := users.FreelancerRequestsForProject(newToken, request, DB); err != nil {
-				return makeOperationErrorNotification(ctx, err)
-			} else {
-				return notifications.GetSuccessfulNotif(ctx, newToken, nil)
-			}
+			return notifications.GetSuccessfulNotif(ctx, nil)
 		}
 	}
 }

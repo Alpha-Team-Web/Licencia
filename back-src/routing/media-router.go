@@ -7,7 +7,7 @@ import (
 
 func (router *router) addMediaEndpoints() {
 	router.addNewEndpointGroup("/media", "media", "")
-	router.addNewEndpointGroup("/following", "media-following", "media")
+	router.addNewEndpointGroup("/following", "media-following", "media").addCheckTokenIgnoreType()
 
 	router.addHandlerToPath("/modify", "media-following", Post, func(ctx *gin.Context) {
 		respond.Respond(router.handler.ModifyFollow(ctx, true))

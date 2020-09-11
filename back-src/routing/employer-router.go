@@ -1,12 +1,13 @@
 package routing
 
 import (
+	"back-src/model/existence"
 	"back-src/view/api/respond"
 	"github.com/gin-gonic/gin"
 )
 
 func (router *router) addEmployerEndpoints() {
-	router.addNewEndpointGroup("/employer", "employer", "")
+	router.addNewEndpointGroup("/employer", "employer", "").addCheckToken(existence.EmployerType)
 	router.addNewEndpointGroup("/profile", "employer-profile", "employer")
 	router.addNewEndpointGroup("/projects", "employer-projects", "employer")
 

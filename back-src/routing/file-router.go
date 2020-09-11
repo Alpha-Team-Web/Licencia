@@ -15,8 +15,10 @@ func (router *router) addFileEndpoints() {
 		limits.AbortIfTooLarge(handle.ProfileImageUploaderForName, limits.FileFormType),
 	)
 	router.addNewEndpointGroup("/project", "project-files", "files")
-	router.addNewEndpointGroup("/freelancer", "freelancer-profile-pic", "profile-pic")
-	router.addNewEndpointGroup("/employer", "employer-profile-pic", "profile-pic")
+	router.addNewEndpointGroup("/employer", "employer-project-files", "project-files").addCheckToken(existence.EmployerType)
+	router.addNewEndpointGroup("/general", "general-project-files", "project-files").addCheckTokenIgnoreType()
+	router.addNewEndpointGroup("/freelancer", "freelancer-profile-pic", "profile-pic").addCheckToken(existence.FreelancerType)
+	router.addNewEndpointGroup("/employer", "employer-profile-pic", "profile-pic").addCheckToken(existence.EmployerType)
 
 	router.addHandlerToPath("/upload", "freelancer-profile-pic", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.UploadProfileImage(context, existence.FreelancerProfile))
@@ -38,19 +40,19 @@ func (router *router) addFileEndpoints() {
 		respond.Respond(router.handler.DownloadProfileImage(context, existence.EmployerProfile))
 	})
 
-	router.addHandlerToPath("/download", "project-files", Get, func(context *gin.Context) {
+	router.addHandlerToPath("/download", "general-project-files", Get, func(context *gin.Context) {
 		respond.Respond(router.handler.DownloadProjectFile(context))
 	})
 
-	router.addHandlerToPath("/upload", "project-files", Post, func(context *gin.Context) {
+	router.addHandlerToPath("/upload", "employer-project-files", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.UploadProjectFile(context))
 	})
 
-	router.addHandlerToPath("/update", "project-files", Post, func(context *gin.Context) {
+	router.addHandlerToPath("/update", "employer-project-files", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.UpdateProjectFile(context))
 	})
 
-	router.addHandlerToPath("/remove", "project-files", Post, func(context *gin.Context) {
+	router.addHandlerToPath("/remove", "employer-project-files", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.RemoveProjectFile(context))
 	})
 }

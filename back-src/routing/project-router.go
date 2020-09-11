@@ -7,13 +7,10 @@ import (
 
 func (router *router) addProjectEndpoints() {
 	router.addNewEndpointGroup("/projects", "projects", "")
-	router.addNewEndpointGroup("/filters", "filters", "projects")
+	router.addNewEndpointGroup("/filters", "filters", "projects").addCheckTokenIgnoreType()
 
-	router.addHandlerToPath("/freelancer", "filters", Get, func(context *gin.Context) {
-		respond.Respond(router.handler.FilterFreelancer(context))
-	})
-	router.addHandlerToPath("/employer", "filters", Get, func(context *gin.Context) {
-		respond.Respond(router.handler.FilterEmployer(context))
+	router.addHandlerToPath("/get", "filters", Get, func(ctx *gin.Context) {
+		respond.Respond(router.handler.Filter(ctx))
 	})
 
 }
