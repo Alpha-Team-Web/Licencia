@@ -26,3 +26,12 @@
 button {
     margin: 10px 0 0 0 !important;
 }
+
+.picture-align {
+    width: 80% !important;
+    height: 80% !important;
+    margin: 10%;
+}
+.picture-div{
+    size: inherit;
+}
