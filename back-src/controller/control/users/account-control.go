@@ -6,6 +6,7 @@ import (
 	"back-src/model/database"
 	"back-src/model/existence"
 	"back-src/view/data"
+	"fmt"
 )
 
 const (
@@ -24,6 +25,7 @@ func RegisterEmployer(emp existence.Employer, db *database.Database) error {
 }
 
 func RegisterFreelancer(frl existence.Freelancer, db *database.Database) error {
+	fmt.Println(db.FreelancerTable.DoesFreelancerExistWithUsername(frl.Username))
 	if !db.FreelancerTable.DoesFreelancerExistWithUsername(frl.Username) {
 		if !db.FreelancerTable.DoesFreelancerExistWithEmail(frl.Email) {
 			frl.ShownName = frl.Username

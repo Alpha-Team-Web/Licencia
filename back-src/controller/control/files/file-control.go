@@ -31,6 +31,14 @@ func UploadUserImage(token string, profileType string, file multipart.File, head
 	}
 }
 
+func DeleteUserImage(token, profileType string, db *database.Database) error {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		return db.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType})
+	} else {
+		return err
+	}
+}
+
 func DownloadUserImage(token string, profileType string, db *database.Database) (existence.File, error) {
 	username, err := db.AuthTokenTable.GetUsernameByToken(token)
 	if err != nil {

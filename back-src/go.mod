@@ -10,4 +10,4 @@ require (
 	mellium.im/sasl v0.2.1 // indirect
 )
 
-replace github.com/gin-contrib/size v0.0.0-20200815104238-dc717522c4e2 => github.com/ashkan-khd/size v0.0.0-20200911120742-58d104d98cdc
+replace github.com/gin-contrib/size v0.0.0-20200815104238-dc717522c4e2 => github.com/ashkan-khd/size v0.0.0-20200911190856-a442161182eb

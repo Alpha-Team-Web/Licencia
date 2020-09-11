@@ -26,6 +26,10 @@ func (router *router) addFileEndpoints() {
 		respond.Respond(router.handler.UploadProfileImage(context, existence.EmployerProfile))
 	})
 
+	router.addHandlerToPath("/upload", "freelancer-profile-pic", Delete, func(context *gin.Context) {
+		respond.Respond(router.handler.DeleteProfileImage(context, existence.FreelancerType))
+	})
+
 	router.addHandlerToPath("/download", "freelancer-profile-pic", Get, func(context *gin.Context) {
 		respond.Respond(router.handler.DownloadProfileImage(context, existence.FreelancerProfile))
 	})
