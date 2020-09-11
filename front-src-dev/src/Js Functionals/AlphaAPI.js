@@ -29,7 +29,7 @@ export function httpGet(url, headers, handleSuccess, handleDeny, ...params){
         .catch(response => deny(response));
 }
 
-export function httpExcGetFile(method, url, file, handleSuccess, handleDeny, headers, ...params) {
+export function httpExcGetFile(method, url, formData, handleSuccess, handleDeny, headers, ...params) {
     return fetch(url + createQuery(params), {
         method: method,
         mode: 'cors',
@@ -38,7 +38,7 @@ export function httpExcGetFile(method, url, file, handleSuccess, handleDeny, hea
         headers: headers,
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: file
+        body: formData
     }).then(response => success(response, handleSuccess, handleDeny))
         .catch(deny);
 }

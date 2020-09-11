@@ -1,4 +1,5 @@
-import {emptyLoginFields, emptySignUpFields} from "./Login SignUp Method";
+import {emptySignUpFields, emptySignUpFieldsFromErrors} from "./IOMethods/signUpMethods";
+import {emptyLoginFields, emptyLoginFieldsFromErrors} from "./IOMethods/loginMethods";
 
 export const greenColor = "green"
 export const whiteColor = "white"
@@ -12,6 +13,7 @@ export function loginMenu() {
     if (onLoginPage) return;
     onLoginPage = true;
     emptyLoginFields();
+    emptyLoginFieldsFromErrors()
     change(greenColor, whiteColor, "none", "block");
 }
 
@@ -21,6 +23,7 @@ export function signUpMenu() {
     }
     onLoginPage = false;
     emptySignUpFields()
+    emptySignUpFieldsFromErrors()
     change(whiteColor, greenColor, "block", "none");
 }
 
@@ -37,14 +40,8 @@ function change(color1, color2, display1, display2) {
 }
 
 
-
 export const userNameMaxLength = 30;
 export const passwordMaxLength = 30;
 export const emailMaxLength = 50;
 export const firstNameMaxLength = 30;
 export const lastNameMaxLength = 40;
-function signUpInput() {
-    // todo
-}
-
-// signUpInput();

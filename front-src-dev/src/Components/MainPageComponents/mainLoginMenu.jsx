@@ -1,34 +1,19 @@
 import React, {Component} from 'react';
 import '../../CSS Designs/MainPage/LoginMenu.css';
 import MainTextField from "./mainTextField";
-import {login} from "../../Js Functionals/MainPage/Login SignUp Method";
 import {signUpMenu} from "../../Js Functionals/MainPage/Login SignUp Show";
 import {Label} from "semantic-ui-react";
+import {login} from "../../Js Functionals/MainPage/IOMethods/loginMethods";
 
 class MainLoginMenu extends Component {
     render() {
         return (
             <div id={this.props.id} style={this.props.style} className="content Login-SignUp-Menu" >
                 <div className="ui form formPadding">
-                    {/*<div className="ui form formPadding">
-                        <div className="ui field">
-                            <p className="paragraphInput">نام کاربری یا ایمیل</p>
-                            <input maxLength="50" type="text" placeholder="Username Or Email"
-                                   id="login-KeyPoint" onFocus="setFieldError(this, false)" />
-                        </div>
-                    </div>*/}
 
-                    {/*<div className="ui form formPadding">
-                        <div className="ui field">
-                            <p className="paragraphInput">رمز عبور</p>
-                            <input maxLength="30" type="password" className="div-div-div-input" id="login-Password"
-                                   placeholder="Password" onFocus="setFieldError(this, false)" />
-                        </div>
-                    </div>*/}
+                    <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorId="loginKeyPointError"/>
 
-                    <MainTextField id='login-KeyPoint' maxLength='50' textName='نام کاربری یا ایمیل' placeHolder='Username Or Email' errorText="ایمیل یا نام کاربری اشتباه است" errorId="loginKeyPointError"/>
-
-                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorText="رمزعبور اشتباه است" errorID="loginPasswordError"/>
+                    <MainTextField id='login-Password' maxLength='30' textName='رمز عبور' placeHolder='Password' isPassword={true} errorID="loginPasswordError"/>
 
                     <div className="ui form formPadding">
                         <div className="ui field">
