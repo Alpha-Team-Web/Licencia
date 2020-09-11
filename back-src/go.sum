@@ -1,5 +1,7 @@
 github.com/ashkan-khd/size v0.0.0-20200911120742-58d104d98cdc h1:muQvrw6k5g4jvq5xDHcok/FmPWNAyzDj4EWNpfbOwYs=
 github.com/ashkan-khd/size v0.0.0-20200911120742-58d104d98cdc/go.mod h1:MnR4Tp9v4OBCvoGBMoYJc4Jh/KUDcfFSxfbWVs+BKuM=
+github.com/ashkan-khd/size v0.0.0-20200911190856-a442161182eb h1:Om9lmD5RkediBHAtcojFBDmvhn3a9eX9fguavzaGOEY=
+github.com/ashkan-khd/size v0.0.0-20200911190856-a442161182eb/go.mod h1:MnR4Tp9v4OBCvoGBMoYJc4Jh/KUDcfFSxfbWVs+BKuM=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gin-contrib/size v0.0.0-20200815104238-dc717522c4e2 h1:by6FEjzchEcXiooLKIumgbxwVxrvSxZffdE3clPw3tE=

@@ -37,3 +37,8 @@ func (table *ProfileTable) HasProfile(id, profileType string) (bool, error) {
 	}
 	return len(profiles) != 0, nil
 }
+
+func (table *ProfileTable) DeleteProfileImage(profile existence.Profile) error {
+	_, err := table.conn.Model(&profile).Where("id = ?", profile.Id).Where("type = ?", profile.Type).Delete()
+	return err
+}

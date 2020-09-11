@@ -36,6 +36,21 @@ func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string)
 	}
 }
 
+func (handler *Handler) DeleteProfileImage(context *gin.Context, profileType string) notifications.Notification {
+	if newToken, err := CheckTokenIgnoreType(context.GetHeader("Token")); err == nil {
+		if profileType == existence.ProjectProfile {
+			//TODO
+			return notifications.Notification{}
+		} else {
+			if err := files.DeleteUserImage(newToken, profileType, DB); err != nil {
+				return notifications.GetDatabaseErrorNotif(context, newToken, nil)
+			}
+		}
+	} else {
+		return notifications.GetTokenNotAuthorizedErrorNotif(context, nil)
+	}
+}
+
 func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType string) notifications.Notification {
 
 	if newToken, err := CheckTokenIgnoreType(ctx.GetHeader("Token")); err == nil {
