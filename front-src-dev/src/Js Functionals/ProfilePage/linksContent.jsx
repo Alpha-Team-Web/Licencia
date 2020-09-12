@@ -48,6 +48,7 @@ function fillGitHubReposFields() {
     addRepoDiv = document.getElementById('addRepoDiv')
     addedRepoInput = document.getElementById('addRepoInput')
     addRepoIconDiv = document.getElementById('plusRepoIconDiv')
+    gitHubAccountField = document.getElementById('githubAccountField')
 }
 
 export function gitHubAccountChanged() {

@@ -39,7 +39,7 @@ class LinksComponent extends Component {
                                onBlur={() => gitHubAccountChanged()}/>
                     </div>*/}
                     <MainInput maxLength={githubAccountMaxLengthInput} id="githubAccountField" placeHolder="Github-Account"
-                               onBlur={() => gitHubAccountChanged()} textName='اکانت گیت هاب' />
+                               textName='اکانت گیت هاب' />
                 </div>
 
                 <div className="ui relaxed" id="gitHubRepos">
@@ -48,8 +48,7 @@ class LinksComponent extends Component {
 
                     <div className="item" id="addRepoDiv">
                         <div className="ui action input" id="addGitHubRepoInput">
-                            <input type="text" placeholder="Search..." id="addRepoInput"
-                                   onBlur={() => addedRepoInputFocusOut()}/>
+                            <input type="text" placeholder="Search..." id="addRepoInput"/>
                             <Button className="ui icon button" onClick={() => addedRepoInputFocusOut()}>
                                 <i className="plus circle icon"/>
                             </Button>
@@ -68,6 +67,15 @@ class LinksComponent extends Component {
         );
     }
 
+
+    componentDidMount() {
+        document.getElementById("githubAccountField").addEventListener('focusout', (event)=>{
+            gitHubAccountChanged()
+        })
+        document.getElementById("addGitHubRepoInput").addEventListener('focusout', (event)=>{
+            addedRepoInputFocusOut()
+        })
+    }
 }
 
 
