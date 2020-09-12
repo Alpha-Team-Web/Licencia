@@ -17,7 +17,7 @@ type router struct {
 }
 
 func NewRouter(port string) Listener {
-	var listener Listener = &router{port, gin.Default(), handle.NewControl(), []*endpointGroup{}}
+	var listener Listener = &router{port, gin.Default(), handle.NewHandler(), []*endpointGroup{}}
 	return listener
 }
 

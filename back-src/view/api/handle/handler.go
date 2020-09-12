@@ -2,6 +2,7 @@ package handle
 
 import (
 	licnecia_errors "back-src/controller/control/licencia-errors"
+	"back-src/controller/control/projects/fields"
 	"back-src/controller/control/projects/filters"
 	"back-src/model/database"
 	"back-src/view/api/handle/utils"
@@ -23,7 +24,7 @@ var AuthExpiryDur time.Duration
 var DB *database.Database
 var TokensWithClocks map[string]*utils.Clock
 
-func NewControl() *Handler {
+func NewHandler() *Handler {
 	var error error
 	AuthExpiryDur, error = time.ParseDuration(strconv.Itoa(authExpiryMin) + "m")
 	if error != nil {
@@ -35,6 +36,7 @@ func NewControl() *Handler {
 		panic(err)
 	}
 	filters.Inv = filters.NewEngine(DB)
+	fields.Engine = fields.NewEngine(DB)
 	initTokensWithClocks()
 	return &Handler{}
 }

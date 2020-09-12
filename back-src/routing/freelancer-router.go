@@ -10,6 +10,7 @@ func (router *router) addFreelancerEndpoints() {
 	router.addNewEndpointGroup("/freelancer", "freelancer", "").addCheckToken(existence.FreelancerType)
 	router.addNewEndpointGroup("/profile", "freelancer-profile", "freelancer")
 	router.addNewEndpointGroup("/projects", "freelancer-projects", "freelancer")
+	router.addNewEndpointGroup("/skills", "freelancer-profile-skills", "freelancer-profile")
 
 	router.addHandlerToPath("/get", "freelancer-profile", Get, func(context *gin.Context) {
 		respond.Respond(router.handler.GetFreelancerProfile(context))
@@ -34,5 +35,4 @@ func (router *router) addFreelancerEndpoints() {
 	router.addHandlerToPath("/request", "freelancer-projects", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.FreelancerRequestToProject(context))
 	})
-
 }
