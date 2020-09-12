@@ -4,7 +4,7 @@ class ProfileIndicesComponent extends Component {
     render() {
         return (
             <div>
-                
+
             </div>
         );
     }
