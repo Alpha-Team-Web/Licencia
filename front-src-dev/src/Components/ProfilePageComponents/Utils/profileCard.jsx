@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../../../CSS Designs/basic.css';
-import '../../CSS Designs/ProfilePage/CSS1.css';
-import '../../CSS Designs/Header.css';
+import '../../../CSS Designs/ProfilePage/CSS1.css';
+import '../../../CSS Designs/Header.css';
 
 class ProfileCard extends Component {
     constructor(props, context) {

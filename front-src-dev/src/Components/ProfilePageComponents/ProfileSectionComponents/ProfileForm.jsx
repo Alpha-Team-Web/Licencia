@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import '../../../CSS Designs/basic.css';
-import '../../CSS Designs/extra-css.css'
+import '../../../CSS Designs/extra-css.css'
 import {Grid} from 'semantic-ui-react'
-import profilePic from "../../Pics/codingPerson.jpg"
-import {saveProfile} from "../../Js Functionals/ProfilePage/profileContent";
-import ProfilePictureComponent from "./profilePictureComponent";
+import profilePic from "../../../Pics/codingPerson.jpg"
+import {saveProfile} from "../../../Js Functionals/ProfilePage/profileContent";
+import ProfilePictureComponent from "../Utils/profilePictureComponent";
 import {
     addressMaxLengthInput, descriptionMaxLengthInput,
     firstnameMaxLengthInput,
     lastnameMaxLengthInput, phoneNumberMaxLengthInput,
     shownNameMaxLengthInput
-} from "../../Js Functionals/MainPage/ioInputLengths";
+} from "../../../Js Functionals/MainPage/ioInputLengths";
 
 class ProfileForm extends Component {
     state = {}

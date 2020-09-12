@@ -8,7 +8,7 @@ import {
     acceptedImageExtensions,
     addPictureInputChanged,
     choosePicture,
-} from "../../Js Functionals/ProfilePage/profilePictureContent";
+} from "../../../Js Functionals/ProfilePage/profilePictureContent";
 
 class ProfilePictureComponent extends Component {
     render() {

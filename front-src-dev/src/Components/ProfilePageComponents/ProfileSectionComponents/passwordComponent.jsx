@@ -1,9 +1,9 @@
 import React from 'react'
 import {Modal} from 'semantic-ui-react'
 import '../../../CSS Designs/ProfilePage/CSS1.css'
-import ProfileCard from "./profileCard";
-import {changePassword} from "../../Js Functionals/ProfilePage/passwordContent";
-import MainInput from "../MainPageComponents/mainFormElements/mainInput";
+import ProfileCard from "../Utils/profileCard";
+import {changePassword} from "../../../Js Functionals/ProfilePage/passwordContent";
+import MainInput from "../../MainPageComponents/mainFormElements/mainInput";
 
 // import {changePassword} from '../../Js Functionals/ProfilePage/JS1';
 

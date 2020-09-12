@@ -4,11 +4,11 @@ import {
     addedRepoInputFocusOut, clickedPlusIcon, gitHubAccount, gitHubAccountChanged, submitGitPart,
 } from "../../../Js Functionals/ProfilePage/linksContent";
 import '../../../CSS Designs/ProfilePage/CSS1.css'
-import Background from '../../Pics/githubImage2.png'
-import GithubRepoComponent from "./Utils/GithubRepoComponent";
-import {gitHubUrl} from "../../Js Functionals/urlNames";
-import {githubAccountMaxLengthInput, siteAddressMaxLengthInput} from "../../Js Functionals/MainPage/ioInputLengths";
-import MainInput from "../MainPageComponents/mainFormElements/mainInput";
+import Background from '../../../Pics/githubImage2.png'
+import GithubRepoComponent from "../Utils/GithubRepoComponent";
+import {gitHubUrl} from "../../../Js Functionals/urlNames";
+import MainInput from "../../MainPageComponents/mainFormElements/mainInput";
+import {githubAccountMaxLengthInput, siteAddressMaxLengthInput} from "../../../Js Functionals/MainPage/ioInputLengths";
 
 class LinksComponent extends Component {
     constructor(props, context) {
