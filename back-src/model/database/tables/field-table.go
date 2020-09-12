@@ -50,3 +50,11 @@ func (table *FieldTable) GetAllFieldsWithSkills() ([]existence.Field, error) {
 	}
 	return fields, nil
 }
+
+func (table *FieldTable) GetField(fieldId string) (existence.Field, error) {
+	field := existence.Field{}
+	if err := table.conn.Model(&field).Where("id = ?", fieldId).Select(); err != nil {
+		return existence.Field{}, err
+	}
+	return field, nil
+}
