@@ -42,7 +42,7 @@ class SkillsPageComponent extends Component {
 
                 <div style={this.secondRealStyle}>
                     <Input icon='search' className='ui-rtl'/>
-                    <FieldsListComponent cards={getSkillFields()} skillAdder={this.addSkill} skillDeleter={this.deleteSkill}
+                    <FieldsListComponent cards={{/*getSkillFields()*/}} skillAdder={this.addSkill} skillDeleter={this.deleteSkill}
                                          skillIncludes={this.skillIncludes}/>
                 </div>
             </div>
