@@ -4,18 +4,32 @@ import ProfileForm from "../ProfilePageComponents/ProfileSectionComponents/Profi
 import {Input} from "semantic-ui-react";
 
 class SkillsPageComponent extends Component {
-    mainDivStyle = {
+    mainDivStyle = {};
 
-    };
+    firstRealStyle = {};
 
-    firstRealStyle = {
+    secondRealStyle = {};
 
-    };
 
-    secondRealStyle = {
-
-    };
-
+    state = {
+        personAddedSkills: []
+    }
+    addSkill = (skill) => {
+        this.setState((prevState) => {
+            let array = prevState.personAddedSkills;
+            if (!this.skillIncludes(array, skill)) array.push(skill)
+            return {personAddedSkills: array};
+        })
+    }
+    deleteSkill = (skill) => {
+        this.setState((prevState) => {
+            return {
+                personAddedSkills: prevState.personAddedSkills.filter(value => !this.skillEquals(value, skill))
+            }
+        })
+    }
+    skillIncludes = (skill) => this.state.personAddedSkills.filter(value => this.skillEquals(value, skill)).length !== 0;
+    skillEquals = (skill1, skill2) => skill1.name === skill2.name && skill1.type === skill2.type;
 
     render() {
         return (
