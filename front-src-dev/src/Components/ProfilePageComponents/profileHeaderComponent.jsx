@@ -4,7 +4,7 @@ import '../../CSS Designs/basic.css';
 import '../../CSS Designs/extra-css.css'
 import {logOut} from "../../Js Functionals/ProfilePage/profilePageContent";
 
-class Menu extends Component {
+class ProfileHeader extends Component {
     state = {  }
     render() {
         return (
@@ -31,4 +31,4 @@ class Menu extends Component {
     }
 }
 
-export default Menu;
+export default ProfileHeader;
