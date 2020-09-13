@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../../CSS Designs/extra-css.css'
+import '../../../CSS Designs/extra-css.css'
 
 
 class SkillComponent extends Component {

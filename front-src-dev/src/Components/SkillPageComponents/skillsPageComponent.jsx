@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import PersonSkillsComponent from "./personSkillsComponent";
+import PersonSkillsComponent from "./MinorListsComponents/personSkillsComponent";
 import ProfileForm from "../ProfilePageComponents/ProfileSectionComponents/ProfileForm";
 import {Input} from "semantic-ui-react";
-import FieldsListComponent from "./fieldsListComponent";
+import FieldsListComponent from "./MinorListsComponents/fieldsListComponent";
 
 class SkillsPageComponent extends Component {
     mainDivStyle = {};
