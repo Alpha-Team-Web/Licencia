@@ -63,13 +63,13 @@ class PersonSkillsComponent extends Component {
     }
 
     createCard=(object)=>{
-        let card = <skillComponent onDelete={()=>this.deleteCard(object)} contect={object.content} skillType={object.skillType}/>
+        let card = <skillComponent onDelete={()=>this.deleteCard(object)} contect={object.contentType} skillType={object.skillType}/>
         return card;
     }
 
     deleteCard=(object)=>{
         let optionsObjectMock = this.state.optionsObject.filter((obj)=>{
-            return (obj.content!==object.content || obj.skillType!==object.skillType)
+            return (obj.contentText!==object.contentText || obj.skillType!==object.skillType)
         })
         this.setState((prevState)=> {
             return {
