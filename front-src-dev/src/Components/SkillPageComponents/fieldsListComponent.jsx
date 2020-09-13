@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {GridColumn, GridRow, Transition} from "semantic-ui-react";
 import PersonSkillsComponent from "./personSkillsComponent";
-import FieldCardComponent from "../MinorComponents/fieldCardComponent";
+import FieldCardComponent from "./fieldCardComponent";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import ReactDOM from "react-dom";
 
