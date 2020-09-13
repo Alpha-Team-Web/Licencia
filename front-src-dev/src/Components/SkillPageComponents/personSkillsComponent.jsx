@@ -5,10 +5,19 @@ import {GridColumn, GridRow} from "semantic-ui-react";
 class PersonSkillsComponent extends Component {
 
 
-    constructor(props, context) {
+    constructor(props, context, state) {
         super(props, context);
+        this.state = state
     }
 
+    state;
+    /*state={
+        skillCardArray
+    }*/
+    /*props={
+        columnSize,
+
+    }*/
 
     render() {
         return (
@@ -18,7 +27,7 @@ class PersonSkillsComponent extends Component {
 
     createGrid = () => {
         let grid = <Grid columns={this.props.columnSize} divided/>
-        let skillCardArray = this.props.skillCardArray;
+        let skillCardArray = this.state.skillCardArray;
         let numberOfRows = (skillCardArray.length) / this.props.columnSize;
         if (skillCardArray.length % this.props.columnSize !== 0) {
             numberOfRows += 1;
