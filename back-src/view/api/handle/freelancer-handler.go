@@ -100,3 +100,11 @@ func (handler *Handler) RemoveSkillFromFreelancer(ctx *gin.Context) notification
 		}
 	}
 }
+
+func (handler *Handler) GetSkillsFromFreelancer(context *gin.Context) notifications.Notification {
+	if skills, err := users.GetFreelancerSkills(getTokenByContext(context), DB); err != nil {
+		return notifications.GetInternalServerErrorNotif(context, skills)
+	} else {
+		return notifications.GetSuccessfulNotif(context, skills)
+	}
+}

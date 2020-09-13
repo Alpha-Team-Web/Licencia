@@ -36,11 +36,15 @@ func (router *router) addFreelancerEndpoints() {
 		respond.Respond(router.handler.FreelancerRequestToProject(context))
 	})
 
-	router.addHandlerToPath("/modify", "freelancer-profile-skills", Post, func(context *gin.Context) {
+	router.addHandlerToPath("", "freelancer-profile-skills", Post, func(context *gin.Context) {
 		respond.Respond(router.handler.AddSkillToFreelancer(context))
 	})
 
-	router.addHandlerToPath("/modify", "freelancer-profile-skills", Delete, func(context *gin.Context) {
+	router.addHandlerToPath("", "freelancer-profile-skills", Delete, func(context *gin.Context) {
 		respond.Respond(router.handler.RemoveSkillFromFreelancer(context))
+	})
+
+	router.addHandlerToPath("", "freelancer-profile-skills", Get, func(ctx *gin.Context) {
+		respond.Respond(router.handler.GetSkillsFromFreelancer(ctx))
 	})
 }

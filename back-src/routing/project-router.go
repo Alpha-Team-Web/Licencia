@@ -26,4 +26,8 @@ func (router *router) addProjectEndpoints() {
 		respond.Respond(router.handler.AddSkillToField(ctx))
 	})
 
+	router.addHandlerToPath("", "fields", Get, func(ctx *gin.Context) {
+		respond.Respond(router.handler.GetFields(ctx))
+	})
+
 }

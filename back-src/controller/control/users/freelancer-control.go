@@ -193,3 +193,12 @@ func RemoveSkillFromFreelancer(token string, skillName string, db *database.Data
 	}
 	return nil
 }
+
+func GetFreelancerSkills(token string, db *database.Database) ([]string, error) {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		skills, err := db.FreelancerTable.GetFreelancerSkills(username)
+		return skills, err
+	} else {
+		return []string{}, err
+	}
+}

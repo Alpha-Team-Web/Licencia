@@ -48,16 +48,17 @@ const (
 )
 
 func (router *router) addHandlerToPath(addr, endpointGroupName, method string, handle func(ctx *gin.Context)) {
-	if addr == "" {
-		//TODO
-	} else {
-		switch method {
-		case "POST":
-			router.getEndpointGroupByName(endpointGroupName).group.POST(addr, handle)
-		case "GET":
-			router.getEndpointGroupByName(endpointGroupName).group.GET(addr, handle)
-		case "DELETE":
-			router.getEndpointGroupByName(endpointGroupName).group.DELETE(addr, handle)
-		}
+	switch method {
+	case "POST":
+		router.getEndpointGroupByName(endpointGroupName).group.POST(addr, handle)
+	case "GET":
+		router.getEndpointGroupByName(endpointGroupName).group.GET(addr, handle)
+	case "DELETE":
+		router.getEndpointGroupByName(endpointGroupName).group.DELETE(addr, handle)
 	}
+	/*	if addr == "" {
+			//TODO
+		} else {
+
+		}*/
 }

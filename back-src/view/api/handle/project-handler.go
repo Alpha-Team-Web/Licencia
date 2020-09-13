@@ -41,3 +41,7 @@ func (handler *Handler) AddSkillToField(ctx *gin.Context) notifications.Notifica
 	}
 	return notifications.GetSuccessfulNotif(ctx, nil)
 }
+
+func (handler *Handler) GetFields(ctx *gin.Context) notifications.Notification {
+	return notifications.GetSuccessfulNotif(ctx, fields.GetFieldsWithoutSkills())
+}

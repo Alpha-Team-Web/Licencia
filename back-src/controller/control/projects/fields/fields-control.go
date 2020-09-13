@@ -2,6 +2,7 @@ package fields
 
 import (
 	"back-src/model/database"
+	"back-src/model/existence"
 	"strings"
 )
 
@@ -37,4 +38,12 @@ func AddSkillToField(fieldId string, skill string, db *database.Database) error 
 			return db.FieldTable.AddSkillToField(fieldId, skill)
 		}
 	}
+}
+
+func GetFieldsWithoutSkills() []existence.Field {
+	var fields []existence.Field
+	for _, field := range Engine.Fields {
+		fields = append(fields, existence.Field{Name: field.Name, Id: field.Id})
+	}
+	return fields
 }
