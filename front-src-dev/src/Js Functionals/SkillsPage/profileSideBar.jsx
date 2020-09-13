@@ -3,7 +3,7 @@ import {Grid, Checkbox, Sidebar, Segment, Menu, Icon, Header, Image} from "seman
 
 import {Component} from 'react';
 
-class PersonSkillsSideBar extends Component {
+class ProfileSideBar extends Component {
 
     render() {
 
@@ -13,6 +13,7 @@ class PersonSkillsSideBar extends Component {
                     as={Menu}
                     animation='overlay'
                     icon='labeled'
+                    direction='right'
                     inverted
                     onHide={() => this.props.setVisible(false)}
                     vertical
@@ -42,4 +43,4 @@ class PersonSkillsSideBar extends Component {
 
 }
 
-export default PersonSkillsSideBar;
+export default ProfileSideBar;
