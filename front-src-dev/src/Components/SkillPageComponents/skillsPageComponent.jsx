@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PersonSkillsComponent from "./personSkillsComponent";
 import ProfileForm from "../ProfilePageComponents/ProfileSectionComponents/ProfileForm";
 import {Input} from "semantic-ui-react";
+import FieldsListComponent from "./fieldsListComponent";
 
 class SkillsPageComponent extends Component {
     mainDivStyle = {};
@@ -35,12 +36,14 @@ class SkillsPageComponent extends Component {
         return (
             <div style={this.mainDivStyle}>
                 <div style={this.firstRealStyle}>
-                    <ProfileForm/>
+                    <PersonSkillsComponent skillDeleter={this.deleteSkill}
+                                           personAddedSkills={this.state.personAddedSkills}/>
                 </div>
 
                 <div style={this.secondRealStyle}>
                     <Input icon='search' className='ui-rtl'/>
-                    <ProfileForm/>
+                    <FieldsListComponent cards={getSkillFields()} skillAdder={this.addSkill} skillDeleter={this.deleteSkill}
+                                         skillIncludes={this.skillIncludes}/>
                 </div>
             </div>
         );

@@ -16,7 +16,8 @@ class FieldsListComponent extends Component {
 
     cards = this.props.cards
 
-    cardsToCardComponents = (card, index) => <FieldCardComponent skillName={card.skillName} onClick={() => this.setVisible(index, true)}/>
+    cardsToCardComponents = (card, index) => <FieldCardComponent skillName={card.skillName}
+                                                                 onClick={() => this.setVisible(index, true)}/>
     cardsToCardContainers = (card) => {
         return {
             card: card,
@@ -47,7 +48,8 @@ class FieldsListComponent extends Component {
     }
 
     createGridColumn = (card, index) => <GridColumn>{this.cardsToCardComponents(card, index)}</GridColumn>
-    createGridRow = (cards, index) => <Grid.Row>{cards.map((value, index2) => this.createGridColumn(value, index + index2))}</Grid.Row>
+    createGridRow = (cards, index) =>
+        <Grid.Row>{cards.map((value, index2) => this.createGridColumn(value, index + index2))}</Grid.Row>
     createGrid = (cards) => {
         let columnSize = this.chooser(this.props.columnSize, defaultColumnsSize)
         return (
@@ -58,11 +60,13 @@ class FieldsListComponent extends Component {
     }
     chooser = (choice, defaultValue) => choice ? choice : defaultValue;
 
-
-    transitioner = (card) => {
+    transitioner = (card, index) => {
         return (
             <Transition visible={card.visible} animation='scale' duration={500}>
-                <PersonSkillsComponent skillCardObject={5/*getCardSkills(cardID)*/}/>
+                <PersonSkillsComponent personAddedSkills={this.props.personAddedSkills}
+                                       skillIncludes={this.props.skillIncludes} skillAdder={this.props.skillAdder}
+                                       skillDeleter={this.props.skillDeleter} hasExit
+                                       exitFunction={() => this.setVisible(index, false)}/>
             </Transition>
         )
     }

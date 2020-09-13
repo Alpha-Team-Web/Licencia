@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
-import {Button, GridColumn, GridRow} from "semantic-ui-react";
+import {GridColumn, GridRow} from "semantic-ui-react";
 import ReactDOM from 'react-dom';
 
 class PersonSkillsComponent extends Component {
@@ -9,32 +9,22 @@ class PersonSkillsComponent extends Component {
     constructor(props, context) {
         super(props, context);
         this.setState({
-            optionsObject: this.props.skillCardObject,
-            optionsCard: this.props.skillCardObject.map((object) => this.createCard(object))
+            optionsObject:this.props.skillCardObject,
+            optionsCard:this.props.skillCardObject.map((object)=>this.createCard(object))
         })
     }
 
-    state = {
-        optionsCard: [],
-        optionsObject: [],
+    state={
+        optionsCard:[],
+        optionsObject:[],
 
 
     };
 
     render() {
         return (
-            <div>
-                {this.createButton()}
-                {this.createGrid()}
-            </div>
-
+            this.createGrid()
         );
-    }
-
-    createButton = () => {
-        if (this.props.hasExit) {
-            return <Button onClick={() => this.props.exitFunction()} icon='angle left'/>
-        }
     }
 
     createGrid = () => {
@@ -72,12 +62,22 @@ class PersonSkillsComponent extends Component {
         return grid;
     }
 
-    createCard = (skill) => {
-        return <skillComponent name={skill.name} type={skill.type}
-                               skillDeleter={this.props.skillDeleter} skillAdder={this.props.skillAdder}
-                               personHasSkill={this.props.skillIncludes ? this.props.skillIncludes(skill) : true}/>;
+    createCard=(object)=>{
+        let card = <skillComponent onDelete={()=>this.deleteCard(object)} contect={object.contentType} skillType={object.skillType}/>
+        return card;
     }
 
+    deleteCard=(object)=>{
+        let optionsObjectMock = this.state.optionsObject.filter((obj)=>{
+            return (obj.contentText!==object.contentText || obj.skillType!==object.skillType)
+        })
+        this.setState((prevState)=> {
+            return {
+                optionsObject:optionsObjectMock,
+                optionsCard:optionsObjectMock.map((obj)=>this.createCard(obj))
+            }
+        })
+    }
 }
 
 export default PersonSkillsComponent;
