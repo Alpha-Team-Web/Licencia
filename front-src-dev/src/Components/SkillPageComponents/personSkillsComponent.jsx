@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import {GridColumn, GridRow} from "semantic-ui-react";
+import ReactDOM from 'react-dom';
 
 class PersonSkillsComponent extends Component {
 
