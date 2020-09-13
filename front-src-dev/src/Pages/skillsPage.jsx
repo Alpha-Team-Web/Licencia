@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import ProfileIndicesComponent from "./profileIndicesComponent";
-import ProfileForm from "../ProfilePageComponents/ProfileSectionComponents/ProfileForm";
+import ProfileIndicesComponent from "../Components/SkillPageComponents/profileIndicesComponent";
+import ProfileForm from "../Components/ProfilePageComponents/ProfileSectionComponents/ProfileForm";
 
 class SkillsPage extends Component {
     render() {

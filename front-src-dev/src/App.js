@@ -5,7 +5,7 @@ import {
 import MainPage from "./Pages/mainPage";
 import ProfilePage from "./Pages/profilePage";
 import {mainPagePath, profilePagePath, skillsPagePath} from "./Js Functionals/PagePaths";
-import SkillsPage from "./Components/SkillPageComponents/skillsPage";
+import SkillsPage from "./Pages/skillsPage";
 
 class App extends Component {
     constructor(props) {
