@@ -35,3 +35,53 @@ button {
 .picture-div{
     size: inherit;
 }
+
+.iconButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #cc2929;
+    margin: 0 10px 0 10px !important;
+    outline: none;
+}
+
+#deleteSkillIcon {
+    display: none;
+}
+
+.skillComponent{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    direction: rtl;
+    border: 2px solid #eb9494;
+    border-radius: 5px;
+    min-height: 40px;
+    max-width: 30%;
+    padding: 10px;
+    color: black;
+    cursor: move;
+    vertical-align: center;
+}
+
+.skillField {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 2px solid #eb9494;
+    border-radius: 5px;
+    min-height: 120px;
+    max-width: 30%;
+}
+
+.flexBox{
+    display: flex !important;
+    justify-content: space-between;
+    direction: rtl;
+}
+
+#exitButton{
+
+}
+
+

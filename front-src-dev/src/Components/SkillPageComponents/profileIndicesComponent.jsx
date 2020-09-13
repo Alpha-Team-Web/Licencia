@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import ProfileSideBar from "../../Js Functionals/SkillsPage/profileSideBar";
 import ProfileHeader from "../ProfilePageComponents/profileHeaderComponent";
 import {Button} from "semantic-ui-react";
+import PersonSkillsComponent from "./personSkillsComponent";
+import SkillComponent from "./skillComponent";
 
 class ProfileIndicesComponent extends Component {
 
@@ -23,6 +25,11 @@ class ProfileIndicesComponent extends Component {
                     <ProfileSideBar visible={this.getVisible()} setVisible={this.setVisible}>
                         {this.props.children}
                     </ProfileSideBar>
+                </div>
+                <div>
+                    <SkillComponent contentText="motarjemi">
+
+                    </SkillComponent>
                 </div>
             </div>
         );

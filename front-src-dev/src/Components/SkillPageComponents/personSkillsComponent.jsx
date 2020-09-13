@@ -6,19 +6,20 @@ import ReactDOM from 'react-dom';
 class PersonSkillsComponent extends Component {
 
 
-    constructor(props, context, state) {
+    constructor(props, context) {
         super(props, context);
-        this.state = state
+        this.setState({
+            optionsObject:this.props.skillCardObject,
+            optionsCard:this.props.skillCardObject.map((object)=>this.createCard(object))
+        })
     }
 
-    state;
-    /*state={
-        skillCardArray
-    }*/
-    /*props={
-        columnSize,
+    state={
+        optionsCard:[],
+        optionsObject:[],
 
-    }*/
+
+    };
 
     render() {
         return (
@@ -40,7 +41,8 @@ class PersonSkillsComponent extends Component {
             let listOfColumns = []
             for (let j = 0; j < this.props.columnSize; j++) {
                 let gridColumn = <GridColumn/>
-                ReactDOM.render(skillCardArray[counter], gridColumn);
+                let card = this.createCard(skillCardArray[counter])
+                ReactDOM.render(card, gridColumn);
                 counter += 1;
                 listOfColumns[listOfColumns.length] = gridColumn;
             }
@@ -58,6 +60,23 @@ class PersonSkillsComponent extends Component {
         listOfRows[listOfRows.length] = gridRow;
         ReactDOM.render(listOfRows, grid);
         return grid;
+    }
+
+    createCard=(object)=>{
+        let card = <skillComponent onDelete={()=>this.deleteCard(object)} contect={object.contentType} skillType={object.skillType}/>
+        return card;
+    }
+
+    deleteCard=(object)=>{
+        let optionsObjectMock = this.state.optionsObject.filter((obj)=>{
+            return (obj.contentText!==object.contentText || obj.skillType!==object.skillType)
+        })
+        this.setState((prevState)=> {
+            return {
+                optionsObject:optionsObjectMock,
+                optionsCard:optionsObjectMock.map((obj)=>this.createCard(obj))
+            }
+        })
     }
 }
 

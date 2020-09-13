@@ -17,10 +17,9 @@ class ProfileHeader extends Component {
                         <a className="item">دسته بندی ها</a>
                     </div>
                 </div>
-                <div className="left floated five wide column">
-                    <div className="item">
-                        <button className="ui labeled icon negative basic huge button" onClick={() => logOut()}>
-                            <i className="arrow alternate circle left icon"></i>
+                <div className="left floated column">
+                    <div className="item ltr" id="exitButton">
+                        <button className="ui negative button" onClick={() => logOut()}>
                             خروج
                         </button>
                     </div>
