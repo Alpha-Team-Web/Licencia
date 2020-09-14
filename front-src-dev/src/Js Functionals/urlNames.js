@@ -22,6 +22,7 @@ export const uploadProfilePicUrlFreelancer = serverAddress + "files/profile-pic/
 // SkillsPart
 
 export const getFieldsUrl = serverAddress + "/ProfilePart";
+export const getSkillsByFieldIdUrl = serverAddress + "/fields/field-skills";
 
 // External WebSites
 export const gitHubUrl = "https://github.com/"

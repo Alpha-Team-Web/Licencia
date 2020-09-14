@@ -3,13 +3,15 @@ import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import {Button, GridColumn, GridRow} from "semantic-ui-react";
 import ReactDOM from 'react-dom';
 import SkillComponent from "../MinorComponents/skillComponent";
+import {getSkillsByFieldId} from "../../../Js Functionals/SkillsPage/skillsGetterByFields";
 
 class PersonSkillsComponent extends Component {
 
-
     constructor(props, context) {
         super(props, context);
-        this.setState({
+
+        if (props.fieldId) getSkillsByFieldId(this.setSkills, props.fieldId)
+        if (this.props.skillCardObject) this.setState({
             optionsObject: this.props.skillCardObject,
             optionsCard: this.props.skillCardObject.map((object) => this.createCard(object))
         })
@@ -18,9 +20,16 @@ class PersonSkillsComponent extends Component {
     state = {
         optionsCard: [],
         optionsObject: [],
-
-
     };
+
+    setSkills = (skills) => {
+        this.setState((prevState) => {
+            return {
+                optionsObject: skills,
+                optionsCard: skills.map((value) => this.createCard(value))
+            }
+        })
+    }
 
     render() {
         return (
