@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import {Button, GridColumn, GridRow} from "semantic-ui-react";
-import ReactDOM from 'react-dom';
 import SkillComponent from "../MinorComponents/skillComponent";
 import {getSkillsByFieldId} from "../../../Js Functionals/SkillsPage/skillsGetterByFields";
 
@@ -48,7 +47,6 @@ class PersonSkillsComponent extends Component {
     }
 
     createGrid = () => {
-        let grid = <Grid columns={this.props.columnSize} divided/>
         let skillCardArray = this.state.optionsObject;
         let numberOfRows = (skillCardArray.length) / this.props.columnSize;
         if (skillCardArray.length % this.props.columnSize !== 0) {
@@ -57,32 +55,25 @@ class PersonSkillsComponent extends Component {
         let listOfRows = [];
         let counter = 0
         for (let i = 0; i < numberOfRows - 1; i++) {
-            let gridRow = <Grid.Row/>
             let listOfColumns = []
-            console.log("2333jfseofiesifjseoifj")
             for (let j = 0; j < this.props.columnSize; j++) {
-                let gridColumn = <GridColumn/>
                 let card = this.createCard(skillCardArray[counter])
-                ReactDOM.render(card, gridColumn);
+                listOfColumns[listOfColumns.length] = <GridColumn>{card}</GridColumn>;
                 counter += 1;
-                listOfColumns[listOfColumns.length] = gridColumn;
-                console.log("1222jfsoifjesiofjsiofj")
             }
-            ReactDOM.render(listOfColumns, gridRow);
-            listOfRows[listOfRows.length] = gridRow;
+            listOfRows[listOfRows.length] = <Grid.Row>{listOfColumns}</Grid.Row>;
         }
-        let gridRow = <GridRow/>
+
         let listOfColumns = []
         for (let i = counter; i < skillCardArray.length; i++) {
-            let gridColumn = <GridColumn/>
-            console.log("3444fjosiefjoeisjfiosfjseoifj")
-            ReactDOM.render(skillCardArray[i], gridColumn);
-            listOfColumns[listOfColumns.length] = gridColumn;
+            listOfColumns[listOfColumns.length] = <GridColumn>
+                {skillCardArray[i]}
+            </GridColumn>;
         }
-        ReactDOM.render(listOfColumns, gridRow);
-        listOfRows[listOfRows.length] = gridRow;
-        ReactDOM.render(listOfRows, grid);
-        return grid;
+        listOfRows[listOfRows.length] = <GridRow>{listOfColumns}</GridRow>;
+        return <Grid columns={this.props.columnSize} divided>
+            {listOfRows}
+        </Grid>;
     }
 
     createCard = (skill) => {
