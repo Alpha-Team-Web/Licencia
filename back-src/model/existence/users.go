@@ -43,12 +43,12 @@ type Freelancer struct {
 	tableName struct{} `sql:"freelancers"`
 	user
 	person
-	ProjectIds            []string            `json:"project-ids"`
-	RequestedProjectIds   []string            `json:"requested-project-ids"`
-	AccountType           string              `json:"account-type" sql:",notnull"`
-	Website               string              `json:"website"`
-	GithubAccount         string              `json:"github-account"`
-	GithubRepos           []string            `json:"github-repos"`
-	SkillsWithProject     map[string][]string `json:"skills-with-project"`
-	ChosenFieldWithSkills map[string][]string `json:"chosen-field-with-skills"`
+	ProjectIds          []string            `json:"project-ids"`
+	RequestedProjectIds []string            `json:"requested-project-ids"`
+	AccountType         string              `json:"account-type" sql:",notnull"`
+	Website             string              `json:"website"`
+	GithubAccount       string              `json:"github-account"`
+	GithubRepos         []string            `json:"github-repos"`
+	SkillsWithProject   map[string][]string `json:"skills-with-project"`
+	ChosenSkills        []string            `json:"chosen-skills"`
 }

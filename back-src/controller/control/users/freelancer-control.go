@@ -3,13 +3,14 @@ package users
 import (
 	licencia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/media"
+	"back-src/controller/control/projects/fields"
 	"back-src/controller/utils/libs"
 	"back-src/model/database"
 	"back-src/model/existence"
 	"back-src/view/data"
 )
 
-func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *database.Database) error {
+/*func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *database.Database) error {
 	if fieldSkills, err := db.FieldTable.GetFieldSkills(fieldId); err == nil {
 		if err := db.FreelancerTable.AddFreelancerSkills(username, fieldId, skills); err != nil {
 			return err
@@ -25,7 +26,7 @@ func ChooseFreelancerSkills(username string, fieldId string, skills []string, db
 	} else {
 		return err
 	}
-}
+}*/
 
 func EditFreelancerProfile(token string, frl existence.Freelancer, db *database.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
@@ -159,4 +160,45 @@ func checkAbilityToRequestNewProject(username string, db *database.Database) err
 		return err
 	}
 	return nil
+}
+
+func AddSkillToFreelancer(token string, skillName string, db *database.Database) error {
+	if _, ok := fields.Engine.SkillWithField[skillName]; !ok {
+		return licencia_errors.NewLicenciaError("no skill with such name exists.")
+	} else {
+		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+			if skills, err := db.FreelancerTable.GetFreelancerSkills(username); err != nil {
+				return err
+			} else {
+				if !libs.ContainsString(skills, skillName) {
+					return db.FreelancerTable.AddFreelancerSkill(username, skillName)
+				}
+			}
+		} else {
+			return err
+		}
+	}
+	return nil
+}
+
+func RemoveSkillFromFreelancer(token string, skillName string, db *database.Database) error {
+	if _, ok := fields.Engine.SkillWithField[skillName]; !ok {
+		return licencia_errors.NewLicenciaError("no skill with such name exists.")
+	} else {
+		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+			return db.FreelancerTable.RemoveFreelancerSkill(username, skillName)
+		} else {
+			return err
+		}
+	}
+	return nil
+}
+
+func GetFreelancerSkills(token string, db *database.Database) ([]string, error) {
+	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
+		skills, err := db.FreelancerTable.GetFreelancerSkills(username)
+		return skills, err
+	} else {
+		return []string{}, err
+	}
 }

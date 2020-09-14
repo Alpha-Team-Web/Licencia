@@ -10,6 +10,7 @@ func (router *router) addFreelancerEndpoints() {
 	router.addNewEndpointGroup("/freelancer", "freelancer", "").addCheckToken(existence.FreelancerType)
 	router.addNewEndpointGroup("/profile", "freelancer-profile", "freelancer")
 	router.addNewEndpointGroup("/projects", "freelancer-projects", "freelancer")
+	router.addNewEndpointGroup("/skills", "freelancer-profile-skills", "freelancer-profile")
 
 	router.addHandlerToPath("/get", "freelancer-profile", Get, func(context *gin.Context) {
 		respond.Respond(router.handler.GetFreelancerProfile(context))
@@ -35,4 +36,15 @@ func (router *router) addFreelancerEndpoints() {
 		respond.Respond(router.handler.FreelancerRequestToProject(context))
 	})
 
+	router.addHandlerToPath("", "freelancer-profile-skills", Post, func(context *gin.Context) {
+		respond.Respond(router.handler.AddSkillToFreelancer(context))
+	})
+
+	router.addHandlerToPath("", "freelancer-profile-skills", Delete, func(context *gin.Context) {
+		respond.Respond(router.handler.RemoveSkillFromFreelancer(context))
+	})
+
+	router.addHandlerToPath("", "freelancer-profile-skills", Get, func(ctx *gin.Context) {
+		respond.Respond(router.handler.GetSkillsFromFreelancer(ctx))
+	})
 }

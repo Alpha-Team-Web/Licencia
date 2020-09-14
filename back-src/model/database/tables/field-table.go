@@ -41,3 +41,20 @@ func (table *FieldTable) IsThereFieldWithId(id string) (bool, error) {
 	}
 	return len(fields) != 0, nil
 }
+
+func (table *FieldTable) GetAllFieldsWithSkills() ([]existence.Field, error) {
+	var fields []existence.Field
+	err := table.conn.Model(&fields).Select()
+	if err != nil {
+		return []existence.Field{}, err
+	}
+	return fields, nil
+}
+
+func (table *FieldTable) GetField(fieldId string) (existence.Field, error) {
+	field := existence.Field{}
+	if err := table.conn.Model(&field).Where("id = ?", fieldId).Select(); err != nil {
+		return existence.Field{}, err
+	}
+	return field, nil
+}

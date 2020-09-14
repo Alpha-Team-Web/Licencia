@@ -31,9 +31,10 @@ func (table *FreelancerTable) InsertFreelancer(frl existence.Freelancer) error {
 	return err
 }
 
+/*
 func (table *FreelancerTable) AddFreelancerSkills(username string, fieldId string, skills []string) error {
 	var frl existence.Freelancer
-	if err := table.conn.Model(&frl). /*.Column("chosen_field_with_skills")*/ Where("username = ?", username).Select(); err != nil {
+	if err := table.conn.Model(&frl). .Column("chosen_field_with_skills") Where("username = ?", username).Select(); err != nil {
 		return err
 	}
 	if frl.ChosenFieldWithSkills == nil {
@@ -42,7 +43,7 @@ func (table *FreelancerTable) AddFreelancerSkills(username string, fieldId strin
 	frl.ChosenFieldWithSkills[fieldId] = skills
 	_, err := table.conn.Model(&frl).Column("chosen_field_with_skills").Where("username = ?", username).Update()
 	return err
-}
+}*/
 
 func (table *FreelancerTable) UpdateFreelancerProfile(username string, frl existence.Freelancer) error {
 	if _, err := table.conn.Model(&frl).Column("shown_name", "description", "first_name", "last_name", "phone_number", "address").Where("username = ?", username).Update(); err != nil {
@@ -172,4 +173,43 @@ func (table *FreelancerTable) GetFreelancerProjectIds(username string) ([]string
 		return []string{}, err
 	}
 	return frl.ProjectIds, nil
+}
+
+func (table *FreelancerTable) AddFreelancerSkill(username string, skill string) error {
+	skills, err := table.GetFreelancerSkills(username)
+	if err != nil {
+		return err
+	}
+	frl := existence.Freelancer{
+		ChosenSkills: skills,
+	}
+	frl.ChosenSkills = append(frl.ChosenSkills, skill)
+	_, err = table.conn.Model(&frl).Column("chosen_skills").Where("username = ?", username).Update()
+	return err
+}
+
+func (table *FreelancerTable) GetFreelancerSkills(username string) ([]string, error) {
+	skills := []string{}
+	frl := existence.Freelancer{}
+	if err := table.conn.Model(&frl).Column("chosen_skills").Where("username = ?", username).Select(); err != nil {
+		return skills, err
+	}
+	return frl.ChosenSkills, nil
+}
+
+func (table *FreelancerTable) RemoveFreelancerSkill(username string, skill string) error {
+	skills, err := table.GetFreelancerSkills(username)
+	if err != nil {
+		return err
+	}
+	frl := existence.Freelancer{
+		ChosenSkills: skills,
+	}
+	for i, chosenSkill := range frl.ChosenSkills {
+		if chosenSkill == skill {
+			frl.ChosenSkills = append(frl.ChosenSkills[i:], frl.ChosenSkills[i+1:]...)
+		}
+	}
+	_, err = table.conn.Model(&frl).Column("chosen_skills").Where("username = ?", username).Update()
+	return err
 }
