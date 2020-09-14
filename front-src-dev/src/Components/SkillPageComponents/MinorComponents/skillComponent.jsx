@@ -6,24 +6,25 @@ class SkillComponent extends Component {
 
     constructor(props, context) {
         super(props, context);
+        this.props.skillIncludes ? document.getElementById("functionIcon").className = "close" : document.getElementById("functionIcon").className + "add"
     }
 
     render() {
         return (
             <div className="skillComponent" onMouseOver={
                 function (){
-                    let deleteBtn = document.getElementById("deleteSkillIcon")
+                    let funcBtn = document.getElementById("functionIcon")
                      let fakeIcon = document.getElementById("fakeIcon")
                      fakeIcon.style.display = "none"
-                    deleteBtn.style.display = "block"
+                    funcBtn.style.display = "block"
                 }
             }
             onMouseOut={
                 function () {
-                    let deleteBtn = document.getElementById("deleteSkillIcon")
+                    let funcBtn = document.getElementById("functionIcon")
                     let fakeIcon = document.getElementById("fakeIcon")
                     fakeIcon.style.display = "block"
-                    deleteBtn.style.display = "none"
+                    funcBtn.style.display = "none"
                 }
             }>
                 <div>
@@ -31,7 +32,7 @@ class SkillComponent extends Component {
                     </i>
                    {this.props.contentText}
                 </div>
-                <i className="close link icon iconButton" aria-hidden="true" id="deleteSkillIcon" >
+                <i className="link icon iconButton" aria-hidden="true" id="functionIcon" onClick={this.props.skillIncludes ? this.props.skillDeleter : this.props.skillAdder} >
                 </i>
                 <i id="fakeIcon"></i>
             </div>
