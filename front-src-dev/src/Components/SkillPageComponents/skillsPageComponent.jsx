@@ -55,12 +55,14 @@ class SkillsPageComponent extends Component {
             <div style={this.mainDivStyle}>
                 <div style={this.firstRealStyle}>
                     <PersonSkillsComponent skillDeleter={this.deleteSkill}
-                                           skillCardObject={this.state.personAddedSkills}/>
+                                           skillCardObject={this.state.personAddedSkills}
+                                           columnSize={3}/>
                 </div>
 
                 <div style={this.secondRealStyle}>
                     <Input icon='search' className='ui-rtl'/>
-                    <FieldsListComponent cards={this.setFields} skillAdder={this.addSkill} skillDeleter={this.deleteSkill}
+                    <FieldsListComponent cards={getSkillFields(this.setFields)} skillAdder={this.addSkill}
+                                         skillDeleter={this.deleteSkill}
                                          skillIncludes={this.skillIncludes}/>
                 </div>
             </div>

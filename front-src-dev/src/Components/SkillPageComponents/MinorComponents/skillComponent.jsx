@@ -6,7 +6,6 @@ class SkillComponent extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.props.skillIncludes ? document.getElementById("functionIcon").className += " close" : document.getElementById("functionIcon").className += " add"
     }
 
     render() {
@@ -39,6 +38,10 @@ class SkillComponent extends Component {
         );
     }
 
+
+    componentDidMount() {
+        this.props.skillIncludes ? document.getElementById("functionIcon").class += " close" : document.getElementById("functionIcon").class += " add"
+    }
 }
 
 export default SkillComponent;

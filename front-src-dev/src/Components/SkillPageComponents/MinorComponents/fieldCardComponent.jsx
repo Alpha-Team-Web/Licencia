@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Card} from "semantic-ui-react";
 
 class FieldCardComponent extends Component {
     render() {

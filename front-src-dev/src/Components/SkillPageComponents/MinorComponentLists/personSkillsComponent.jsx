@@ -49,7 +49,7 @@ class PersonSkillsComponent extends Component {
 
     createGrid = () => {
         let grid = <Grid columns={this.props.columnSize} divided/>
-        let skillCardArray = this.state.skillCardArray;
+        let skillCardArray = this.state.optionsObject;
         let numberOfRows = (skillCardArray.length) / this.props.columnSize;
         if (skillCardArray.length % this.props.columnSize !== 0) {
             numberOfRows += 1;
@@ -59,12 +59,14 @@ class PersonSkillsComponent extends Component {
         for (let i = 0; i < numberOfRows - 1; i++) {
             let gridRow = <Grid.Row/>
             let listOfColumns = []
+            console.log("2333jfseofiesifjseoifj")
             for (let j = 0; j < this.props.columnSize; j++) {
                 let gridColumn = <GridColumn/>
                 let card = this.createCard(skillCardArray[counter])
                 ReactDOM.render(card, gridColumn);
                 counter += 1;
                 listOfColumns[listOfColumns.length] = gridColumn;
+                console.log("1222jfsoifjesiofjsiofj")
             }
             ReactDOM.render(listOfColumns, gridRow);
             listOfRows[listOfRows.length] = gridRow;
@@ -73,6 +75,7 @@ class PersonSkillsComponent extends Component {
         let listOfColumns = []
         for (let i = counter; i < skillCardArray.length; i++) {
             let gridColumn = <GridColumn/>
+            console.log("3444fjosiefjoeisjfiosfjseoifj")
             ReactDOM.render(skillCardArray[i], gridColumn);
             listOfColumns[listOfColumns.length] = gridColumn;
         }
