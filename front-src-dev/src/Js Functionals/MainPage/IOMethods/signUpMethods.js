@@ -3,6 +3,7 @@ import {urlSignUp} from "../../urlNames";
 import {signUpDuplicateEmailLabel, signUpDuplicateUsernameLabel, signUpInvalidEmailLabel} from "../ioErrors";
 import {emptyFields, emptyFieldsFromErrors, hasEmpty} from "../../Utils/handleInputs";
 import {setFieldError, showErrorLabel} from "../../Utils/handleErrors";
+import {accountTypeParams, defaultHeader} from "../../defaultParamsAndHeaders";
 
 let signUpUsername
 let signUpFirstName
@@ -75,12 +76,7 @@ export function signUp(func) {
 
      if(checkSignUpFields() && checkPasswordSimilarity()) {
         const promise = httpExcGET('post', urlSignUp, getSignUpDataFromFields(),
-            handleSuccessSignUp, handleErrorSignUp, {
-            'Content-Type': 'application/json'
-        }, {
-            key: 'account-type',
-            value: signUpKind.value
-        });
+            handleSuccessSignUp, handleErrorSignUp, defaultHeader, accountTypeParams(signUpKind.value));
     }
 }
 

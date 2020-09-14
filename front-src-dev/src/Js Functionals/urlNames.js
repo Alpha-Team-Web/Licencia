@@ -3,6 +3,9 @@ export const serverAddress = "http://localhost:8008/";
 
 export const urlSignUp = serverAddress + "io/register"
 export const urlLogin = serverAddress + "io/login"
+
+// ProfilePart
+
 export const urlGetEmployerProfileInfo = serverAddress + "employer/profile/get"
 export const urlGetFreelancerProfileInfo = serverAddress + "freelancer/profile/get"
 export const saveProfileUrlEmployer = serverAddress + "employer/profile/general";
@@ -13,6 +16,12 @@ export const changePasswordUrlFreeLancer = serverAddress + "freelancer/profile/p
 export const uploadProfilePicUrlEmployer = serverAddress + "files/profile-pic/employer/upload";
 export const uploadProfilePicUrlFreelancer = serverAddress + "files/profile-pic/freelancer/upload";
 
+// ProfilePart
+
+
+// SkillsPart
+
+export const getFieldsUrl = serverAddress + "/ProfilePart";
 
 // External WebSites
 export const gitHubUrl = "https://github.com/"

@@ -6,6 +6,7 @@ import {profilePagePath} from "../../PagePaths";
 import {loginInvalidPasswordLabel, loginNotSignedUpKeypointLabel} from "../ioErrors";
 import {emptyFields, emptyFieldsFromErrors, hasEmpty} from "../../Utils/handleInputs";
 import {setFieldError, showErrorLabel} from "../../Utils/handleErrors";
+import {accountTypeParams, defaultHeader} from "../../defaultParamsAndHeaders";
 
 let loginKeypoint;
 let loginPassword;
@@ -52,12 +53,8 @@ export function login(func) {
     loginCloseModalFunc = func;
 
     if (checkLoginFields()) {
-        const promise = httpExcGET('post', urlLogin, getLoginDataFromFields(), handleSuccessLogin, handleErrorLogin, {
-            'Content-Type': 'application/json'
-        }, {
-            key: 'account-type',
-            value: loginKind.value
-        });
+        const promise = httpExcGET('post', urlLogin, getLoginDataFromFields(), handleSuccessLogin, handleErrorLogin,
+            defaultHeader, accountTypeParams(loginKind.value));
     }
 }
 

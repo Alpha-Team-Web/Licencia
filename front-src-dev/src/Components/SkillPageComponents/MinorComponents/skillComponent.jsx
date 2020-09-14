@@ -6,7 +6,7 @@ class SkillComponent extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.props.skillIncludes ? document.getElementById("functionIcon").className = "close" : document.getElementById("functionIcon").className + "add"
+        this.props.skillIncludes ? document.getElementById("functionIcon").className += " close" : document.getElementById("functionIcon").className += " add"
     }
 
     render() {

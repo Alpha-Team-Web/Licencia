@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import ProfileSideBar from "../../Js Functionals/SkillsPage/profileSideBar";
 import ProfileHeader from "../ProfilePageComponents/profileHeaderComponent";
 import {Button} from "semantic-ui-react";
-import PersonSkillsComponent from "./MinorComponentLists/personSkillsComponent";
 import SkillComponent from "./MinorComponents/skillComponent";
 
 class ProfileIndicesComponent extends Component {
