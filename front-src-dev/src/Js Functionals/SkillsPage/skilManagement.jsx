@@ -1,23 +1,25 @@
 import {httpExcGET} from "../AlphaAPI";
-import {addSkillUrl} from "../urlNames";
+import {skillManagementUrl} from "../urlNames";
 import {defaultHeader} from "../defaultParamsAndHeaders";
 
 
-export function addSkillPost(skillName,mageType){
+export function skillManagementPost(skillName, manageType) {
     let data = {
-        "name" : skillName
+        "name": skillName
     }
-    mageType === "post" ? httpExcGET(mageType, addSkillUrl,data,addSkillSuccess,serverDeny,defaultHeader) : httpExcGET(mageType,data, addSkillUrl,removeSkillSuccess,serverDeny,defaultHeader)
+    httpExcGET(manageType, skillManagementUrl, data,
+        manageType === "post" ? addSkillSuccess : removeSkillSuccess, serverDeny,
+        defaultHeader)
 }
 
-export function addSkillSuccess(){
+function addSkillSuccess() {
     console.log("Skill added.")
 }
 
-export function serverDeny(){
+function serverDeny(value) {
     console.log("Server Error: " + JSON.stringify(value))
 }
 
-export function removeSkillSuccess(){
+function removeSkillSuccess() {
     console.log("Skill removed.")
 }

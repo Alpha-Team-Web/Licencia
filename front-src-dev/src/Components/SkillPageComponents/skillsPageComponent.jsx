@@ -4,6 +4,7 @@ import ProfileForm from "../ProfilePageComponents/ProfileSectionComponents/Profi
 import {Input} from "semantic-ui-react";
 import FieldsListComponent from "./MinorComponentLists/fieldsListComponent";
 import {getSkillFields} from "../../Js Functionals/SkillsPage/fieldsGetter";
+import {skillManagementPost} from "../../Js Functionals/SkillsPage/skilManagement";
 
 class SkillsPageComponent extends Component {
     mainDivStyle = {};
@@ -18,6 +19,8 @@ class SkillsPageComponent extends Component {
         fields: []
     }
     addSkill = (skill) => {
+        skillManagementPost(skill.name, 'post')
+
         this.setState((prevState) => {
             let array = prevState.personAddedSkills;
             if (!this.skillIncludes(array, skill)) array.push(skill)
@@ -25,6 +28,8 @@ class SkillsPageComponent extends Component {
         })
     }
     deleteSkill = (skill) => {
+        skillManagementPost(skill.name, 'delete')
+
         this.setState((prevState) => {
             return {
                 personAddedSkills: prevState.personAddedSkills.filter(value => !this.skillEquals(value, skill)),
@@ -50,7 +55,7 @@ class SkillsPageComponent extends Component {
             <div style={this.mainDivStyle}>
                 <div style={this.firstRealStyle}>
                     <PersonSkillsComponent skillDeleter={this.deleteSkill}
-                                           personAddedSkills={this.state.personAddedSkills}/>
+                                           skillCardObject={this.state.personAddedSkills}/>
                 </div>
 
                 <div style={this.secondRealStyle}>

@@ -63,7 +63,7 @@ class FieldsListComponent extends Component {
     transitioner = (card, index) => {
         return (
             <Transition visible={card.visible} animation='scale' duration={500}>
-                <PersonSkillsComponent personAddedSkills={this.props.personAddedSkills}
+                <PersonSkillsComponent fieldId={card.id}
                                        skillIncludes={this.props.skillIncludes} skillAdder={this.props.skillAdder}
                                        skillDeleter={this.props.skillDeleter} hasExit
                                        exitFunction={() => this.setVisible(index, false)}/>
