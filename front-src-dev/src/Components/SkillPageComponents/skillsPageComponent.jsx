@@ -3,6 +3,7 @@ import PersonSkillsComponent from "./MinorComponentLists/personSkillsComponent";
 import ProfileForm from "../ProfilePageComponents/ProfileSectionComponents/ProfileForm";
 import {Input} from "semantic-ui-react";
 import FieldsListComponent from "./MinorComponentLists/fieldsListComponent";
+import {getSkillFields} from "../../Js Functionals/SkillsPage/fieldsGetter";
 
 class SkillsPageComponent extends Component {
     mainDivStyle = {};
@@ -13,24 +14,36 @@ class SkillsPageComponent extends Component {
 
 
     state = {
-        personAddedSkills: []
+        personAddedSkills: [],
+        fields: []
     }
     addSkill = (skill) => {
         this.setState((prevState) => {
             let array = prevState.personAddedSkills;
             if (!this.skillIncludes(array, skill)) array.push(skill)
-            return {personAddedSkills: array};
+            return {personAddedSkills: array, fields: prevState.fields};
         })
     }
     deleteSkill = (skill) => {
         this.setState((prevState) => {
             return {
-                personAddedSkills: prevState.personAddedSkills.filter(value => !this.skillEquals(value, skill))
+                personAddedSkills: prevState.personAddedSkills.filter(value => !this.skillEquals(value, skill)),
+                fields: prevState.fields
             }
         })
     }
     skillIncludes = (skill) => this.state.personAddedSkills.filter(value => this.skillEquals(value, skill)).length !== 0;
     skillEquals = (skill1, skill2) => skill1.name === skill2.name && skill1.type === skill2.type;
+
+    setFields = (fields) => {
+        this.setState((prevState) => {
+            return {
+                personAddedSkills: prevState.personAddedSkills,
+                fields: fields
+            }
+        })
+    }
+
 
     render() {
         return (
@@ -42,7 +55,7 @@ class SkillsPageComponent extends Component {
 
                 <div style={this.secondRealStyle}>
                     <Input icon='search' className='ui-rtl'/>
-                    <FieldsListComponent cards={{/*getSkillFields()*/}} skillAdder={this.addSkill} skillDeleter={this.deleteSkill}
+                    <FieldsListComponent cards={getSkillFields(this)} skillAdder={this.addSkill} skillDeleter={this.deleteSkill}
                                          skillIncludes={this.skillIncludes}/>
                 </div>
             </div>
