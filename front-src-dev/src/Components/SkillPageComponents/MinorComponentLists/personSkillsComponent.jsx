@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import {Button, GridColumn, GridRow} from "semantic-ui-react";
 import ReactDOM from 'react-dom';
+import SkillComponent from "../MinorComponents/skillComponent";
 
 class PersonSkillsComponent extends Component {
 
@@ -73,7 +74,7 @@ class PersonSkillsComponent extends Component {
     }
 
     createCard = (skill) => {
-        return <skillComponent name={skill.name} type={skill.type}
+        return <SkillComponent name={skill.name} type={skill.type}
                                skillDeleter={this.props.skillDeleter} skillAdder={this.props.skillAdder}
                                personHasSkill={this.props.skillIncludes ? this.props.skillIncludes(skill) : true}/>;
     }

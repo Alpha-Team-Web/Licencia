@@ -48,6 +48,7 @@ class SkillsPageComponent extends Component {
             </div>
         );
     }
+
 }
 
 export default SkillsPageComponent;
