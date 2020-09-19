@@ -4,6 +4,7 @@ import (
 	licnecia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/projects/fields"
 	"back-src/controller/control/projects/filters"
+	"back-src/model/existence"
 	redis_sessions "back-src/model/redis-sessions"
 	"back-src/model/sql"
 	"back-src/view/api/handle/utils"
@@ -17,8 +18,8 @@ import (
 type Handler struct {
 }
 
-const notUsedExpiry = 10
-const authExpiryMin = 30
+const notUsedExpiry = 1
+const authExpiryMin = 2
 
 var AuthExpiryDur time.Duration
 
@@ -79,10 +80,17 @@ func makeOperationErrorNotification(ctx *gin.Context, err error) notifications.N
 	if licnecia_errors.IsLicenciaError(err) {
 		return notifications.GetExpectationFailedError(ctx, licnecia_errors.GetErrorStrForRespond(err), nil)
 	} else {
+		panic(err)
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	}
 }
 
-func getTokenByContext(ctx *gin.Context) string {
-	return ctx.Writer.Header().Get("Token")
+func getAuthByContext(ctx *gin.Context) existence.AuthToken {
+	auth, _ := RedisApi.AuthTokenDB.GetAuthByToken(ctx.Writer.Header().Get("Token"))
+	return auth
+}
+
+func getUsernameByContextToken(ctx *gin.Context) string {
+	username, _ := RedisApi.AuthTokenDB.GetUsernameByToken(ctx.Writer.Header().Get("Token"))
+	return username
 }

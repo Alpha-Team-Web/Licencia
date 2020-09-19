@@ -32,6 +32,16 @@ func GetDatabaseErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	return notif
 }
 
+func GetInMemoryDataStructureDownNotif(ctx *gin.Context, data ...interface{}) Notification {
+	notif := Notification{
+		Context:    ctx,
+		Message:    "redis down",
+		StatusCode: http.StatusServiceUnavailable, //503
+		Data:       data,
+	}
+	return notif
+}
+
 func GetInvalidQueryErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,

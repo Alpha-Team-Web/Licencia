@@ -1,13 +1,13 @@
 package authentications
 
 import (
+	licencia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
 	"back-src/model/existence"
 	"back-src/view/api/handle"
 	"back-src/view/api/respond"
 	"back-src/view/notifications"
-	"errors"
 	"github.com/gin-gonic/gin"
 	"time"
 )
@@ -30,7 +30,11 @@ func GetCheckTokenIgnoreTypeHandlerFunc() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		token := context.GetHeader("Token")
 		if newToken, err := checkTokenIgnoreType(token); err != nil {
-			respond.Respond(notifications.GetTokenNotAuthorizedErrorNotif(context, nil))
+			if licencia_errors.IsLicenciaError(err) {
+				respond.Respond(notifications.GetTokenNotAuthorizedErrorNotif(context, nil))
+			} else {
+				respond.Respond(notifications.GetInMemoryDataStructureDownNotif(context, nil))
+			}
 			context.Abort()
 		} else {
 			context.Header("Token", newToken)
@@ -44,7 +48,7 @@ func checkToken(token, userType string) (string, error) {
 		if libs.XNor(auth.IsFreelancer, userType == existence.FreelancerType) {
 			return reInitToken(auth)
 		} else {
-			return "", errors.New("wrong user type token: " + token)
+			return "", licencia_errors.NewLicenciaError("wrong user type token")
 		}
 	} else {
 		return "", err
@@ -69,7 +73,7 @@ func formalCheckToken(token string) (existence.AuthToken, error) {
 			return auth, err
 		}
 	} else {
-		return existence.AuthToken{}, errors.New("not authorized token: " + token)
+		return existence.AuthToken{}, licencia_errors.NewLicenciaError("not authorized token")
 	}
 }
 

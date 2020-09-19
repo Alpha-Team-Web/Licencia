@@ -21,7 +21,7 @@ func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string)
 		return notifications.Notification{}
 	} else {
 		if file, header, err := ctx.Request.FormFile(ProfileImageUploaderForName); err == nil {
-			if err := files.UploadUserImage(getTokenByContext(ctx), profileType, file, header, DB); err != nil {
+			if err := files.UploadUserImage(getUsernameByContextToken(ctx), profileType, file, header, DB); err != nil {
 				return notifications.GetInternalServerErrorNotif(ctx, nil)
 			} else {
 				return notifications.GetSuccessfulNotif(ctx, nil)
@@ -37,7 +37,7 @@ func (handler *Handler) DeleteProfileImage(context *gin.Context, profileType str
 		//TODO
 		return notifications.Notification{}
 	} else {
-		if err := files.DeleteUserImage(getTokenByContext(context), profileType, DB); err != nil {
+		if err := files.DeleteUserImage(getUsernameByContextToken(context), profileType, DB); err != nil {
 			return notifications.GetDatabaseErrorNotif(context, nil)
 		}
 		return notifications.GetSuccessfulNotif(context, nil)
@@ -49,7 +49,7 @@ func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType strin
 		//TODO
 		return notifications.Notification{}
 	} else {
-		if file, err := files.DownloadUserImage(getTokenByContext(ctx), profileType, DB); err != nil {
+		if file, err := files.DownloadUserImage(getUsernameByContextToken(ctx), profileType, DB); err != nil {
 			return notifications.GetDatabaseErrorNotif(ctx, nil)
 		} else {
 			fmt.Println(file)
@@ -89,7 +89,7 @@ func (handler *Handler) UploadProjectFile(ctx *gin.Context) notifications.Notifi
 		attachment.Data = data
 	}
 	attachment.ProjectId = form.ProjectId
-	if err := files.AttachFileToProject(getTokenByContext(ctx), attachment, DB); err != nil {
+	if err := files.AttachFileToProject(getUsernameByContextToken(ctx), attachment, DB); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
@@ -112,7 +112,7 @@ func (handler *Handler) UpdateProjectFile(ctx *gin.Context) notifications.Notifi
 		attachment.Data = data
 	}
 	attachment.FileId = form.FileId
-	if err := files.UpdateFileInProject(getTokenByContext(ctx), attachment, DB); err != nil {
+	if err := files.UpdateFileInProject(getUsernameByContextToken(ctx), attachment, DB); err != nil {
 		return notifications.Notification{
 			Context:    ctx,
 			StatusCode: http.StatusInternalServerError,
@@ -129,7 +129,7 @@ func (handler *Handler) RemoveProjectFile(ctx *gin.Context) notifications.Notifi
 		Id string `json:"id"`
 	}{}
 	if err := ctx.ShouldBindJSON(&fileStruct); err == nil {
-		if err := files.DetachFileFromProject(getTokenByContext(ctx), fileStruct.Id, DB); err != nil {
+		if err := files.DetachFileFromProject(getUsernameByContextToken(ctx), fileStruct.Id, DB); err != nil {
 			return notifications.GetDatabaseErrorNotif(ctx, nil)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, nil)

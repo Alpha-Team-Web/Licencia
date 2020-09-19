@@ -10,89 +10,51 @@ import (
 	"back-src/view/data"
 )
 
-/*func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *sql.Database) error {
-	if fieldSkills, err := db.FieldTable.GetFieldSkills(fieldId); err == nil {
-		if err := db.FreelancerTable.AddFreelancerSkills(username, fieldId, skills); err != nil {
-			return err
-		}
-		for _, skill := range skills {
-			if !libs.ContainsString(fieldSkills, skill) {
-				if err := db.FieldTable.AddSkillToField(fieldId, skill); err != nil {
-					return err
-				}
-			}
-		}
+func EditFreelancerProfile(username string, frl existence.Freelancer, db *sql.Database) error {
+	if err := db.FreelancerTable.UpdateFreelancerProfile(username, frl); err == nil {
+		media.AddUpdateProfileEvent(username, true, db)
 		return nil
 	} else {
 		return err
 	}
-}*/
+}
 
-func EditFreelancerProfile(token string, frl existence.Freelancer, db *sql.Database) error {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if err := db.FreelancerTable.UpdateFreelancerProfile(username, frl); err == nil {
-			media.AddUpdateProfileEvent(username, true, db)
-			return nil
-		} else {
-			return err
-		}
+func EditFreelancerPassword(username string, frl data.ChangePassRequest, db *sql.Database) error {
+	freelancer, _ := db.FreelancerTable.GetFreelancer(username)
+	if frl.OldPass != freelancer.Password {
+		return licencia_errors.NewLicenciaError("password mismatch")
+	}
+	return db.FreelancerTable.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
+}
+
+func EditFreelancerLinks(username string, frl existence.Freelancer, db *sql.Database) error {
+	if err := db.FreelancerTable.UpdateFreelancerLinks(username, frl); err == nil {
+		media.AddUpdateProfileEvent(username, true, db)
+		return nil
 	} else {
 		return err
 	}
 }
 
-func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *sql.Database) error {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		freelancer, _ := db.FreelancerTable.GetFreelancer(username)
-		if frl.OldPass != freelancer.Password {
-			return licencia_errors.NewLicenciaError("password mismatch")
-		}
-		return db.FreelancerTable.UpdateFreelancerPassword(username, frl.OldPass, frl.NewPass)
-	} else {
-		return err
-	}
-}
-
-func EditFreelancerLinks(token string, frl existence.Freelancer, db *sql.Database) error {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if err := db.FreelancerTable.UpdateFreelancerLinks(username, frl); err == nil {
-			media.AddUpdateProfileEvent(username, true, db)
-			return nil
-		} else {
-			return err
-		}
-	} else {
-		return err
-	}
-}
-
-func GetFreelancer(token string, db *sql.Database) (existence.Freelancer, existence.File, error) {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if frl, err := db.FreelancerTable.GetFreelancer(username); err != nil {
-			return existence.Freelancer{}, existence.File{}, err
-		} else {
-			frl.Password = "N/A"
-			if profile, err := db.ProfileTable.GetProfileImage(existence.FreelancerType, username); err == nil {
-				return frl, profile.File, nil
-			} else {
-				return existence.Freelancer{}, existence.File{}, err
-			}
-		}
-	} else {
+func GetFreelancer(username string, db *sql.Database) (existence.Freelancer, existence.File, error) {
+	if frl, err := db.FreelancerTable.GetFreelancer(username); err != nil {
 		return existence.Freelancer{}, existence.File{}, err
+	} else {
+		frl.Password = "N/A"
+		if profile, err := db.ProfileTable.GetProfileImage(existence.FreelancerType, username); err == nil {
+			return frl, profile.File, nil
+		} else {
+			return existence.Freelancer{}, existence.File{}, err
+		}
 	}
 }
 
-func FreelancerRequestsForProject(token string, request data.FreelancerRequestForProject, db *sql.Database) error {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		if err := checkAbilityToRequestNewProject(username, db); err == nil {
-			if err := checkProjectStatus(request.Id, existence.Open, db); err == nil {
-				if err := db.FreelancerTable.AddRequestedProjectToFreelancer(username, request.Id); err == nil {
-					media.AddRequestEvent(username, request.Id, db)
-					return db.ProjectTable.AddRequestToProject(request.Id, username, request.Description)
-				} else {
-					return err
-				}
+func FreelancerRequestsForProject(username string, request data.FreelancerRequestForProject, db *sql.Database) error {
+	if err := checkAbilityToRequestNewProject(username, db); err == nil {
+		if err := checkProjectStatus(request.Id, existence.Open, db); err == nil {
+			if err := db.FreelancerTable.AddRequestedProjectToFreelancer(username, request.Id); err == nil {
+				media.AddRequestEvent(username, request.Id, db)
+				return db.ProjectTable.AddRequestToProject(request.Id, username, request.Description)
 			} else {
 				return err
 			}
@@ -162,43 +124,30 @@ func checkAbilityToRequestNewProject(username string, db *sql.Database) error {
 	return nil
 }
 
-func AddSkillToFreelancer(token string, skillName string, db *sql.Database) error {
+func AddSkillToFreelancer(username string, skillName string, db *sql.Database) error {
 	if _, ok := fields.Engine.SkillWithField[skillName]; !ok {
 		return licencia_errors.NewLicenciaError("no skill with such name exists.")
 	} else {
-		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-			if skills, err := db.FreelancerTable.GetFreelancerSkills(username); err != nil {
-				return err
-			} else {
-				if !libs.ContainsString(skills, skillName) {
-					return db.FreelancerTable.AddFreelancerSkill(username, skillName)
-				}
+		if skills, err := db.FreelancerTable.GetFreelancerSkills(username); err != nil {
+			return err
+		} else {
+			if !libs.ContainsString(skills, skillName) {
+				return db.FreelancerTable.AddFreelancerSkill(username, skillName)
 			}
-		} else {
-			return err
 		}
 	}
 	return nil
 }
 
-func RemoveSkillFromFreelancer(token string, skillName string, db *sql.Database) error {
+func RemoveSkillFromFreelancer(username string, skillName string, db *sql.Database) error {
 	if _, ok := fields.Engine.SkillWithField[skillName]; !ok {
 		return licencia_errors.NewLicenciaError("no skill with such name exists.")
 	} else {
-		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-			return db.FreelancerTable.RemoveFreelancerSkill(username, skillName)
-		} else {
-			return err
-		}
+		return db.FreelancerTable.RemoveFreelancerSkill(username, skillName)
 	}
-	return nil
 }
 
-func GetFreelancerSkills(token string, db *sql.Database) ([]string, error) {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		skills, err := db.FreelancerTable.GetFreelancerSkills(username)
-		return skills, err
-	} else {
-		return []string{}, err
-	}
+func GetFreelancerSkills(username string, db *sql.Database) ([]string, error) {
+	skills, err := db.FreelancerTable.GetFreelancerSkills(username)
+	return skills, err
 }

@@ -88,8 +88,8 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 func (handler *Handler) ModifyFollow(ctx *gin.Context, isFollow bool) notifications.Notification {
 	follow := existence.Follow{}
 	if err := ctx.ShouldBindJSON(&follow); err == nil {
-		job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(string, existence.Follow, *sql.Database) error)
-		if err := job(getTokenByContext(ctx), follow, DB); err == nil {
+		job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(existence.AuthToken, existence.Follow, *sql.Database) error)
+		if err := job(getAuthByContext(ctx), follow, DB); err == nil {
 			return notifications.GetSuccessfulNotif(ctx, nil)
 		} else {
 			return notifications.GetInternalServerErrorNotif(ctx, nil)

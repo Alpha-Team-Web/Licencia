@@ -10,11 +10,7 @@ import (
 	"mime/multipart"
 )
 
-func UploadUserImage(token string, profileType string, file multipart.File, header *multipart.FileHeader, db *sql.Database) error {
-	username, err := db.AuthTokenTable.GetUsernameByToken(token)
-	if err != nil {
-		return err
-	}
+func UploadUserImage(username string, profileType string, file multipart.File, header *multipart.FileHeader, db *sql.Database) error {
 	name := header.Filename
 	result, _ := ioutil.ReadAll(file)
 	profile := existence.Profile{
@@ -31,19 +27,11 @@ func UploadUserImage(token string, profileType string, file multipart.File, head
 	}
 }
 
-func DeleteUserImage(token, profileType string, db *sql.Database) error {
-	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
-		return db.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType})
-	} else {
-		return err
-	}
+func DeleteUserImage(username, profileType string, db *sql.Database) error {
+	return db.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType})
 }
 
-func DownloadUserImage(token string, profileType string, db *sql.Database) (existence.File, error) {
-	username, err := db.AuthTokenTable.GetUsernameByToken(token)
-	if err != nil {
-		return existence.File{}, err
-	}
+func DownloadUserImage(username string, profileType string, db *sql.Database) (existence.File, error) {
 	if prof, err := db.ProfileTable.GetProfileImage(profileType, username); err != nil {
 		return existence.File{}, err
 	} else {
@@ -59,11 +47,7 @@ func DownloadProjectFile(fileId string, db *sql.Database) (existence.File, error
 	return attachment.File, nil
 }
 
-func AttachFileToProject(token string, attachment existence.ProjectAttachment, db *sql.Database) error {
-	username, err := db.AuthTokenTable.GetUsernameByToken(token)
-	if err != nil {
-		return err
-	}
+func AttachFileToProject(username string, attachment existence.ProjectAttachment, db *sql.Database) error {
 	if project, err := db.ProjectTable.GetProject(attachment.ProjectId); err != nil {
 		return err
 	} else {
@@ -92,11 +76,7 @@ func AttachFileToProject(token string, attachment existence.ProjectAttachment, d
 	return nil
 }
 
-func DetachFileFromProject(token string, fileId string, db *sql.Database) error {
-	username, err := db.AuthTokenTable.GetUsernameByToken(token)
-	if err != nil {
-		return err
-	}
+func DetachFileFromProject(username string, fileId string, db *sql.Database) error {
 	var projectId string
 	if attachment, err := db.ProjectAttachmentTable.GetProjectAttachmentById(fileId); err != nil {
 		return err
@@ -119,11 +99,7 @@ func DetachFileFromProject(token string, fileId string, db *sql.Database) error 
 	return nil
 }
 
-func UpdateFileInProject(token string, attachment existence.ProjectAttachment, db *sql.Database) error {
-	username, err := db.AuthTokenTable.GetUsernameByToken(token)
-	if err != nil {
-		return err
-	}
+func UpdateFileInProject(username string, attachment existence.ProjectAttachment, db *sql.Database) error {
 	if project, err := db.ProjectTable.GetProject(attachment.ProjectId); err != nil {
 		return err
 	} else {

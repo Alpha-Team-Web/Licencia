@@ -16,7 +16,7 @@ func (handler *Handler) EditFreelancerProfile(ctx *gin.Context) notifications.No
 	if err := ctx.ShouldBindJSON(&frl); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.EditFreelancerProfile(getTokenByContext(ctx), frl, DB); err != nil {
+	if err := users.EditFreelancerProfile(getUsernameByContextToken(ctx), frl, DB); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
@@ -28,7 +28,7 @@ func (handler *Handler) EditFreelancerPassword(ctx *gin.Context) notifications.N
 	if err := ctx.ShouldBindJSON(&frl); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.EditFreelancerPassword(getTokenByContext(ctx), frl, DB); err != nil {
+	if err := users.EditFreelancerPassword(getUsernameByContextToken(ctx), frl, DB); err != nil {
 		return makeOperationErrorNotification(ctx, err)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
@@ -43,7 +43,7 @@ func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) notifications.Noti
 	if err := ctx.ShouldBindJSON(&frl); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.EditFreelancerLinks(getTokenByContext(ctx), frl, DB); err != nil {
+	if err := users.EditFreelancerLinks(getUsernameByContextToken(ctx), frl, DB); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
@@ -51,7 +51,7 @@ func (handler *Handler) EditFreelancerLinks(ctx *gin.Context) notifications.Noti
 }
 
 func (handler *Handler) GetFreelancerProfile(ctx *gin.Context) notifications.Notification {
-	if frl, file, err := users.GetFreelancer(getTokenByContext(ctx), DB); err != nil {
+	if frl, file, err := users.GetFreelancer(getUsernameByContextToken(ctx), DB); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, frl, file)
@@ -63,7 +63,7 @@ func (handler *Handler) FreelancerRequestToProject(ctx *gin.Context) notificatio
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	} else {
-		if err := users.FreelancerRequestsForProject(getTokenByContext(ctx), request, DB); err != nil {
+		if err := users.FreelancerRequestsForProject(getUsernameByContextToken(ctx), request, DB); err != nil {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, nil)
@@ -78,7 +78,7 @@ func (handler *Handler) AddSkillToFreelancer(ctx *gin.Context) notifications.Not
 	if err := ctx.ShouldBindJSON(&skill); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	} else {
-		if err := users.AddSkillToFreelancer(getTokenByContext(ctx), skill.Name, DB); err != nil {
+		if err := users.AddSkillToFreelancer(getUsernameByContextToken(ctx), skill.Name, DB); err != nil {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, nil)
@@ -93,7 +93,7 @@ func (handler *Handler) RemoveSkillFromFreelancer(ctx *gin.Context) notification
 	if err := ctx.ShouldBindJSON(&skill); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	} else {
-		if err := users.RemoveSkillFromFreelancer(getTokenByContext(ctx), skill.Name, DB); err != nil {
+		if err := users.RemoveSkillFromFreelancer(getUsernameByContextToken(ctx), skill.Name, DB); err != nil {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, nil)
@@ -102,7 +102,7 @@ func (handler *Handler) RemoveSkillFromFreelancer(ctx *gin.Context) notification
 }
 
 func (handler *Handler) GetSkillsFromFreelancer(context *gin.Context) notifications.Notification {
-	if skills, err := users.GetFreelancerSkills(getTokenByContext(context), DB); err != nil {
+	if skills, err := users.GetFreelancerSkills(getUsernameByContextToken(context), DB); err != nil {
 		return notifications.GetInternalServerErrorNotif(context, skills)
 	} else {
 		return notifications.GetSuccessfulNotif(context, skills)
