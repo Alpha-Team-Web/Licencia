@@ -65,3 +65,16 @@ func (db *RedisAuthTokenDb) ExpireAuth(token string) error {
 	}
 	return nil
 }
+
+func (db *RedisAuthTokenDb) GetAllTokens() ([]existence.AuthToken, error) {
+	if tokens, err := db.conn.SMembers(tokenSetKey).Result(); err != nil {
+		return []existence.AuthToken{}, err
+	} else {
+		authz := []existence.AuthToken{}
+		for _, token := range tokens {
+			auth, _ := db.GetAuthByToken(token)
+			authz = append(authz, auth)
+		}
+		return authz, nil
+	}
+}

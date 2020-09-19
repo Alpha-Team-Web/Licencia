@@ -47,7 +47,7 @@ func NewHandler() *Handler {
 
 func initTokensWithClocks() {
 	TokensWithClocks = map[string]*utils.Clock{}
-	if auths, err := DB.AuthTokenTable.GetAllTokens(); err == nil {
+	if auths, err := RedisApi.AuthTokenDB.GetAllTokens(); err == nil {
 		for _, auth := range auths {
 			AddNewClock(auth.Token)
 		}
@@ -58,7 +58,7 @@ func initTokensWithClocks() {
 
 func AddNewClock(token string) {
 	clk := utils.NewClock(true, notUsedExpiry, func() {
-		if err := DB.AuthTokenTable.ExpireAuth(token); err != nil {
+		if err := RedisApi.AuthTokenDB.ExpireAuth(token); err != nil {
 			panic(err)
 		}
 	})
