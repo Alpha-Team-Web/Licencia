@@ -2,8 +2,8 @@ package filters
 
 import (
 	"back-src/controller/utils/libs/sets"
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"back-src/view/data"
 	"back-src/view/notifications"
 	"math"
@@ -11,7 +11,7 @@ import (
 
 var Inv invertedEngine
 
-func Filter(filter data.Filter, db *database.Database) ([]notifications.ListicProject, error) {
+func Filter(filter data.Filter, db *sql.Database) ([]notifications.ListicProject, error) {
 	if resultSet, err := filterByPriceAndStat(filter, db); err == nil {
 		if filter.IsFilterBySkill {
 			resultSet = sets.IntersectSets(resultSet, filterBySkills(filter))
@@ -22,7 +22,7 @@ func Filter(filter data.Filter, db *database.Database) ([]notifications.ListicPr
 	}
 }
 
-func getListicProjectsByIds(ids []string, db *database.Database) []notifications.ListicProject {
+func getListicProjectsByIds(ids []string, db *sql.Database) []notifications.ListicProject {
 	listicProjects := []notifications.ListicProject{}
 	for _, id := range ids {
 		if project, err := db.ProjectTable.GetProjectDefinedColumns(id, "id", "name", "description", "start_date", "employer_username", "freelancer_requests_with_description", "fields_with_skills"); err == nil {
@@ -32,7 +32,7 @@ func getListicProjectsByIds(ids []string, db *database.Database) []notifications
 	return listicProjects
 }
 
-func getListicProjectFromProject(project existence.Project, db *database.Database) notifications.ListicProject {
+func getListicProjectFromProject(project existence.Project, db *sql.Database) notifications.ListicProject {
 	listicProject := notifications.ListicProject{
 		Id:                  project.Id,
 		Name:                project.Name,
@@ -51,7 +51,7 @@ func getListicProjectFromProject(project existence.Project, db *database.Databas
 	return listicProject
 }
 
-func filterByPriceAndStat(filter data.Filter, db *database.Database) (sets.Set, error) {
+func filterByPriceAndStat(filter data.Filter, db *sql.Database) (sets.Set, error) {
 	max := filter.MaxPrice
 	min := filter.MinPrice
 	if max == 0 {

@@ -25,7 +25,7 @@ func GetShouldBindJsonErrorNotif(ctx *gin.Context, data ...interface{}) Notifica
 func GetDatabaseErrorNotif(ctx *gin.Context, data ...interface{}) Notification {
 	notif := Notification{
 		Context:    ctx,
-		Message:    "database down",
+		Message:    "sql down",
 		StatusCode: http.StatusServiceUnavailable, //503
 		Data:       data,
 	}

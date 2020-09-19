@@ -5,8 +5,8 @@ import (
 	"back-src/controller/control/media"
 	"back-src/controller/control/projects/filters"
 	"back-src/controller/utils/libs"
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"back-src/view/data"
 	"errors"
 	"time"
@@ -17,7 +17,7 @@ const (
 	FileIdSize    = 16
 )
 
-func EditEmployerProfile(token string, emp existence.Employer, db *database.Database) error {
+func EditEmployerProfile(token string, emp existence.Employer, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if err := db.EmployerTable.UpdateEmployerProfile(username, emp); err == nil {
 			media.AddUpdateProfileEvent(username, false, db)
@@ -30,7 +30,7 @@ func EditEmployerProfile(token string, emp existence.Employer, db *database.Data
 	}
 }
 
-func EditEmployerPassword(token string, emp data.ChangePassRequest, db *database.Database) error {
+func EditEmployerPassword(token string, emp data.ChangePassRequest, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		employer, _ := db.EmployerTable.GetEmployer(username)
 		if emp.OldPass != employer.Password {
@@ -42,7 +42,7 @@ func EditEmployerPassword(token string, emp data.ChangePassRequest, db *database
 	}
 }
 
-func GetEmployer(token string, db *database.Database) (existence.Employer, existence.File, error) {
+func GetEmployer(token string, db *sql.Database) (existence.Employer, existence.File, error) {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if emp, err := db.EmployerTable.GetEmployer(username); err != nil {
 			return existence.Employer{}, existence.File{}, err
@@ -59,14 +59,14 @@ func GetEmployer(token string, db *database.Database) (existence.Employer, exist
 	}
 }
 
-func GetEmployerProjects(username string, db *database.Database) ([]existence.Project, error) {
+func GetEmployerProjects(username string, db *sql.Database) ([]existence.Project, error) {
 	if !db.EmployerTable.DoesEmployerExistWithUsername(username) {
 		return nil, errors.New("no user with such username :" + username)
 	}
 	return db.EmployerTable.GetEmployerProjects(username)
 }
 
-//func AddProjectWithFilesToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *database.Database) error {
+//func AddProjectWithFilesToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *sql.Database) error {
 //	project.FileIds = []string{}
 //	if licencia-errors := AddProjectToEmployer(token, project, db); licencia-errors != nil {
 //		return licencia-errors
@@ -77,7 +77,7 @@ func GetEmployerProjects(username string, db *database.Database) ([]existence.Pr
 //	return nil
 //}
 
-func AddProjectToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *database.Database) (e error) {
+func AddProjectToEmployer(token string, project existence.Project, attachments []existence.ProjectAttachment, db *sql.Database) (e error) {
 	e = nil
 	if err := checkAddProjectFieldsValidity(project); err == nil {
 		if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
@@ -135,7 +135,7 @@ func checkAddProjectFieldsValidity(project existence.Project) error {
 	return nil
 }
 
-func checkProjectFiles(projectId string, attachments []existence.ProjectAttachment, db *database.Database) error {
+func checkProjectFiles(projectId string, attachments []existence.ProjectAttachment, db *sql.Database) error {
 	for i, attachment := range attachments {
 		if id, err := MakeNewFileId(db); err == nil {
 			attachment.ProjectId = projectId
@@ -150,7 +150,7 @@ func checkProjectFiles(projectId string, attachments []existence.ProjectAttachme
 	return nil
 }
 
-func MakeNewFileId(db *database.Database) (string, error) {
+func MakeNewFileId(db *sql.Database) (string, error) {
 	var e error
 	id := "f" + libs.GetRandomNumberAsString(FileIdSize-1, func(str string) bool {
 		if isThere, err := db.ProjectAttachmentTable.IsThereFileWithId("f" + str); err != nil {
@@ -163,7 +163,7 @@ func MakeNewFileId(db *database.Database) (string, error) {
 	return id, e
 }
 
-func makeNewProjectId(db *database.Database) (id string, e error) {
+func makeNewProjectId(db *sql.Database) (id string, e error) {
 	id = "p" + libs.GetRandomNumberAsString(ProjectIdSize-1, func(str string) bool {
 		if isThere, err := db.ProjectTable.IsThereProjectWithId("p" + str); err != nil {
 			e = err
@@ -175,7 +175,7 @@ func makeNewProjectId(db *database.Database) (id string, e error) {
 	return id, e
 }
 
-func checkProjectSkills(projectId string, fieldsWithSkills map[string][]string, db *database.Database) error {
+func checkProjectSkills(projectId string, fieldsWithSkills map[string][]string, db *sql.Database) error {
 	for field, skills := range fieldsWithSkills {
 		oldSkills, err := db.FieldTable.GetFieldSkills(field)
 		if err != nil {
@@ -194,7 +194,7 @@ func checkProjectSkills(projectId string, fieldsWithSkills map[string][]string, 
 	return nil
 }
 
-func EditEmployerProject(token string, project existence.Project, db *database.Database) error {
+func EditEmployerProject(token string, project existence.Project, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if _, err := db.EmployerTable.GetEmployer(username); err == nil {
 			if realProject, err := db.ProjectTable.GetProject(project.Id); err == nil {
@@ -218,7 +218,7 @@ func EditEmployerProject(token string, project existence.Project, db *database.D
 	}
 }
 
-func AssignProjectToFreelancer(token string, freelancer string, projectId string, db *database.Database) error {
+func AssignProjectToFreelancer(token string, freelancer string, projectId string, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
 			return err
@@ -252,7 +252,7 @@ func AssignProjectToFreelancer(token string, freelancer string, projectId string
 	}
 }
 
-func removeProjectRequests(projectId string, db *database.Database) error {
+func removeProjectRequests(projectId string, db *sql.Database) error {
 	if givenMap, err := db.ProjectTable.DeleteProjectDescriptions(projectId); err != nil {
 		return err
 	} else {
@@ -264,7 +264,7 @@ func removeProjectRequests(projectId string, db *database.Database) error {
 	return nil
 }
 
-func ExtendProject(token string, projectId string, finishDate time.Time, db *database.Database) error {
+func ExtendProject(token string, projectId string, finishDate time.Time, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
 			return err
@@ -291,7 +291,7 @@ func ExtendProject(token string, projectId string, finishDate time.Time, db *dat
 	}
 }
 
-func CloseProject(token string, projectId string, db *database.Database) error {
+func CloseProject(token string, projectId string, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if realUsername, err := db.ProjectTable.GetEmployerUsernameByProjectId(projectId); err != nil {
 			return err

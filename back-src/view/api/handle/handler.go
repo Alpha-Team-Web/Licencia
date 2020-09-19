@@ -4,7 +4,8 @@ import (
 	licnecia_errors "back-src/controller/control/licencia-errors"
 	"back-src/controller/control/projects/fields"
 	"back-src/controller/control/projects/filters"
-	"back-src/model/database"
+	redis_sessions "back-src/model/redis-sessions"
+	"back-src/model/sql"
 	"back-src/view/api/handle/utils"
 	"back-src/view/notifications"
 	"fmt"
@@ -21,7 +22,9 @@ const authExpiryMin = 30
 
 var AuthExpiryDur time.Duration
 
-var DB *database.Database
+var DB *sql.Database
+var RedisApi *redis_sessions.RedisApi
+
 var TokensWithClocks map[string]*utils.Clock
 
 func NewHandler() *Handler {
@@ -30,7 +33,8 @@ func NewHandler() *Handler {
 	if error != nil {
 		panic(error)
 	}
-	DB = database.NewDb()
+	DB = sql.NewDb()
+	RedisApi = redis_sessions.NewRedisApi()
 	err := DB.Initialize()
 	if err != nil {
 		panic(err)

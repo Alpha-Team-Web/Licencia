@@ -1,8 +1,8 @@
 package fields
 
 import (
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 )
 
 type engine struct {
@@ -19,7 +19,7 @@ func (eng *engine) addNewSkill(field existence.Field, skill string) {
 	}
 }
 
-func NewEngine(db *database.Database) engine {
+func NewEngine(db *sql.Database) engine {
 	engine := engine{
 		SkillWithField: map[string]existence.Field{},
 		Fields:         []existence.Field{},

@@ -1,8 +1,8 @@
 package fields
 
 import (
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"strings"
 )
 
@@ -27,7 +27,7 @@ func GetSkillsByField(fieldId string) []string {
 	return []string{}
 }
 
-func AddSkillToField(fieldId string, skill string, db *database.Database) error {
+func AddSkillToField(fieldId string, skill string, db *sql.Database) error {
 	if _, ok := Engine.SkillWithField[skill]; ok {
 		return nil
 	} else {

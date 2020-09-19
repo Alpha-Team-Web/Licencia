@@ -5,8 +5,8 @@ import (
 	"back-src/controller/control/media"
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"back-src/view/data"
 	"back-src/view/notifications"
 	"github.com/gin-gonic/gin"
@@ -73,7 +73,7 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
-		if token, err := users.Login(loginReq, DB); err != nil {
+		if token, err := users.Login(loginReq, DB, RedisApi); err != nil {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			AddNewClock(token)
@@ -88,7 +88,7 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 func (handler *Handler) ModifyFollow(ctx *gin.Context, isFollow bool) notifications.Notification {
 	follow := existence.Follow{}
 	if err := ctx.ShouldBindJSON(&follow); err == nil {
-		job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(string, existence.Follow, *database.Database) error)
+		job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(string, existence.Follow, *sql.Database) error)
 		if err := job(getTokenByContext(ctx), follow, DB); err == nil {
 			return notifications.GetSuccessfulNotif(ctx, nil)
 		} else {

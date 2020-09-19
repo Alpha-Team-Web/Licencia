@@ -1,8 +1,8 @@
 package users
 
 import (
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"fmt"
 	"testing"
 )
@@ -16,7 +16,7 @@ import (
 }*/
 
 func TestUpdateEmployer(t *testing.T) {
-	db := database.NewDb()
+	db := sql.NewDb()
 	if err := db.Initialize(); err != nil {
 		t.Error(err)
 	}
@@ -64,7 +64,7 @@ func TestUpdateEmployer(t *testing.T) {
 	"emp-to-fr-comment":"N/A"
 }*/
 func TestAddProjectToEmployer(t *testing.T) {
-	db := database.NewDb()
+	db := sql.NewDb()
 	if err := db.Initialize(); err != nil {
 		t.Error(err)
 	}
@@ -81,7 +81,7 @@ func TestAddProjectToEmployer(t *testing.T) {
 //}
 
 func TestEditEmployerProject(t *testing.T) {
-	db := database.NewDb()
+	db := sql.NewDb()
 	if err := db.Initialize(); err != nil {
 		t.Error(err)
 	}
@@ -106,7 +106,7 @@ func TestMakeNewProjectId(t *testing.T) {
 				t.Errorf("Code Paniced: %v\n", r)
 			}
 		}()
-		db := database.NewDb()
+		db := sql.NewDb()
 		if err := db.Initialize(); err != nil {
 			t.Error(err)
 		}

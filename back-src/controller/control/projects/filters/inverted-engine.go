@@ -2,7 +2,7 @@ package filters
 
 import (
 	"back-src/controller/utils/libs/sets"
-	"back-src/model/database"
+	"back-src/model/sql"
 )
 
 type invertedEngine struct {
@@ -10,7 +10,7 @@ type invertedEngine struct {
 	FailedInit  bool
 }
 
-func NewEngine(db *database.Database) invertedEngine {
+func NewEngine(db *sql.Database) invertedEngine {
 	inv := invertedEngine{invertedMap: map[string]sets.Set{}, FailedInit: false}
 
 	projects, err := db.ProjectTable.GetAllProjects()

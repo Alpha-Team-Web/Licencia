@@ -1,15 +1,15 @@
-package database
+package sql
 
 import (
-	"back-src/model/database/tables"
 	"back-src/model/existence"
+	"back-src/model/sql/tables"
 	"encoding/json"
 	"github.com/go-pg/pg"
 	"io/ioutil"
 )
 
 const (
-	jsonsFolderPath = "model/database/jsons/"
+	jsonsFolderPath = "model/sql/jsons/"
 )
 
 type Initializable interface {

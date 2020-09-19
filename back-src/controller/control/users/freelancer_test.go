@@ -2,8 +2,8 @@ package users
 
 import (
 	"back-src/controller/utils/libs"
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"testing"
 )
 
@@ -17,7 +17,7 @@ import (
 }*/
 
 func TestUpdateFreelancer(t *testing.T) {
-	db := database.NewDb()
+	db := sql.NewDb()
 	if err := db.Initialize(); err != nil {
 		t.Error(err)
 	}
@@ -61,7 +61,7 @@ func TestUpdateFreelancer(t *testing.T) {
 }
 
 func TestChooseFreelancerSkills(t *testing.T) {
-	db := database.NewDb()
+	db := sql.NewDb()
 	if err := db.Initialize(); err != nil {
 		t.Error(err)
 	}

@@ -1,13 +1,13 @@
 package files
 
 import (
-	"back-src/model/database"
+	"back-src/model/sql"
 	"testing"
 )
 
 //execute this after uploading
 func TestUpload(t *testing.T) {
-	db := database.NewDb()
+	db := sql.NewDb()
 	if err := db.Initialize(); err != nil {
 		t.Error(err)
 	}

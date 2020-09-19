@@ -5,12 +5,12 @@ import (
 	"back-src/controller/control/media"
 	"back-src/controller/control/projects/fields"
 	"back-src/controller/utils/libs"
-	"back-src/model/database"
 	"back-src/model/existence"
+	"back-src/model/sql"
 	"back-src/view/data"
 )
 
-/*func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *database.Database) error {
+/*func ChooseFreelancerSkills(username string, fieldId string, skills []string, db *sql.Database) error {
 	if fieldSkills, err := db.FieldTable.GetFieldSkills(fieldId); err == nil {
 		if err := db.FreelancerTable.AddFreelancerSkills(username, fieldId, skills); err != nil {
 			return err
@@ -28,7 +28,7 @@ import (
 	}
 }*/
 
-func EditFreelancerProfile(token string, frl existence.Freelancer, db *database.Database) error {
+func EditFreelancerProfile(token string, frl existence.Freelancer, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if err := db.FreelancerTable.UpdateFreelancerProfile(username, frl); err == nil {
 			media.AddUpdateProfileEvent(username, true, db)
@@ -41,7 +41,7 @@ func EditFreelancerProfile(token string, frl existence.Freelancer, db *database.
 	}
 }
 
-func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *database.Database) error {
+func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		freelancer, _ := db.FreelancerTable.GetFreelancer(username)
 		if frl.OldPass != freelancer.Password {
@@ -53,7 +53,7 @@ func EditFreelancerPassword(token string, frl data.ChangePassRequest, db *databa
 	}
 }
 
-func EditFreelancerLinks(token string, frl existence.Freelancer, db *database.Database) error {
+func EditFreelancerLinks(token string, frl existence.Freelancer, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if err := db.FreelancerTable.UpdateFreelancerLinks(username, frl); err == nil {
 			media.AddUpdateProfileEvent(username, true, db)
@@ -66,7 +66,7 @@ func EditFreelancerLinks(token string, frl existence.Freelancer, db *database.Da
 	}
 }
 
-func GetFreelancer(token string, db *database.Database) (existence.Freelancer, existence.File, error) {
+func GetFreelancer(token string, db *sql.Database) (existence.Freelancer, existence.File, error) {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if frl, err := db.FreelancerTable.GetFreelancer(username); err != nil {
 			return existence.Freelancer{}, existence.File{}, err
@@ -83,7 +83,7 @@ func GetFreelancer(token string, db *database.Database) (existence.Freelancer, e
 	}
 }
 
-func FreelancerRequestsForProject(token string, request data.FreelancerRequestForProject, db *database.Database) error {
+func FreelancerRequestsForProject(token string, request data.FreelancerRequestForProject, db *sql.Database) error {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		if err := checkAbilityToRequestNewProject(username, db); err == nil {
 			if err := checkProjectStatus(request.Id, existence.Open, db); err == nil {
@@ -104,7 +104,7 @@ func FreelancerRequestsForProject(token string, request data.FreelancerRequestFo
 	}
 }
 
-func checkProjectStatus(projectId, status string, db *database.Database) error {
+func checkProjectStatus(projectId, status string, db *sql.Database) error {
 	if isThere, err := db.ProjectTable.IsThereProjectWithId(projectId); err == nil {
 		if isThere {
 			if projectStatus, err := db.ProjectTable.GetProjectStatus(projectId); err == nil {
@@ -124,7 +124,7 @@ func checkProjectStatus(projectId, status string, db *database.Database) error {
 	}
 }
 
-func checkAbilityToRequestNewProject(username string, db *database.Database) error {
+func checkAbilityToRequestNewProject(username string, db *sql.Database) error {
 	e := licencia_errors.NewLicenciaError("cant request more")
 	if accountType, err := db.FreelancerTable.GetFreelancerTypeByUsername(username); err == nil {
 		if requestedProjectIds, err := db.FreelancerTable.GetFreelancerRequestedProjectIds(username); err == nil {
@@ -162,7 +162,7 @@ func checkAbilityToRequestNewProject(username string, db *database.Database) err
 	return nil
 }
 
-func AddSkillToFreelancer(token string, skillName string, db *database.Database) error {
+func AddSkillToFreelancer(token string, skillName string, db *sql.Database) error {
 	if _, ok := fields.Engine.SkillWithField[skillName]; !ok {
 		return licencia_errors.NewLicenciaError("no skill with such name exists.")
 	} else {
@@ -181,7 +181,7 @@ func AddSkillToFreelancer(token string, skillName string, db *database.Database)
 	return nil
 }
 
-func RemoveSkillFromFreelancer(token string, skillName string, db *database.Database) error {
+func RemoveSkillFromFreelancer(token string, skillName string, db *sql.Database) error {
 	if _, ok := fields.Engine.SkillWithField[skillName]; !ok {
 		return licencia_errors.NewLicenciaError("no skill with such name exists.")
 	} else {
@@ -194,7 +194,7 @@ func RemoveSkillFromFreelancer(token string, skillName string, db *database.Data
 	return nil
 }
 
-func GetFreelancerSkills(token string, db *database.Database) ([]string, error) {
+func GetFreelancerSkills(token string, db *sql.Database) ([]string, error) {
 	if username, err := db.AuthTokenTable.GetUsernameByToken(token); err == nil {
 		skills, err := db.FreelancerTable.GetFreelancerSkills(username)
 		return skills, err
