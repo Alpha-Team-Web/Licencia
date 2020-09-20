@@ -13,7 +13,7 @@ func (handler *Handler) Filter(ctx *gin.Context) notifications.Notification {
 	if err := ctx.ShouldBindJSON(&filterReq); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if projects, err := filters.Filter(filterReq, DB); err != nil {
+	if projects, err := filters.Filter(filterReq, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, projects)
@@ -36,7 +36,7 @@ func (handler *Handler) AddSkillToField(ctx *gin.Context) notifications.Notifica
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := fields.AddSkillToField(req.FieldId, req.SkillName, DB); err != nil {
+	if err := fields.AddSkillToField(req.FieldId, req.SkillName, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	}
 	return notifications.GetSuccessfulNotif(ctx, nil)

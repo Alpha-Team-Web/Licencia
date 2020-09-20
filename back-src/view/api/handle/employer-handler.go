@@ -25,7 +25,7 @@ func (handler *Handler) EditEmployerProfile(ctx *gin.Context) notifications.Noti
 	if err := ctx.ShouldBindJSON(&emp); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	} else {
-		if err := users.EditEmployerProfile(getUsernameByContextToken(ctx), emp, DB); err != nil {
+		if err := users.EditEmployerProfile(getUsernameByContextToken(ctx), emp, SqlDb); err != nil {
 			return notifications.GetInternalServerErrorNotif(ctx, nil)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, nil)
@@ -38,7 +38,7 @@ func (handler *Handler) EditEmployerPassword(ctx *gin.Context) notifications.Not
 	if err := ctx.ShouldBindJSON(&emp); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	} else {
-		if err := users.EditEmployerPassword(getUsernameByContextToken(ctx), emp, DB); err != nil {
+		if err := users.EditEmployerPassword(getUsernameByContextToken(ctx), emp, SqlDb); err != nil {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, nil)
@@ -47,7 +47,7 @@ func (handler *Handler) EditEmployerPassword(ctx *gin.Context) notifications.Not
 }
 
 func (handler *Handler) GetEmployerProfile(ctx *gin.Context) notifications.Notification {
-	if emp, file, err := users.GetEmployer(getUsernameByContextToken(ctx), DB); err != nil {
+	if emp, file, err := users.GetEmployer(getUsernameByContextToken(ctx), SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, emp, file)
@@ -80,7 +80,7 @@ func (handler *Handler) AddEmployerProject(ctx *gin.Context) notifications.Notif
 			attachments = append(attachments, attachment)
 		}
 	}
-	if err := users.AddProjectToEmployer(getUsernameByContextToken(ctx), project, attachments, DB); err != nil {
+	if err := users.AddProjectToEmployer(getUsernameByContextToken(ctx), project, attachments, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 		//TODO
 		/*			if err.Error() == "project fields not valid" {
@@ -98,7 +98,7 @@ func (handler *Handler) EditEmployerProject(ctx *gin.Context) notifications.Noti
 	if err := ctx.ShouldBindJSON(&project); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.EditEmployerProject(getUsernameByContextToken(ctx), project, DB); err != nil {
+	if err := users.EditEmployerProject(getUsernameByContextToken(ctx), project, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
@@ -113,7 +113,7 @@ func (handler *Handler) AssignProjectToFreelancer(ctx *gin.Context) notification
 	if err := ctx.ShouldBindJSON(&assign); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.AssignProjectToFreelancer(getUsernameByContextToken(ctx), assign.Freelancer, assign.Id, DB); err != nil {
+	if err := users.AssignProjectToFreelancer(getUsernameByContextToken(ctx), assign.Freelancer, assign.Id, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 		//TODO
 		/*			switch err.Error() {
@@ -138,7 +138,7 @@ func (handler *Handler) ExtendProject(ctx *gin.Context) notifications.Notificati
 	if err := ctx.ShouldBindJSON(&extend); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.ExtendProject(getUsernameByContextToken(ctx), extend.Id, extend.FinishDate, DB); err != nil {
+	if err := users.ExtendProject(getUsernameByContextToken(ctx), extend.Id, extend.FinishDate, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 		//TODO
 		/*			switch err.Error() {
@@ -161,7 +161,7 @@ func (handler *Handler) CloseProject(ctx *gin.Context) notifications.Notificatio
 	if err := ctx.ShouldBindJSON(&close); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := users.CloseProject(getUsernameByContextToken(ctx), close.Id, DB); err != nil {
+	if err := users.CloseProject(getUsernameByContextToken(ctx), close.Id, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 		//TODO
 		/*			switch err.Error() {

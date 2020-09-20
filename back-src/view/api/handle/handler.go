@@ -18,12 +18,12 @@ import (
 type Handler struct {
 }
 
-const notUsedExpiry = 1
-const authExpiryMin = 2
+const notUsedExpiry = 10
+const authExpiryMin = 30
 
 var AuthExpiryDur time.Duration
 
-var DB *sql.Database
+var SqlDb *sql.Database
 var RedisApi *redis_sessions.RedisApi
 
 var TokensWithClocks map[string]*utils.Clock
@@ -34,14 +34,14 @@ func NewHandler() *Handler {
 	if error != nil {
 		panic(error)
 	}
-	DB = sql.NewDb()
+	SqlDb = sql.NewDb()
 	RedisApi = redis_sessions.NewRedisApi()
-	err := DB.Initialize()
+	err := SqlDb.Initialize()
 	if err != nil {
 		panic(err)
 	}
-	filters.Inv = filters.NewEngine(DB)
-	fields.Engine = fields.NewEngine(DB)
+	filters.Inv = filters.NewEngine(SqlDb)
+	fields.Engine = fields.NewEngine(SqlDb)
 	initTokensWithClocks()
 	return &Handler{}
 }

@@ -36,7 +36,7 @@ func (*Handler) registerEmployer(ctx *gin.Context) notifications.Notification {
 			return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 		}
 	}
-	if err := users.RegisterEmployer(employer, DB); err != nil {
+	if err := users.RegisterEmployer(employer, SqlDb); err != nil {
 		if licnecia_errors.IsLicenciaError(err) {
 			return notifications.GetExpectationFailedError(ctx, licnecia_errors.GetErrorStrForRespond(err), nil)
 		} else {
@@ -55,7 +55,7 @@ func (*Handler) registerFreelancer(ctx *gin.Context) notifications.Notification 
 			return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 		}
 	}
-	if err := users.RegisterFreelancer(freelancer, DB); err != nil {
+	if err := users.RegisterFreelancer(freelancer, SqlDb); err != nil {
 		if licnecia_errors.IsLicenciaError(err) {
 			return notifications.GetExpectationFailedError(ctx, licnecia_errors.GetErrorStrForRespond(err), nil)
 		} else {
@@ -73,7 +73,7 @@ func (handler *Handler) Login(ctx *gin.Context) notifications.Notification {
 	switch accountType := ctx.Query("account-type"); accountType {
 	case existence.EmployerType, existence.FreelancerType:
 		loginReq.IsFreelancer = accountType == existence.FreelancerType
-		if token, err := users.Login(loginReq, DB, RedisApi); err != nil {
+		if token, err := users.Login(loginReq, SqlDb, RedisApi); err != nil {
 			return makeOperationErrorNotification(ctx, err)
 		} else {
 			AddNewClock(token)
@@ -89,7 +89,7 @@ func (handler *Handler) ModifyFollow(ctx *gin.Context, isFollow bool) notificati
 	follow := existence.Follow{}
 	if err := ctx.ShouldBindJSON(&follow); err == nil {
 		job := libs.Ternary(isFollow, media.Follow, media.UnFollow).(func(existence.AuthToken, existence.Follow, *sql.Database) error)
-		if err := job(getAuthByContext(ctx), follow, DB); err == nil {
+		if err := job(getAuthByContext(ctx), follow, SqlDb); err == nil {
 			return notifications.GetSuccessfulNotif(ctx, nil)
 		} else {
 			return notifications.GetInternalServerErrorNotif(ctx, nil)

@@ -12,7 +12,7 @@ func (handler *Handler) AddFreelancerReview(ctx *gin.Context) notifications.Noti
 	if err := ctx.ShouldBindJSON(frlReview); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := projects.AddFreelancerReview(getUsernameByContextToken(ctx), frlReview, DB); err != nil {
+	if err := projects.AddFreelancerReview(getUsernameByContextToken(ctx), frlReview, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
@@ -24,7 +24,7 @@ func (handler *Handler) AddEmployerReview(ctx *gin.Context) notifications.Notifi
 	if err := ctx.ShouldBindJSON(empReview); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if err := projects.AddEmployerReview(getUsernameByContextToken(ctx), empReview, DB); err != nil {
+	if err := projects.AddEmployerReview(getUsernameByContextToken(ctx), empReview, SqlDb); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, nil)
