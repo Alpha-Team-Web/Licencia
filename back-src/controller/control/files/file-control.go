@@ -9,6 +9,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"mime/multipart"
+	"time"
 )
 
 func UploadUserImage(username string, profileType string, file multipart.File, header *multipart.FileHeader, db *sql.Database, redis *redis_sessions.RedisApi) error {
@@ -23,15 +24,18 @@ func UploadUserImage(username string, profileType string, file multipart.File, h
 	profile.Size = header.Size
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if err := redis.ProfileDB.SetProfile(userWithRole, profile); err != nil {
+	if err := redis.ProfileDB.SetProfile(userWithRole, time.Now(), profile); err != nil {
 		return err
 	}
 	//sql
-	if has, _ := db.ProfileTable.HasProfile(username, profileType); has {
-		return db.ProfileTable.UpdateProfileImage(profile)
-	} else {
-		return db.ProfileTable.AddProfileImage(profile)
-	}
+	go func() {
+		if has, _ := db.ProfileTable.HasProfile(username, profileType); has {
+			db.ProfileTable.UpdateProfileImage(profile)
+		} else {
+			db.ProfileTable.AddProfileImage(profile)
+		}
+	}()
+	return nil
 }
 
 func DeleteUserImage(username, profileType string, db *sql.Database, redis *redis_sessions.RedisApi) error {
@@ -41,9 +45,9 @@ func DeleteUserImage(username, profileType string, db *sql.Database, redis *redi
 		return err
 	}
 	//sql
-	if err := db.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType}); err != nil {
-		return err
-	}
+	go func() {
+		db.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType})
+	}()
 	return nil
 }
 
@@ -61,6 +65,9 @@ func DownloadUserImage(username string, profileType string, db *sql.Database, re
 	if prof, err := db.ProfileTable.GetProfileImage(profileType, username); err != nil {
 		return existence.File{}, err
 	} else {
+		go func() {
+			redis.ProfileDB.SetProfile(userWithRole, time.Now(), prof)
+		}()
 		return prof.File, nil
 	}
 }

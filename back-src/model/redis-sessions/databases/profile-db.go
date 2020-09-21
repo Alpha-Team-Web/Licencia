@@ -1,8 +1,10 @@
 package databases
 
 import (
+	"back-src/controller/utils/libs"
 	"back-src/model/existence"
 	"back-src/model/redis-sessions/orm"
+	"time"
 )
 
 //DB Number 5
@@ -13,7 +15,7 @@ type RedisProfileDb struct {
 }
 
 const (
-	profileSetKey = "profile"
+	keysExpireMinutes = 5
 )
 
 func NewRedisProfileDB(addr, password string) *RedisProfileDb {
@@ -35,24 +37,21 @@ func (db *RedisProfileDb) GetProfile(userWithRole string) (existence.Profile, er
 }
 
 func (db *RedisProfileDb) SetProfile(userWithRole string, profile existence.Profile) error {
-	if cmd := db.conn.SAdd(profileSetKey, userWithRole); cmd.Err() != nil {
-		return cmd.Err()
-	}
-
 	if stats := db.conn.HMSet(
 		userWithRole,
 		orm.HashProfileImage(profile),
 	); stats.Err() != nil {
 		return stats.Err()
 	}
+
+	if cmd := db.conn.Expire(userWithRole, time.Minute*keysExpireMinutes); cmd.Err() != nil {
+		return cmd.Err()
+	}
+
 	return nil
 }
 
 func (db *RedisProfileDb) DeleteProfile(userWithRole string) error {
-	if cmd := db.conn.SRem(profileSetKey, userWithRole); cmd.Err() != nil {
-		return cmd.Err()
-	}
-
 	if cmd := db.conn.Del(userWithRole); cmd.Err() != nil {
 		return cmd.Err()
 	}
@@ -60,5 +59,6 @@ func (db *RedisProfileDb) DeleteProfile(userWithRole string) error {
 }
 
 func (db *RedisProfileDb) IsThereProfile(userWithRole string) (bool, error) {
-	return db.conn.SIsMember(profileSetKey, userWithRole).Result()
+	cmd := db.conn.Exists(userWithRole)
+	return libs.Ternary(cmd.Val() == 0, false, true).(bool), cmd.Err()
 }
