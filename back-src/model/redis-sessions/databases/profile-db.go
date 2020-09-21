@@ -26,21 +26,21 @@ func NewRedisProfileDB(addr, password string) *RedisProfileDb {
 	return redisProfileDb
 }
 
-func (db *RedisProfileDb) GetProfile(username string) (existence.Profile, error) {
-	if values, err := db.conn.HGetAll(username).Result(); err != nil {
+func (db *RedisProfileDb) GetProfile(userWithRole string) (existence.Profile, error) {
+	if values, err := db.conn.HGetAll(userWithRole).Result(); err != nil {
 		return existence.Profile{}, err
 	} else {
 		return orm.UnHashProfileImage(values), nil
 	}
 }
 
-func (db *RedisProfileDb) SetProfile(username string, profile existence.Profile) error {
-	if cmd := db.conn.SAdd(profileSetKey, username); cmd.Err() != nil {
+func (db *RedisProfileDb) SetProfile(userWithRole string, profile existence.Profile) error {
+	if cmd := db.conn.SAdd(profileSetKey, userWithRole); cmd.Err() != nil {
 		return cmd.Err()
 	}
 
 	if stats := db.conn.HMSet(
-		username,
+		userWithRole,
 		orm.HashProfileImage(profile),
 	); stats.Err() != nil {
 		return stats.Err()
@@ -48,17 +48,17 @@ func (db *RedisProfileDb) SetProfile(username string, profile existence.Profile)
 	return nil
 }
 
-func (db *RedisProfileDb) DeleteProfile(username string) error {
-	if cmd := db.conn.SRem(profileSetKey, username); cmd.Err() != nil {
+func (db *RedisProfileDb) DeleteProfile(userWithRole string) error {
+	if cmd := db.conn.SRem(profileSetKey, userWithRole); cmd.Err() != nil {
 		return cmd.Err()
 	}
 
-	if cmd := db.conn.Del(username); cmd.Err() != nil {
+	if cmd := db.conn.Del(userWithRole); cmd.Err() != nil {
 		return cmd.Err()
 	}
 	return nil
 }
 
-func (db *RedisProfileDb) IsThereProfile(username string) bool {
-	return db.conn.SIsMember(profileSetKey, username).Val()
+func (db *RedisProfileDb) IsThereProfile(userWithRole string) (bool, error) {
+	return db.conn.SIsMember(profileSetKey, userWithRole).Result()
 }
