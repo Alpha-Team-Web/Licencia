@@ -20,7 +20,7 @@ func (handler *Handler) UploadProfileImage(ctx *gin.Context, profileType string)
 		return notifications.Notification{}
 	} else {
 		if file, header, err := ctx.Request.FormFile(ProfileImageUploaderForName); err == nil {
-			if err := files.UploadUserImage(getUsernameByContextToken(ctx), profileType, file, header, SqlDb, RedisApi); err != nil {
+			if err := files.UploadUserImage(getUsernameByContextToken(ctx), profileType, file, header, Db); err != nil {
 				return notifications.GetInternalServerErrorNotif(ctx, nil)
 			} else {
 				return notifications.GetSuccessfulNotif(ctx, nil)
@@ -36,7 +36,7 @@ func (handler *Handler) DeleteProfileImage(context *gin.Context, profileType str
 		//TODO
 		return notifications.Notification{}
 	} else {
-		if err := files.DeleteUserImage(getUsernameByContextToken(context), profileType, SqlDb, RedisApi); err != nil {
+		if err := files.DeleteUserImage(getUsernameByContextToken(context), profileType, Db); err != nil {
 			return notifications.GetDatabaseErrorNotif(context, nil)
 		}
 		return notifications.GetSuccessfulNotif(context, nil)
@@ -48,7 +48,7 @@ func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType strin
 		//TODO
 		return notifications.Notification{}
 	} else {
-		if file, err := files.DownloadUserImage(getUsernameByContextToken(ctx), profileType, SqlDb, RedisApi); err != nil {
+		if file, err := files.DownloadUserImage(getUsernameByContextToken(ctx), profileType, Db); err != nil {
 			return notifications.GetDatabaseErrorNotif(ctx, nil)
 		} else {
 			return notifications.GetSuccessfulNotif(ctx, file)

@@ -3,15 +3,15 @@ package files
 import (
 	"back-src/controller/control/users"
 	"back-src/controller/utils/libs"
+	"back-src/model"
 	"back-src/model/existence"
-	redis_sessions "back-src/model/redis-sessions"
 	"back-src/model/sql"
 	"errors"
 	"io/ioutil"
 	"mime/multipart"
 )
 
-func UploadUserImage(username string, profileType string, file multipart.File, header *multipart.FileHeader, db *sql.Database, redis *redis_sessions.RedisApi) error {
+func UploadUserImage(username string, profileType string, file multipart.File, header *multipart.FileHeader, dbApi model.DbApi) error {
 	name := header.Filename
 	result, _ := ioutil.ReadAll(file)
 	profile := existence.Profile{
@@ -23,52 +23,52 @@ func UploadUserImage(username string, profileType string, file multipart.File, h
 	profile.Size = header.Size
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if err := redis.ProfileDB.SetProfile(userWithRole, profile); err != nil {
+	if err := dbApi.RedisDb.ProfileDB.SetProfile(userWithRole, profile); err != nil {
 		return err
 	}
 	//sql
 	go func() {
-		if has, _ := db.ProfileTable.HasProfile(username, profileType); has {
-			db.ProfileTable.UpdateProfileImage(profile)
+		if has, _ := dbApi.SqlDb.ProfileTable.HasProfile(username, profileType); has {
+			dbApi.SqlDb.ProfileTable.UpdateProfileImage(profile)
 		} else {
-			db.ProfileTable.AddProfileImage(profile)
+			dbApi.SqlDb.ProfileTable.AddProfileImage(profile)
 		}
 	}()
 	return nil
 }
 
-func DeleteUserImage(username, profileType string, db *sql.Database, redis *redis_sessions.RedisApi) error {
+func DeleteUserImage(username, profileType string, dbApi model.DbApi) error {
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if err := redis.ProfileDB.DeleteProfile(userWithRole); err != nil {
+	if err := dbApi.RedisDb.ProfileDB.DeleteProfile(userWithRole); err != nil {
 		return err
 	}
 	//sql
 	go func() {
-		db.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType})
+		dbApi.SqlDb.ProfileTable.DeleteProfileImage(existence.Profile{Id: username, Type: profileType})
 	}()
 	return nil
 }
 
-func DownloadUserImage(username string, profileType string, db *sql.Database, redis *redis_sessions.RedisApi) (existence.File, error) {
+func DownloadUserImage(username string, profileType string, dbApi model.DbApi) (existence.File, error) {
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if has, _ := redis.ProfileDB.IsThereProfile(userWithRole); has {
-		if err := redis.ProfileDB.ExtendExpiry(userWithRole); err != nil {
+	if has, _ := dbApi.RedisDb.ProfileDB.IsThereProfile(userWithRole); has {
+		if err := dbApi.RedisDb.ProfileDB.ExtendExpiry(userWithRole); err != nil {
 			return existence.File{}, err
 		}
-		if prof, err := redis.ProfileDB.GetProfile(userWithRole); err != nil {
+		if prof, err := dbApi.RedisDb.ProfileDB.GetProfile(userWithRole); err != nil {
 			return existence.File{}, err
 		} else {
 			return prof.File, nil
 		}
 	}
 	//sql
-	if prof, err := db.ProfileTable.GetProfileImage(profileType, username); err != nil {
+	if prof, err := dbApi.SqlDb.ProfileTable.GetProfileImage(profileType, username); err != nil {
 		return existence.File{}, err
 	} else {
 		go func() {
-			redis.ProfileDB.SetProfile(userWithRole, prof)
+			dbApi.RedisDb.ProfileDB.SetProfile(userWithRole, prof)
 		}()
 		return prof.File, nil
 	}
