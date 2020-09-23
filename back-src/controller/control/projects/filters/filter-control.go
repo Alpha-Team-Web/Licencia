@@ -13,29 +13,55 @@ import (
 
 var Inv invertedEngine
 
+const PageSize = 20
+
 func Filter(auth existence.AuthToken, filter data.Filter, dbApi model.DbApi) ([]notifications.ListicProject, error) {
 	projectIds := []string{}
+	userWithRole := libs.Ternary(auth.IsFreelancer, "frl-"+auth.Username, "emp-"+auth.Username).(string)
+	//redis
+	if dbApi.RedisDb.FilterDb.IsThereFilter(userWithRole) {
+		if redisFilter, projectIds, err := dbApi.RedisDb.FilterDb.GetFilter(userWithRole); err == nil {
+			if areFiltersEqual(filter, redisFilter) {
+				dbApi.RedisDb.FilterDb.ExtendFilterExpiry(userWithRole)
+				return getListicProjectsByIds(projectIds, filter.PageNumber, dbApi.SqlDb), nil
+			}
+		}
+	}
+	//sql
 	if resultSet, err := filterByPriceAndStat(filter, dbApi.SqlDb); err == nil {
 		if filter.IsFilterBySkill {
 			resultSet = sets.IntersectSets(resultSet, filterBySkills(filter))
 		}
 		projectIds = append(projectIds, resultSet.GetMembers()...)
 		dbApi.RedisDb.FilterDb.AddFilterToUserWithRole(
-			libs.Ternary(auth.IsFreelancer, "frl-"+auth.Username, "emp-"+auth.Username).(string),
+			userWithRole,
 			filter,
 			projectIds,
 		)
 	} else {
 		return []notifications.ListicProject{}, err
 	}
-	//TODO(Safhe Bandi)
-	return getListicProjectsByIds(projectIds, dbApi.SqlDb), nil
+	return getListicProjectsByIds(projectIds, filter.PageNumber, dbApi.SqlDb), nil
 }
 
-func getListicProjectsByIds(ids []string, db *sql.Database) []notifications.ListicProject {
+func areFiltersEqual(first data.Filter, second data.Filter) bool {
+	result := true
+	result = result && (first.Status == second.Status)
+	result = result && (first.MinPrice == second.MinPrice)
+	result = result && (first.MaxPrice == second.MaxPrice)
+	result = result && (first.IsFilterBySkill == second.IsFilterBySkill)
+	result = result && libs.AreStringSetsEqual(first.MustIncludeSkills, second.MustIncludeSkills)
+	result = result && libs.AreStringSetsEqual(first.IncludeSkills, second.IncludeSkills)
+	result = result && libs.AreStringSetsEqual(first.ExcludeSkills, second.ExcludeSkills)
+	return result
+}
+
+func getListicProjectsByIds(ids []string, pageNumber int, db *sql.Database) []notifications.ListicProject {
 	listicProjects := []notifications.ListicProject{}
-	for _, id := range ids {
-		if project, err := db.ProjectTable.GetProjectDefinedColumns(id, "id", "name", "description", "start_date", "employer_username", "freelancer_requests_with_description", "fields_with_skills"); err == nil {
+	start, end := (pageNumber-1)*PageSize, pageNumber*PageSize-1
+
+	for i := start; i < end && i < len(ids); i++ {
+		if project, err := db.ProjectTable.GetProjectDefinedColumns(ids[i], "id", "name", "description", "start_date", "employer_username", "freelancer_requests_with_description", "fields_with_skills"); err == nil {
 			listicProjects = append(listicProjects, getListicProjectFromProject(project, db))
 		}
 	}
