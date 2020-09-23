@@ -28,6 +28,7 @@ type Filter struct {
 	IncludeSkills     []string `json:"include-skills"`
 	ExcludeSkills     []string `json:"exclude-skills"`
 	IsFilterBySkill   bool     `json:"is-filter-by-skill"`
+	PageNumber        int      `json:"page_number" binding:"lte=1"`
 }
 
 type ProjectForm struct {

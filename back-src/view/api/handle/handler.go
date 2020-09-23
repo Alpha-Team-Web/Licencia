@@ -53,7 +53,7 @@ func NewHandler() *Handler {
 
 func initTokensWithClocks() {
 	TokensWithClocks = map[string]*utils.Clock{}
-	if auths, err := RedisApi.AuthTokenDB.GetAllTokens(); err == nil {
+	if auths, err := RedisApi.AuthTokenDb.GetAllTokens(); err == nil {
 		for _, auth := range auths {
 			AddNewClock(auth.Token)
 		}
@@ -64,7 +64,7 @@ func initTokensWithClocks() {
 
 func AddNewClock(token string) {
 	clk := utils.NewClock(true, notUsedExpiry, func() {
-		if err := RedisApi.AuthTokenDB.ExpireAuth(token); err != nil {
+		if err := RedisApi.AuthTokenDb.ExpireAuth(token); err != nil {
 			panic(err)
 		}
 	})
@@ -91,11 +91,11 @@ func makeOperationErrorNotification(ctx *gin.Context, err error) notifications.N
 }
 
 func getAuthByContext(ctx *gin.Context) existence.AuthToken {
-	auth, _ := RedisApi.AuthTokenDB.GetAuthByToken(ctx.Writer.Header().Get("Token"))
+	auth, _ := RedisApi.AuthTokenDb.GetAuthByToken(ctx.Writer.Header().Get("Token"))
 	return auth
 }
 
 func getUsernameByContextToken(ctx *gin.Context) string {
-	username, _ := RedisApi.AuthTokenDB.GetUsernameByToken(ctx.Writer.Header().Get("Token"))
+	username, _ := RedisApi.AuthTokenDb.GetUsernameByToken(ctx.Writer.Header().Get("Token"))
 	return username
 }

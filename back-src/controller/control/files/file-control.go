@@ -23,7 +23,7 @@ func UploadUserImage(username string, profileType string, file multipart.File, h
 	profile.Size = header.Size
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if err := dbApi.RedisDb.ProfileDB.SetProfile(userWithRole, profile); err != nil {
+	if err := dbApi.RedisDb.ProfileDb.SetProfile(userWithRole, profile); err != nil {
 		return err
 	}
 	//sql
@@ -40,7 +40,7 @@ func UploadUserImage(username string, profileType string, file multipart.File, h
 func DeleteUserImage(username, profileType string, dbApi model.DbApi) error {
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if err := dbApi.RedisDb.ProfileDB.DeleteProfile(userWithRole); err != nil {
+	if err := dbApi.RedisDb.ProfileDb.DeleteProfile(userWithRole); err != nil {
 		return err
 	}
 	//sql
@@ -53,11 +53,11 @@ func DeleteUserImage(username, profileType string, dbApi model.DbApi) error {
 func DownloadUserImage(username string, profileType string, dbApi model.DbApi) (existence.File, error) {
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if has, _ := dbApi.RedisDb.ProfileDB.IsThereProfile(userWithRole); has {
-		if err := dbApi.RedisDb.ProfileDB.ExtendExpiry(userWithRole); err != nil {
+	if has, _ := dbApi.RedisDb.ProfileDb.IsThereProfile(userWithRole); has {
+		if err := dbApi.RedisDb.ProfileDb.ExtendExpiry(userWithRole); err != nil {
 			return existence.File{}, err
 		}
-		if prof, err := dbApi.RedisDb.ProfileDB.GetProfile(userWithRole); err != nil {
+		if prof, err := dbApi.RedisDb.ProfileDb.GetProfile(userWithRole); err != nil {
 			return existence.File{}, err
 		} else {
 			return prof.File, nil
@@ -68,7 +68,7 @@ func DownloadUserImage(username string, profileType string, dbApi model.DbApi) (
 		return existence.File{}, err
 	} else {
 		go func() {
-			dbApi.RedisDb.ProfileDB.SetProfile(userWithRole, prof)
+			dbApi.RedisDb.ProfileDb.SetProfile(userWithRole, prof)
 		}()
 		return prof.File, nil
 	}

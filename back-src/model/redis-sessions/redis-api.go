@@ -3,8 +3,9 @@ package redis_sessions
 import "back-src/model/redis-sessions/databases"
 
 type RedisApi struct {
-	AuthTokenDB *databases.RedisAuthTokenDb
-	ProfileDB   *databases.RedisProfileDb
+	AuthTokenDb *databases.RedisAuthTokenDb
+	ProfileDb   *databases.RedisProfileDb
+	FilterDb    *databases.RedisFilterDb
 }
 
 const (
@@ -14,11 +15,15 @@ const (
 
 func NewRedisApi() *RedisApi {
 	return &RedisApi{
-		AuthTokenDB: databases.NewRedisAuthTokenDB(
+		AuthTokenDb: databases.NewRedisAuthTokenDB(
 			redisHostAddr,
 			redisPassword,
 		),
-		ProfileDB: databases.NewRedisProfileDB(
+		ProfileDb: databases.NewRedisProfileDB(
+			redisHostAddr,
+			redisPassword,
+		),
+		FilterDb: databases.NewRedisFilterDb(
 			redisHostAddr,
 			redisPassword,
 		),

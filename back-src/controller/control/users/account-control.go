@@ -105,8 +105,8 @@ func getPasswordGetter(isFreelancer bool, db *sql.Database) func(string) (string
 }
 
 func MakeNewAuthToken(username string, isFreelancer bool, redisApi *rs.RedisApi) (token string, e error) {
-	token, err := redisApi.AuthTokenDB.MakeNewAuth(username, isFreelancer, time.Now(), libs.GetRandomString(AuthTokenSize, func(token string) bool {
-		if isDuplicate, err := redisApi.AuthTokenDB.IsThereAuthWithToken(token); err == nil {
+	token, err := redisApi.AuthTokenDb.MakeNewAuth(username, isFreelancer, time.Now(), libs.GetRandomString(AuthTokenSize, func(token string) bool {
+		if isDuplicate, err := redisApi.AuthTokenDb.IsThereAuthWithToken(token); err == nil {
 			return isDuplicate
 		} else {
 			e = err

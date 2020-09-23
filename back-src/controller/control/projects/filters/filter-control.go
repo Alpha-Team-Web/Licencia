@@ -1,7 +1,9 @@
 package filters
 
 import (
+	"back-src/controller/utils/libs"
 	"back-src/controller/utils/libs/sets"
+	"back-src/model"
 	"back-src/model/existence"
 	"back-src/model/sql"
 	"back-src/view/data"
@@ -11,15 +13,23 @@ import (
 
 var Inv invertedEngine
 
-func Filter(filter data.Filter, db *sql.Database) ([]notifications.ListicProject, error) {
-	if resultSet, err := filterByPriceAndStat(filter, db); err == nil {
+func Filter(auth existence.AuthToken, filter data.Filter, dbApi model.DbApi) ([]notifications.ListicProject, error) {
+	projectIds := []string{}
+	if resultSet, err := filterByPriceAndStat(filter, dbApi.SqlDb); err == nil {
 		if filter.IsFilterBySkill {
 			resultSet = sets.IntersectSets(resultSet, filterBySkills(filter))
 		}
-		return getListicProjectsByIds(resultSet.GetMembers(), db), nil
+		projectIds = append(projectIds, resultSet.GetMembers()...)
+		dbApi.RedisDb.FilterDb.AddFilterToUserWithRole(
+			libs.Ternary(auth.IsFreelancer, "frl-"+auth.Username, "emp-"+auth.Username).(string),
+			filter,
+			projectIds,
+		)
 	} else {
 		return []notifications.ListicProject{}, err
 	}
+	//TODO(Safhe Bandi)
+	return getListicProjectsByIds(projectIds, dbApi.SqlDb), nil
 }
 
 func getListicProjectsByIds(ids []string, db *sql.Database) []notifications.ListicProject {

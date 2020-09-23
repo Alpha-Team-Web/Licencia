@@ -13,7 +13,7 @@ func (handler *Handler) Filter(ctx *gin.Context) notifications.Notification {
 	if err := ctx.ShouldBindJSON(&filterReq); err != nil {
 		return notifications.GetShouldBindJsonErrorNotif(ctx, nil)
 	}
-	if projects, err := filters.Filter(filterReq, SqlDb); err != nil {
+	if projects, err := filters.Filter(getAuthByContext(ctx), filterReq, Db); err != nil {
 		return notifications.GetInternalServerErrorNotif(ctx, nil)
 	} else {
 		return notifications.GetSuccessfulNotif(ctx, projects)

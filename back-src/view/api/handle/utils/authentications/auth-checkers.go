@@ -64,10 +64,10 @@ func checkTokenIgnoreType(token string) (string, error) {
 }
 
 func formalCheckToken(token string) (existence.AuthToken, error) {
-	if isThereAuth, err := handle.RedisApi.AuthTokenDB.IsThereAuthWithToken(token); err != nil {
+	if isThereAuth, err := handle.RedisApi.AuthTokenDb.IsThereAuthWithToken(token); err != nil {
 		return existence.AuthToken{}, err
 	} else if isThereAuth {
-		if auth, err := handle.RedisApi.AuthTokenDB.GetAuthByToken(token); err != nil {
+		if auth, err := handle.RedisApi.AuthTokenDb.GetAuthByToken(token); err != nil {
 			return existence.AuthToken{}, err
 		} else {
 			return auth, err
@@ -81,7 +81,7 @@ func reInitToken(auth existence.AuthToken) (string, error) {
 	currentTime := time.Now()
 	if currentTime.Sub(auth.InitialTime) > handle.AuthExpiryDur {
 
-		if err := handle.RedisApi.AuthTokenDB.ExpireAuth(auth.Token); err != nil {
+		if err := handle.RedisApi.AuthTokenDb.ExpireAuth(auth.Token); err != nil {
 			return "", err
 		} else {
 			newToken, err := users.MakeNewAuthToken(auth.Username, auth.IsFreelancer, handle.RedisApi)

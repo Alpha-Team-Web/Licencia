@@ -15,7 +15,7 @@ type RedisProfileDb struct {
 }
 
 const (
-	keysExpireMinutes = 5
+	profileDbKeysExpireMinutes = 5
 )
 
 func NewRedisProfileDB(addr, password string) *RedisProfileDb {
@@ -44,7 +44,7 @@ func (db *RedisProfileDb) SetProfile(userWithRole string, profile existence.Prof
 		return stats.Err()
 	}
 
-	if cmd := db.conn.Expire(userWithRole, time.Minute*keysExpireMinutes); cmd.Err() != nil {
+	if cmd := db.conn.Expire(userWithRole, time.Minute*profileDbKeysExpireMinutes); cmd.Err() != nil {
 		return cmd.Err()
 	}
 
@@ -64,5 +64,5 @@ func (db *RedisProfileDb) IsThereProfile(userWithRole string) (bool, error) {
 }
 
 func (db *RedisProfileDb) ExtendExpiry(userWithRole string) error {
-	return db.conn.Expire(userWithRole, time.Minute*keysExpireMinutes).Err()
+	return db.conn.Expire(userWithRole, time.Minute*profileDbKeysExpireMinutes).Err()
 }
