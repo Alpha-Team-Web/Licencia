@@ -23,9 +23,9 @@ func NewRedisAuthTokenDB(addr, password string) *RedisAuthTokenDb {
 		conn: NewRedisCli(addr, password, authTokenDbId),
 	}
 	//TODO(AT THE END)
-	if stats := authTokenDb.conn.FlushDB(); stats.Err() != nil {
+	/*	if stats := authTokenDb.conn.FlushDB(); stats.Err() != nil {
 		panic(stats.Err())
-	}
+	}*/
 	return authTokenDb
 }
 

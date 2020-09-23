@@ -62,3 +62,7 @@ func (db *RedisProfileDb) IsThereProfile(userWithRole string) (bool, error) {
 	cmd := db.conn.Exists(userWithRole)
 	return libs.Ternary(cmd.Val() == 0, false, true).(bool), cmd.Err()
 }
+
+func (db *RedisProfileDb) ExtendExpiry(userWithRole string) error {
+	return db.conn.Expire(userWithRole, time.Minute*keysExpireMinutes).Err()
+}

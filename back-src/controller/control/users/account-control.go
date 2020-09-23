@@ -7,7 +7,6 @@ import (
 	rs "back-src/model/redis-sessions"
 	"back-src/model/sql"
 	"back-src/view/data"
-	"fmt"
 	"time"
 )
 
@@ -27,7 +26,6 @@ func RegisterEmployer(emp existence.Employer, db *sql.Database) error {
 }
 
 func RegisterFreelancer(frl existence.Freelancer, db *sql.Database) error {
-	fmt.Println(db.FreelancerTable.DoesFreelancerExistWithUsername(frl.Username))
 	if !db.FreelancerTable.DoesFreelancerExistWithUsername(frl.Username) {
 		if !db.FreelancerTable.DoesFreelancerExistWithEmail(frl.Email) {
 			frl.ShownName = frl.Username

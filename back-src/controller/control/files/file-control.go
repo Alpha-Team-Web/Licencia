@@ -9,7 +9,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"mime/multipart"
-	"time"
 )
 
 func UploadUserImage(username string, profileType string, file multipart.File, header *multipart.FileHeader, db *sql.Database, redis *redis_sessions.RedisApi) error {
@@ -24,7 +23,7 @@ func UploadUserImage(username string, profileType string, file multipart.File, h
 	profile.Size = header.Size
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
-	if err := redis.ProfileDB.SetProfile(userWithRole, time.Now(), profile); err != nil {
+	if err := redis.ProfileDB.SetProfile(userWithRole, profile); err != nil {
 		return err
 	}
 	//sql
@@ -55,6 +54,9 @@ func DownloadUserImage(username string, profileType string, db *sql.Database, re
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
 	if has, _ := redis.ProfileDB.IsThereProfile(userWithRole); has {
+		if err := redis.ProfileDB.ExtendExpiry(userWithRole); err != nil {
+			return existence.File{}, err
+		}
 		if prof, err := redis.ProfileDB.GetProfile(userWithRole); err != nil {
 			return existence.File{}, err
 		} else {
@@ -66,7 +68,7 @@ func DownloadUserImage(username string, profileType string, db *sql.Database, re
 		return existence.File{}, err
 	} else {
 		go func() {
-			redis.ProfileDB.SetProfile(userWithRole, time.Now(), prof)
+			redis.ProfileDB.SetProfile(userWithRole, prof)
 		}()
 		return prof.File, nil
 	}

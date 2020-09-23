@@ -5,7 +5,6 @@ import (
 	"back-src/model/existence"
 	"back-src/view/data"
 	"back-src/view/notifications"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -52,7 +51,6 @@ func (handler *Handler) DownloadProfileImage(ctx *gin.Context, profileType strin
 		if file, err := files.DownloadUserImage(getUsernameByContextToken(ctx), profileType, SqlDb, RedisApi); err != nil {
 			return notifications.GetDatabaseErrorNotif(ctx, nil)
 		} else {
-			fmt.Println(file)
 			return notifications.GetSuccessfulNotif(ctx, file)
 		}
 	}
