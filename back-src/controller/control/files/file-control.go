@@ -54,9 +54,7 @@ func DownloadUserImage(username string, profileType string, dbApi model.DbApi) (
 	//redis
 	userWithRole := libs.Ternary(profileType == existence.FreelancerProfile, "frl-"+username, "emp-"+username).(string)
 	if has, _ := dbApi.RedisDb.ProfileDb.IsThereProfile(userWithRole); has {
-		if err := dbApi.RedisDb.ProfileDb.ExtendExpiry(userWithRole); err != nil {
-			return existence.File{}, err
-		}
+		go dbApi.RedisDb.ProfileDb.ExtendExpiry(userWithRole)
 		if prof, err := dbApi.RedisDb.ProfileDb.GetProfile(userWithRole); err != nil {
 			return existence.File{}, err
 		} else {

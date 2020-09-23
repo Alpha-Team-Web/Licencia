@@ -22,7 +22,7 @@ func Filter(auth existence.AuthToken, filter data.Filter, dbApi model.DbApi) ([]
 	if dbApi.RedisDb.FilterDb.IsThereFilter(userWithRole) {
 		if redisFilter, projectIds, err := dbApi.RedisDb.FilterDb.GetFilter(userWithRole); err == nil {
 			if areFiltersEqual(filter, redisFilter) {
-				dbApi.RedisDb.FilterDb.ExtendFilterExpiry(userWithRole)
+				go dbApi.RedisDb.FilterDb.ExtendFilterExpiry(userWithRole)
 				return getListicProjectsByIds(projectIds, filter.PageNumber, dbApi.SqlDb), nil
 			}
 		}
@@ -33,7 +33,7 @@ func Filter(auth existence.AuthToken, filter data.Filter, dbApi model.DbApi) ([]
 			resultSet = sets.IntersectSets(resultSet, filterBySkills(filter))
 		}
 		projectIds = append(projectIds, resultSet.GetMembers()...)
-		dbApi.RedisDb.FilterDb.AddFilterToUserWithRole(
+		go dbApi.RedisDb.FilterDb.AddFilterToUserWithRole(
 			userWithRole,
 			filter,
 			projectIds,
